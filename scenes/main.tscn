@@ -1,0 +1,146 @@
+[gd_scene load_steps=13 format=3]
+
+[ext_resource type="Script" path="res://scripts/main.gd" id="1_4f72t"]
+[ext_resource type="Script" path="res://scripts/player_controller.gd" id="2_vrsh6"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_player"]
+size = Vector3(1, 1, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_player"]
+size = Vector3(1, 1, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_player"]
+albedo_color = Color(0.88, 0.54, 0.27, 1)
+roughness = 0.6
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wall"]
+albedo_color = Color(0.84, 0.87, 0.9, 1)
+roughness = 0.85
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_floor"]
+albedo_color = Color(0.3, 0.33, 0.37, 1)
+roughness = 1.0
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_floor"]
+size = Vector3(20, 1, 20)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wall_ns"]
+size = Vector3(20, 6, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wall_ew"]
+size = Vector3(1, 6, 20)
+
+[sub_resource type="BoxMesh" id="BoxMesh_floor"]
+size = Vector3(20, 1, 20)
+
+[sub_resource type="BoxMesh" id="BoxMesh_wall_ns"]
+size = Vector3(20, 6, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_wall_ew"]
+size = Vector3(1, 6, 20)
+
+[node name="Main" type="Node3D"]
+script = ExtResource("1_4f72t")
+
+[node name="Room" type="Node3D" parent="."]
+
+[node name="Floor" type="StaticBody3D" parent="Room"]
+position = Vector3(0, -0.5, 0)
+collision_layer = 2
+collision_mask = 0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Room/Floor"]
+mesh = SubResource("BoxMesh_floor")
+material_override = SubResource("StandardMaterial3D_floor")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Room/Floor"]
+shape = SubResource("BoxShape3D_floor")
+
+[node name="Ceiling" type="StaticBody3D" parent="Room"]
+position = Vector3(0, 6.5, 0)
+collision_layer = 1
+collision_mask = 0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Room/Ceiling"]
+mesh = SubResource("BoxMesh_floor")
+material_override = SubResource("StandardMaterial3D_wall")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Room/Ceiling"]
+shape = SubResource("BoxShape3D_floor")
+
+[node name="WallNorth" type="StaticBody3D" parent="Room"]
+position = Vector3(0, 3, -10.5)
+collision_layer = 1
+collision_mask = 0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Room/WallNorth"]
+mesh = SubResource("BoxMesh_wall_ns")
+material_override = SubResource("StandardMaterial3D_wall")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Room/WallNorth"]
+shape = SubResource("BoxShape3D_wall_ns")
+
+[node name="WallSouth" type="StaticBody3D" parent="Room"]
+position = Vector3(0, 3, 10.5)
+collision_layer = 1
+collision_mask = 0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Room/WallSouth"]
+mesh = SubResource("BoxMesh_wall_ns")
+material_override = SubResource("StandardMaterial3D_wall")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Room/WallSouth"]
+shape = SubResource("BoxShape3D_wall_ns")
+
+[node name="WallWest" type="StaticBody3D" parent="Room"]
+position = Vector3(-10.5, 3, 0)
+collision_layer = 1
+collision_mask = 0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Room/WallWest"]
+mesh = SubResource("BoxMesh_wall_ew")
+material_override = SubResource("StandardMaterial3D_wall")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Room/WallWest"]
+shape = SubResource("BoxShape3D_wall_ew")
+
+[node name="WallEast" type="StaticBody3D" parent="Room"]
+position = Vector3(10.5, 3, 0)
+collision_layer = 1
+collision_mask = 0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Room/WallEast"]
+mesh = SubResource("BoxMesh_wall_ew")
+material_override = SubResource("StandardMaterial3D_wall")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Room/WallEast"]
+shape = SubResource("BoxShape3D_wall_ew")
+
+[node name="Player" type="CharacterBody3D" parent="."]
+script = ExtResource("2_vrsh6")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Player"]
+shape = SubResource("BoxShape3D_player")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Player"]
+mesh = SubResource("BoxMesh_player")
+material_override = SubResource("StandardMaterial3D_player")
+
+[node name="CameraPivot" type="Node3D" parent="."]
+
+[node name="CameraYaw" type="Node3D" parent="CameraPivot"]
+
+[node name="CameraPitch" type="Node3D" parent="CameraPivot/CameraYaw"]
+
+[node name="SpringArm3D" type="SpringArm3D" parent="CameraPivot/CameraYaw/CameraPitch"]
+spring_length = 9.0
+collision_mask = 1
+
+[node name="Camera3D" type="Camera3D" parent="CameraPivot/CameraYaw/CameraPitch/SpringArm3D"]
+current = true
+
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+position = Vector3(0, 4.5, 0)
+light_color = Color(1, 0.97, 0.92, 1)
+light_energy = 3.5
+omni_range = 28.0

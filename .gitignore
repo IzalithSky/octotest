@@ -1,0 +1,17 @@
+# Godot engine cache and generated files.
+.godot/
+.import/
+
+# Export/build artifacts.
+/android/
+/bin/
+/build/
+
+# Mono/C# temp output (if enabled later).
+.mono/
+data_*/
+
+# Editor/OS noise.
+.DS_Store
+Thumbs.db
+*.swp
