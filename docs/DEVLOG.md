@@ -2,6 +2,14 @@
 
 ## 2026-02-23
 
+### Step 15 - Import Gone Exploring design docs and split backlog
+- Imported the provided source doc into project docs as the initial canonical GDD:
+  - `docs/GDD.md`
+- Split planning into a separate editable backlog tailored to current repo baseline:
+  - `docs/TASK_LIST.md`
+- Updated top-level docs map (`docs/README.md`) to link the new game docs.
+- Note: `docs/GDD.md` was later refined in-repo (task-list removal, image removal, and tangle marked optional/post-MVP).
+
 ### Step 14 - Portable Godot binary detection and docs sync
 - Updated `scripts/check.sh` binary resolution to support cross-device setups without per-run path overrides.
 - Detection order now:

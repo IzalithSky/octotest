@@ -62,3 +62,5 @@ Run the unified check script:
 3. Running change history: `docs/DEVLOG.md`
 4. Manual + automated test checklist: `docs/TESTING.md`
 5. Gameplay implementation notes: `docs/misc/STAIRS.md`
+6. Canonical game design document (active project version): `docs/GDD.md`
+7. Editable game task backlog: `docs/TASK_LIST.md`
