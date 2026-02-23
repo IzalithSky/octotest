@@ -57,3 +57,13 @@
 - Revalidated:
   - Headless project boot passes.
   - `movement_math_test` still passes.
+
+### Step 6 - Session procedure documentation
+- Added `PROCEDURES.md` with AI-agent session initialization rules.
+- Documented:
+  - Project/Godot paths and startup commands.
+  - Branch policy (feature/fix branches, keep `main` stable).
+  - Testing policy (always add/update tests where possible, run headless checks).
+  - Dev log maintenance requirements.
+  - Known pitfalls discovered in this project so far.
+- Purpose: reduce re-onboarding time and prevent repeated setup mistakes in future sessions.
