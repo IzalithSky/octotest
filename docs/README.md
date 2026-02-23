@@ -6,6 +6,7 @@ Godot `4.6.1` 3D isometric prototype with:
 2. Orbit camera rig (`SpringArm3D`).
 3. Gravity and slope traversal ramps.
 4. Authored room geometry with window openings and transparent collidable glass.
+5. UI flow with a startup main menu, in-game menu, and gameplay HUD hints.
 
 ## Canonical Branch
 
@@ -46,6 +47,7 @@ GODOT_BIN=/absolute/path/to/godot ./scripts/check.sh
 2. `RMB + drag`: orbit camera.
 3. `Q` / `E`: keyboard orbit.
 4. Mouse wheel: zoom camera.
+5. `Esc`: toggle in-game menu.
 
 ## Validate
 

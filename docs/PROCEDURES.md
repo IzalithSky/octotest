@@ -6,7 +6,7 @@ This file defines how to initialize and run AI-assisted dev sessions for this pr
 
 - Project root: this repository root
 - Godot binary: auto-detected by `scripts/check.sh` (`godot4`, `godot`, `Godot`, macOS app path, legacy `/ssd2/...`), or override with `GODOT_BIN`
-- Main scene: `res://scenes/main.tscn`
+- Main scene: `res://scenes/main_menu.tscn`
 - Logic tests: `res://tests/movement_math_test.gd`, `res://tests/slope_movement_test.gd`
 - Dev log: `docs/DEVLOG.md`
 - Architecture doc: `docs/ARCHITECTURE.md`

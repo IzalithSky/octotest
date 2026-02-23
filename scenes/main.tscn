@@ -416,3 +416,98 @@ position = Vector3(0, 6.2, 0)
 light_color = Color(1, 0.97, 0.92, 1)
 light_energy = 4.0
 omni_range = 42.0
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="HUD" type="Control" parent="UI"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="HintPanel" type="PanelContainer" parent="UI/HUD"]
+layout_mode = 1
+anchors_preset = 12
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -300.0
+offset_top = -122.0
+offset_right = -16.0
+offset_bottom = -16.0
+mouse_filter = 2
+
+[node name="HintMargin" type="MarginContainer" parent="UI/HUD/HintPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 10
+mouse_filter = 2
+
+[node name="HintLabel" type="Label" parent="UI/HUD/HintPanel/HintMargin"]
+layout_mode = 2
+text = "LMB Move\nRMB + Drag Orbit\nQ/E Keyboard Orbit\nMouse Wheel Zoom\nEsc In-Game Menu"
+horizontal_alignment = 2
+vertical_alignment = 1
+mouse_filter = 2
+
+[node name="InGameMenu" type="Control" parent="UI"]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MenuShade" type="ColorRect" parent="UI/InGameMenu"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.44)
+
+[node name="MenuCenter" type="CenterContainer" parent="UI/InGameMenu"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MenuPanel" type="PanelContainer" parent="UI/InGameMenu/MenuCenter"]
+custom_minimum_size = Vector2(260, 0)
+layout_mode = 2
+
+[node name="MenuMargin" type="MarginContainer" parent="UI/InGameMenu/MenuCenter/MenuPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 14
+theme_override_constants/margin_top = 14
+theme_override_constants/margin_right = 14
+theme_override_constants/margin_bottom = 14
+
+[node name="MenuButtons" type="VBoxContainer" parent="UI/InGameMenu/MenuCenter/MenuPanel/MenuMargin"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="MenuTitle" type="Label" parent="UI/InGameMenu/MenuCenter/MenuPanel/MenuMargin/MenuButtons"]
+layout_mode = 2
+text = "In-Game Menu"
+horizontal_alignment = 1
+
+[node name="MainMenuButton" type="Button" parent="UI/InGameMenu/MenuCenter/MenuPanel/MenuMargin/MenuButtons"]
+custom_minimum_size = Vector2(0, 42)
+layout_mode = 2
+text = "Main Menu"
+
+[node name="QuitButton" type="Button" parent="UI/InGameMenu/MenuCenter/MenuPanel/MenuMargin/MenuButtons"]
+custom_minimum_size = Vector2(0, 42)
+layout_mode = 2
+text = "Quit"

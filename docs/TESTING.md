@@ -26,14 +26,17 @@ HOME=/tmp XDG_DATA_HOME=/tmp XDG_CONFIG_HOME=/tmp godot --headless --path /path/
 
 ## Manual Visual QA Checklist
 
-1. Launch game scene from `main`.
-2. Confirm room is larger and ceiling is high.
-3. Confirm north/south windows show sky (true wall openings, not just transparent overlays).
-4. Confirm transparent window blocks are still collidable (player cannot pass through).
-5. Confirm room palette is muted and lower contrast than player cube.
-6. Confirm ramps are reachable and traversal is smooth uphill/downhill.
-7. Confirm click targets on ramps work and player remains grounded appropriately.
-8. Confirm camera orbit and zoom still behave as expected.
+1. Launch project and confirm startup menu (`main_menu.tscn`) appears first.
+2. Click `Play` and confirm gameplay scene loads.
+3. Confirm room is larger and ceiling is high.
+4. Confirm north/south windows show sky (true wall openings, not just transparent overlays).
+5. Confirm transparent window blocks are still collidable (player cannot pass through).
+6. Confirm room palette is muted and lower contrast than player cube.
+7. Confirm ramps are reachable and traversal is smooth uphill/downhill.
+8. Confirm click targets on ramps work and player remains grounded appropriately.
+9. Confirm camera orbit and zoom still behave as expected.
+10. Confirm HUD key-hint panel is visible in a corner and does not block click-to-move when clicking through it.
+11. Press `Esc` to open/close in-game menu; verify `Main Menu` returns to startup menu and `Quit` exits app.
 
 ## Regression Focus Areas
 

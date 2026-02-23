@@ -122,6 +122,31 @@
 2. `HOME=/tmp XDG_DATA_HOME=/tmp XDG_CONFIG_HOME=/tmp /ssd2/godot/4.6.1/Godot_v4.6.1-stable_linux.x86_64 --headless --path /ssd2/projects/godot/octotest --script res://tests/movement_math_test.gd`
 3. `HOME=/tmp XDG_DATA_HOME=/tmp XDG_CONFIG_HOME=/tmp /ssd2/godot/4.6.1/Godot_v4.6.1-stable_linux.x86_64 --headless --path /ssd2/projects/godot/octotest --script res://tests/slope_movement_test.gd`
 
+### Step 14 - Main menu and in-game UI
+- Added startup menu scene and script:
+  - `scenes/main_menu.tscn`
+  - `scripts/main_menu.gd`
+- Main menu has `Play` and `Quit` actions.
+- Switched startup scene in `project.godot`:
+  - `run/main_scene="res://scenes/main_menu.tscn"`
+- Added gameplay UI under `scenes/main.tscn`:
+  - HUD key-hint panel anchored in a corner.
+  - In-game menu with `Main Menu` and `Quit` buttons.
+- Updated `scripts/main.gd`:
+  - `Esc` toggles in-game menu visibility.
+  - Menu visibility blocks gameplay input while open.
+  - HUD controls are forced to `MOUSE_FILTER_IGNORE` so gameplay remains clickable through hint UI.
+  - Added scene return (`Main Menu`) and app quit handlers.
+- Updated docs for the new scene flow and manual QA:
+  - `docs/README.md`
+  - `docs/ARCHITECTURE.md`
+  - `docs/PROCEDURES.md`
+  - `docs/TESTING.md`
+
+### Validation commands (pass)
+1. `./scripts/check.sh`
+   - Result: boot smoke test PASS, `movement_math_test: PASS`, `slope_movement_test: PASS`.
+
 ### Step 13 - Stair implementation research note
 - Added `docs/misc/STAIRS.md` with a practical Godot stair-handling guide.
 - Documented the most reliable pattern seen in practice:

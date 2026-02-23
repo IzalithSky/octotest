@@ -4,11 +4,13 @@ This document describes the current runtime architecture of the prototype and mu
 
 ## High-Level Runtime
 
-1. `res://scenes/main.tscn` is the main scene.
-2. `Main` (`Node3D`) owns world setup, camera behavior, and click-to-move input routing.
-3. `Player` (`CharacterBody3D`) owns locomotion, gravity handling, and slope alignment.
-4. `Room` contains authored static geometry (floor, ceiling, walls, ramps, windows).
-5. `WorldEnvironment` provides sky/background visuals visible through wall openings.
+1. `res://scenes/main_menu.tscn` is the startup scene.
+2. `MainMenu` (`Control`) owns menu UI flow into gameplay (`Play`) or app exit (`Quit`).
+3. `res://scenes/main.tscn` is the gameplay scene.
+4. `Main` (`Node3D`) owns world setup, camera behavior, click-to-move input routing, and in-game UI menu flow.
+5. `Player` (`CharacterBody3D`) owns locomotion, gravity handling, and slope alignment.
+6. `Room` contains authored static geometry (floor, ceiling, walls, ramps, windows).
+7. `WorldEnvironment` provides sky/background visuals visible through wall openings.
 
 ## Scene Graph Responsibilities
 
@@ -16,40 +18,50 @@ This document describes the current runtime architecture of the prototype and mu
 - Script: `res://scripts/main.gd`
 - Handles mouse raycast targeting on ground collision layer.
 - Handles orbit camera controls (RMB drag, Q/E yaw, wheel zoom).
-2. `WorldEnvironment`:
+- Handles in-game menu (`Esc` toggle) with `Main Menu` and `Quit` actions.
+2. `UI` (`CanvasLayer`) in gameplay scene:
+- `HUD` contains key hints anchored to screen corner.
+- HUD controls are set to ignore mouse input so world clicks pass through.
+- `InGameMenu` blocks world input while visible and routes button actions.
+3. `WorldEnvironment`:
 - Provides procedural sky and ambient environment settings.
-3. `Room`:
+4. `Room`:
 - `Floor` uses ground collision layer for click-to-move raycast targeting.
 - `Ceiling` and wall pieces use wall collision layer for physical boundaries.
 - North/south walls are segmented to create real window openings.
 - `Window*` nodes are transparent collidable blocks filling window apertures.
 - `RampWest`/`RampEast` provide slope traversal test surfaces.
-4. `Player`:
+5. `Player`:
 - Uses `CollisionShape3D` + visible cube mesh.
 - Updated each physics frame by `player_controller.gd`.
-5. Camera rig:
+6. Camera rig:
 - `CameraPivot -> CameraYaw -> CameraPitch -> SpringArm3D -> Camera3D`.
 - Pivot follows player position.
 
 ## Script Architecture
 
-1. `res://scripts/main.gd`
+1. `res://scripts/main_menu.gd`
+- Handles startup menu button actions.
+- Changes to gameplay scene on `Play`.
+- Quits app on `Quit`.
+2. `res://scripts/main.gd`
 - Input and camera orchestration.
 - Converts screen click to world target via physics raycast.
 - Calls `Player.set_move_target()`.
-2. `res://scripts/player_controller.gd`
+- Owns in-game menu visibility and scene change/quit actions.
+3. `res://scripts/player_controller.gd`
 - Character movement state (`_target_position`, `_has_target`).
 - Gravity and grounded handling.
 - Uses `MovementMath.next_velocity_2d()` for planar acceleration/deceleration.
 - Uses `MovementMath.project_planar_direction_on_surface()` to keep movement stable on slopes.
-3. `res://scripts/movement_math.gd`
+4. `res://scripts/movement_math.gd`
 - Pure helper math (no scene dependencies).
 - Designed for headless logic testing.
 
 ## Movement Data Flow
 
 1. User clicks floor/ramp.
-2. `main.gd` raycasts against ground layer and sends target to player.
+2. `main.gd` raycasts against ground layer and sends target to player when in-game menu is hidden.
 3. `player_controller.gd` computes planar velocity toward target.
 4. If grounded, planar direction is projected onto floor tangent for slope handling.
 5. Gravity is applied when airborne.
