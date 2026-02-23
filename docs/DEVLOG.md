@@ -102,6 +102,19 @@
 - Validation:
   - Ran `./scripts/check.sh` -> PASS.
 
+### Step 12 - Reorganize textures and docs folders
+- Moved texture assets:
+  - `icon.svg` -> `assets/textures/icon.svg`
+  - `icon.svg.import` -> `assets/textures/icon.svg.import`
+- Updated `project.godot` icon path to `res://assets/textures/icon.svg`.
+- Moved documentation files under `docs/`:
+  - `docs/README.md`
+  - `docs/PROCEDURES.md`
+  - `docs/ARCHITECTURE.md`
+  - `docs/TESTING.md`
+  - `docs/DEVLOG.md`
+- Updated doc cross-references to use `docs/...` paths from project root.
+
 ### Step 10 - Merge room-window visuals and add architecture docs
 - Merged `feat/room-scale-windows` into `master` (fast-forward).
 - Added `ARCHITECTURE.md` documenting:

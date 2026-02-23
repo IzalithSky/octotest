@@ -74,5 +74,5 @@ This document describes the current runtime architecture of the prototype and mu
 When changing scene hierarchy, collision layers, movement flow, or test strategy:
 
 1. Update this file in the same branch/commit set.
-2. Update `PROCEDURES.md` only if workflow expectations also change.
-3. Add a `DEVLOG.md` entry summarizing architectural impact.
+2. Update `docs/PROCEDURES.md` only if workflow expectations also change.
+3. Add a `docs/DEVLOG.md` entry summarizing architectural impact.

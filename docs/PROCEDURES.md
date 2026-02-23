@@ -8,10 +8,10 @@ This file defines how to initialize and run AI-assisted dev sessions for this pr
 - Godot binary: `/ssd2/godot/4.6.1/Godot_v4.6.1-stable_linux.x86_64`
 - Main scene: `res://scenes/main.tscn`
 - Logic tests: `res://tests/movement_math_test.gd`, `res://tests/slope_movement_test.gd`
-- Dev log: `DEVLOG.md`
-- Architecture doc: `ARCHITECTURE.md`
-- Manual testing doc: `TESTING.md`
-- Quickstart doc: `README.md`
+- Dev log: `docs/DEVLOG.md`
+- Architecture doc: `docs/ARCHITECTURE.md`
+- Manual testing doc: `docs/TESTING.md`
+- Quickstart doc: `docs/README.md`
 - Unified check script: `scripts/check.sh`
 
 ## Session Initialization Checklist
@@ -19,7 +19,7 @@ This file defines how to initialize and run AI-assisted dev sessions for this pr
 Run these steps at the start of every session.
 
 1. Confirm current directory is project root.
-2. Read `ARCHITECTURE.md` and `DEVLOG.md`, then note the latest completed step.
+2. Read `docs/ARCHITECTURE.md` and `docs/DEVLOG.md`, then note the latest completed step.
 3. Check git status and branch.
 4. Run baseline sanity checks before changing code (`./scripts/check.sh`).
 5. Create a dedicated feature/fix branch before implementation.
@@ -60,11 +60,11 @@ Every behavior change must include tests where possible.
 2. At minimum, run:
 - Headless boot smoke check (`--quit-after 5`)
 - Logic test script(s) including slope integration
-3. If a change is hard to unit test, document manual verification steps in `DEVLOG.md`.
+3. If a change is hard to unit test, document manual verification steps in `docs/DEVLOG.md`.
 
 ## Dev Log Rules
 
-Keep `DEVLOG.md` updated continuously so work can resume after interruption.
+Keep `docs/DEVLOG.md` updated continuously so work can resume after interruption.
 
 1. Add a new dated step for each meaningful implementation chunk.
 2. Record:
@@ -77,9 +77,9 @@ Keep `DEVLOG.md` updated continuously so work can resume after interruption.
 
 ## Architecture Maintenance Rules
 
-Keep `ARCHITECTURE.md` synchronized with actual project structure.
+Keep `docs/ARCHITECTURE.md` synchronized with actual project structure.
 
-1. If scene hierarchy, script responsibilities, collision strategy, or test architecture changes, update `ARCHITECTURE.md` in the same branch.
+1. If scene hierarchy, script responsibilities, collision strategy, or test architecture changes, update `docs/ARCHITECTURE.md` in the same branch.
 2. Treat architecture docs as part of done criteria for structural changes.
 3. During reviews/hand-offs, unresolved architecture doc drift is a blocker.
 
@@ -118,7 +118,7 @@ Use consistent commands to avoid environment-specific failures.
 ## End-of-Session Checklist
 
 1. Run tests and smoke checks again.
-2. Update `DEVLOG.md` with final status.
-3. If architecture changed, update `ARCHITECTURE.md` before commit.
+2. Update `docs/DEVLOG.md` with final status.
+3. If architecture changed, update `docs/ARCHITECTURE.md` before commit.
 4. Ensure `git status` reflects only intentional changes.
 5. Commit with a clear, scoped message.
