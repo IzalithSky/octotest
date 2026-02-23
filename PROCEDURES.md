@@ -9,13 +9,14 @@ This file defines how to initialize and run AI-assisted dev sessions for this pr
 - Main scene: `res://scenes/main.tscn`
 - Logic tests: `res://tests/movement_math_test.gd`
 - Dev log: `DEVLOG.md`
+- Architecture doc: `ARCHITECTURE.md`
 
 ## Session Initialization Checklist
 
 Run these steps at the start of every session.
 
 1. Confirm current directory is project root.
-2. Read `DEVLOG.md` from top to bottom and note the latest completed step.
+2. Read `ARCHITECTURE.md` and `DEVLOG.md`, then note the latest completed step.
 3. Check git status and branch.
 4. Run baseline sanity checks before changing code.
 5. Create a dedicated feature/fix branch before implementation.
@@ -34,7 +35,7 @@ HOME=/tmp XDG_DATA_HOME=/tmp XDG_CONFIG_HOME=/tmp /ssd2/godot/4.6.1/Godot_v4.6.1
 
 Use a separate branch for each new feature or fix.
 
-1. Keep `main` stable.
+1. Keep `master` stable.
 2. Branch names:
 - `feat/<short-topic>`
 - `fix/<short-topic>`
@@ -45,7 +46,7 @@ Use a separate branch for each new feature or fix.
 Example:
 
 ```bash
-git checkout main
+git checkout master
 git checkout -b feat/camera-target-indicator
 ```
 
@@ -71,6 +72,14 @@ Keep `DEVLOG.md` updated continuously so work can resume after interruption.
 - Results and failures
 - Follow-up tasks
 3. Never leave a session without a final status entry.
+
+## Architecture Maintenance Rules
+
+Keep `ARCHITECTURE.md` synchronized with actual project structure.
+
+1. If scene hierarchy, script responsibilities, collision strategy, or test architecture changes, update `ARCHITECTURE.md` in the same branch.
+2. Treat architecture docs as part of done criteria for structural changes.
+3. During reviews/hand-offs, unresolved architecture doc drift is a blocker.
 
 ## Godot Execution Rules
 
@@ -105,5 +114,6 @@ Use consistent commands to avoid environment-specific failures.
 
 1. Run tests and smoke checks again.
 2. Update `DEVLOG.md` with final status.
-3. Ensure `git status` reflects only intentional changes.
-4. Commit with a clear, scoped message.
+3. If architecture changed, update `ARCHITECTURE.md` before commit.
+4. Ensure `git status` reflects only intentional changes.
+5. Commit with a clear, scoped message.

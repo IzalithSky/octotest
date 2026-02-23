@@ -88,6 +88,18 @@
 2. `HOME=/tmp XDG_DATA_HOME=/tmp XDG_CONFIG_HOME=/tmp /ssd2/godot/4.6.1/Godot_v4.6.1-stable_linux.x86_64 --headless --path /ssd2/projects/godot/octotest --script res://tests/movement_math_test.gd`
 3. `HOME=/tmp XDG_DATA_HOME=/tmp XDG_CONFIG_HOME=/tmp /ssd2/godot/4.6.1/Godot_v4.6.1-stable_linux.x86_64 --headless --path /ssd2/projects/godot/octotest --script res://tests/slope_movement_test.gd`
 
+### Step 10 - Merge room-window visuals and add architecture docs
+- Merged `feat/room-scale-windows` into `master` (fast-forward).
+- Added `ARCHITECTURE.md` documenting:
+  - Scene hierarchy responsibilities.
+  - Script/module boundaries.
+  - Movement data flow.
+  - Test architecture and extension points.
+- Updated `PROCEDURES.md` to require architecture maintenance:
+  - Session init now includes reading `ARCHITECTURE.md`.
+  - Added dedicated architecture maintenance rules.
+  - End-of-session checklist now requires architecture doc updates for structural changes.
+
 ### Step 8 - Room scale and glass windows pass
 - Created branch: `feat/room-scale-windows`.
 - Updated authored room dimensions in `scenes/main.tscn`:
