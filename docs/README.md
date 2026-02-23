@@ -14,8 +14,30 @@ Use `main` as the default stable branch.
 ## Run
 
 ```bash
-cd /ssd2/projects/godot/octotest
-/ssd2/godot/4.6.1/Godot_v4.6.1-stable_linux.x86_64 --path /ssd2/projects/godot/octotest
+cd /path/to/octotest
+godot --path .
+```
+
+If your binary is named differently, these also work:
+
+```bash
+godot4 --path .
+Godot --path .
+```
+
+For checks, `./scripts/check.sh` auto-detects, in order:
+
+1. `GODOT_BIN` (if set)
+2. `godot4` in `PATH`
+3. `godot` in `PATH`
+4. `Godot` in `PATH`
+5. `/Applications/Godot.app/Contents/MacOS/Godot` (macOS app install)
+6. `/ssd2/godot/4.6.1/Godot_v4.6.1-stable_linux.x86_64` (legacy team Linux path)
+
+You can still force a specific binary:
+
+```bash
+GODOT_BIN=/absolute/path/to/godot ./scripts/check.sh
 ```
 
 ## Controls

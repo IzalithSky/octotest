@@ -2,6 +2,24 @@
 
 ## 2026-02-23
 
+### Step 14 - Portable Godot binary detection and docs sync
+- Updated `scripts/check.sh` binary resolution to support cross-device setups without per-run path overrides.
+- Detection order now:
+  - `GODOT_BIN` override
+  - `godot4` in `PATH`
+  - `godot` in `PATH`
+  - `Godot` in `PATH`
+  - `/Applications/Godot.app/Contents/MacOS/Godot` (macOS app install)
+  - `/ssd2/godot/4.6.1/Godot_v4.6.1-stable_linux.x86_64` (legacy Linux fallback)
+- Updated docs to match current behavior:
+  - `docs/README.md`
+  - `docs/PROCEDURES.md`
+  - `docs/TESTING.md`
+
+### Validation commands (pass)
+1. `./scripts/check.sh`
+   - Result: boot smoke test + movement math test + slope integration test all passed.
+
 ### Step 1 - Project bootstrap
 - Confirmed this is an empty Godot 4.6 template project.
 - Created baseline folders: `scenes/`, `scripts/`, `tests/`.

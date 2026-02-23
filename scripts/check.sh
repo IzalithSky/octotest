@@ -3,7 +3,45 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
-GODOT_BIN="${GODOT_BIN:-/ssd2/godot/4.6.1/Godot_v4.6.1-stable_linux.x86_64}"
+
+resolve_godot_bin() {
+	if [[ -n "${GODOT_BIN:-}" ]]; then
+		echo "${GODOT_BIN}"
+		return 0
+	fi
+
+	if command -v godot4 >/dev/null 2>&1; then
+		command -v godot4
+		return 0
+	fi
+
+	if command -v godot >/dev/null 2>&1; then
+		command -v godot
+		return 0
+	fi
+
+	if command -v Godot >/dev/null 2>&1; then
+		command -v Godot
+		return 0
+	fi
+
+	# Common macOS app bundle path.
+	if [[ -x "/Applications/Godot.app/Contents/MacOS/Godot" ]]; then
+		echo "/Applications/Godot.app/Contents/MacOS/Godot"
+		return 0
+	fi
+
+	# Legacy team Linux path (kept for compatibility with existing dev setups).
+	if [[ -x "/ssd2/godot/4.6.1/Godot_v4.6.1-stable_linux.x86_64" ]]; then
+		echo "/ssd2/godot/4.6.1/Godot_v4.6.1-stable_linux.x86_64"
+		return 0
+	fi
+
+	echo "Godot binary not found. Set GODOT_BIN=/absolute/path/to/godot or add godot4/godot/Godot to PATH." >&2
+	return 1
+}
+
+GODOT_BIN="$(resolve_godot_bin)"
 
 export HOME=/tmp
 export XDG_DATA_HOME=/tmp

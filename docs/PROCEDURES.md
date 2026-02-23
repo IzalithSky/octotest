@@ -4,8 +4,8 @@ This file defines how to initialize and run AI-assisted dev sessions for this pr
 
 ## Project Facts
 
-- Project root: `/ssd2/projects/godot/octotest`
-- Godot binary: `/ssd2/godot/4.6.1/Godot_v4.6.1-stable_linux.x86_64`
+- Project root: this repository root
+- Godot binary: auto-detected by `scripts/check.sh` (`godot4`, `godot`, `Godot`, macOS app path, legacy `/ssd2/...`), or override with `GODOT_BIN`
 - Main scene: `res://scenes/main.tscn`
 - Logic tests: `res://tests/movement_math_test.gd`, `res://tests/slope_movement_test.gd`
 - Dev log: `docs/DEVLOG.md`
@@ -27,7 +27,7 @@ Run these steps at the start of every session.
 Suggested commands:
 
 ```bash
-cd /ssd2/projects/godot/octotest
+cd /path/to/octotest
 git status -sb
 git branch --show-current
 ./scripts/check.sh
@@ -89,12 +89,18 @@ Use consistent commands to avoid environment-specific failures.
 
 1. Prefer running Godot with writable temp environment in headless checks:
 - `HOME=/tmp XDG_DATA_HOME=/tmp XDG_CONFIG_HOME=/tmp`
-2. Use absolute binary path:
+2. Prefer `godot`/`godot4` from `PATH`; `scripts/check.sh` auto-detects in this order:
+- `godot4`
+- `godot`
+- `Godot`
+- `/Applications/Godot.app/Contents/MacOS/Godot`
 - `/ssd2/godot/4.6.1/Godot_v4.6.1-stable_linux.x86_64`
-3. Interactive run command:
+3. If needed, override binary path per machine:
+- `GODOT_BIN=/absolute/path/to/godot ./scripts/check.sh`
+4. Interactive run command:
 
 ```bash
-/ssd2/godot/4.6.1/Godot_v4.6.1-stable_linux.x86_64 --path /ssd2/projects/godot/octotest
+godot --path /path/to/octotest
 ```
 
 ## Known Pitfalls (Observed)
