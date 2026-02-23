@@ -2,6 +2,14 @@
 
 ## 2026-02-23
 
+### Step 16 - Update project icon to octopus PNG
+- Updated Godot application icon to use PNG asset:
+  - `project.godot` -> `config/icon="res://icon.png"`
+- Added icon asset file:
+  - `icon.png` (single source for Godot project icon and Git/SourceTree usage)
+- Validation:
+  - Ran `./scripts/check.sh` -> PASS.
+
 ### Step 15 - Import Gone Exploring design docs and split backlog
 - Imported the provided source doc into project docs as the initial canonical GDD:
   - `docs/GDD.md`
