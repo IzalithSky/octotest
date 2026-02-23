@@ -87,3 +87,37 @@
 1. `HOME=/tmp XDG_DATA_HOME=/tmp XDG_CONFIG_HOME=/tmp /ssd2/godot/4.6.1/Godot_v4.6.1-stable_linux.x86_64 --headless --path /ssd2/projects/godot/octotest --quit-after 5`
 2. `HOME=/tmp XDG_DATA_HOME=/tmp XDG_CONFIG_HOME=/tmp /ssd2/godot/4.6.1/Godot_v4.6.1-stable_linux.x86_64 --headless --path /ssd2/projects/godot/octotest --script res://tests/movement_math_test.gd`
 3. `HOME=/tmp XDG_DATA_HOME=/tmp XDG_CONFIG_HOME=/tmp /ssd2/godot/4.6.1/Godot_v4.6.1-stable_linux.x86_64 --headless --path /ssd2/projects/godot/octotest --script res://tests/slope_movement_test.gd`
+
+### Step 8 - Room scale and glass windows pass
+- Created branch: `feat/room-scale-windows`.
+- Updated authored room dimensions in `scenes/main.tscn`:
+  - Floor expanded from 20x20 to 32x32.
+  - Wall height increased from 6 to 9.
+  - Ceiling raised accordingly.
+- Added four collidable transparent window blocks on north/south walls:
+  - `WindowNorthLeft`, `WindowNorthRight`, `WindowSouthLeft`, `WindowSouthRight`.
+  - Added dedicated transparent glass-like material (`StandardMaterial3D_window`).
+- Slightly moved ramps farther from center to keep room flow balanced in larger layout.
+- Increased interior omni light height/range/energy to better illuminate the larger volume.
+
+### Validation commands (pass)
+1. `HOME=/tmp XDG_DATA_HOME=/tmp XDG_CONFIG_HOME=/tmp /ssd2/godot/4.6.1/Godot_v4.6.1-stable_linux.x86_64 --headless --path /ssd2/projects/godot/octotest --quit-after 5`
+2. `HOME=/tmp XDG_DATA_HOME=/tmp XDG_CONFIG_HOME=/tmp /ssd2/godot/4.6.1/Godot_v4.6.1-stable_linux.x86_64 --headless --path /ssd2/projects/godot/octotest --script res://tests/movement_math_test.gd`
+3. `HOME=/tmp XDG_DATA_HOME=/tmp XDG_CONFIG_HOME=/tmp /ssd2/godot/4.6.1/Godot_v4.6.1-stable_linux.x86_64 --headless --path /ssd2/projects/godot/octotest --script res://tests/slope_movement_test.gd`
+
+### Step 9 - Window openings + visual palette refresh
+- Reworked room wall authoring in `scenes/main.tscn`:
+  - Replaced monolithic north/south walls with segmented wall blocks around each window aperture.
+  - Result: actual holes exist behind window blocks, so outside sky is visible through glass.
+- Added `WorldEnvironment` with procedural sky so openings show a proper sky backdrop.
+- Retuned room materials to a muted, less depressing color palette (non-acidic, lower contrast than player):
+  - Wall: soft blue-gray.
+  - Floor: desaturated slate.
+  - Ceiling: warm neutral.
+  - Ramp: muted green-gray.
+  - Window glass: softer cyan tint.
+
+### Validation commands (pass)
+1. `HOME=/tmp XDG_DATA_HOME=/tmp XDG_CONFIG_HOME=/tmp /ssd2/godot/4.6.1/Godot_v4.6.1-stable_linux.x86_64 --headless --path /ssd2/projects/godot/octotest --quit-after 5`
+2. `HOME=/tmp XDG_DATA_HOME=/tmp XDG_CONFIG_HOME=/tmp /ssd2/godot/4.6.1/Godot_v4.6.1-stable_linux.x86_64 --headless --path /ssd2/projects/godot/octotest --script res://tests/movement_math_test.gd`
+3. `HOME=/tmp XDG_DATA_HOME=/tmp XDG_CONFIG_HOME=/tmp /ssd2/godot/4.6.1/Godot_v4.6.1-stable_linux.x86_64 --headless --path /ssd2/projects/godot/octotest --script res://tests/slope_movement_test.gd`

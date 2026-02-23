@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3]
+[gd_scene load_steps=27 format=3]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_4f72t"]
 [ext_resource type="Script" path="res://scripts/player_controller.gd" id="2_vrsh6"]
@@ -14,30 +14,46 @@ albedo_color = Color(0.88, 0.54, 0.27, 1)
 roughness = 0.6
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wall"]
-albedo_color = Color(0.84, 0.87, 0.9, 1)
-roughness = 0.85
+albedo_color = Color(0.62, 0.71, 0.74, 1)
+roughness = 0.88
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_floor"]
-albedo_color = Color(0.3, 0.33, 0.37, 1)
-roughness = 1.0
+albedo_color = Color(0.37, 0.4, 0.46, 1)
+roughness = 0.95
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ceiling"]
+albedo_color = Color(0.78, 0.77, 0.7, 1)
+roughness = 0.9
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_floor"]
-size = Vector3(20, 1, 20)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_wall_ns"]
-size = Vector3(20, 6, 1)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_wall_ew"]
-size = Vector3(1, 6, 20)
+size = Vector3(32, 1, 32)
 
 [sub_resource type="BoxMesh" id="BoxMesh_floor"]
-size = Vector3(20, 1, 20)
+size = Vector3(32, 1, 32)
 
-[sub_resource type="BoxMesh" id="BoxMesh_wall_ns"]
-size = Vector3(20, 6, 1)
+[sub_resource type="BoxShape3D" id="BoxShape3D_wall_ew"]
+size = Vector3(1, 9, 32)
 
 [sub_resource type="BoxMesh" id="BoxMesh_wall_ew"]
-size = Vector3(1, 6, 20)
+size = Vector3(1, 9, 32)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wall_ns_outer"]
+size = Vector3(5.5, 9, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_wall_ns_outer"]
+size = Vector3(5.5, 9, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wall_ns_center"]
+size = Vector3(11, 9, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_wall_ns_center"]
+size = Vector3(11, 9, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wall_ns_band"]
+size = Vector3(5, 3, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_wall_ns_band"]
+size = Vector3(5, 3, 1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ramp"]
 size = Vector3(4, 0.5, 8)
@@ -46,11 +62,39 @@ size = Vector3(4, 0.5, 8)
 size = Vector3(4, 0.5, 8)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ramp"]
-albedo_color = Color(0.56, 0.62, 0.7, 1)
+albedo_color = Color(0.5, 0.58, 0.52, 1)
 roughness = 0.9
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_window"]
+size = Vector3(5, 3, 0.5)
+
+[sub_resource type="BoxMesh" id="BoxMesh_window"]
+size = Vector3(5, 3, 0.5)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_window"]
+transparency = 1
+albedo_color = Color(0.72, 0.86, 0.92, 0.36)
+roughness = 0.15
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_7yl8v"]
+sky_top_color = Color(0.44, 0.59, 0.78, 1)
+sky_horizon_color = Color(0.78, 0.84, 0.91, 1)
+ground_bottom_color = Color(0.33, 0.37, 0.33, 1)
+ground_horizon_color = Color(0.55, 0.56, 0.52, 1)
+
+[sub_resource type="Sky" id="Sky_tavjh"]
+sky_material = SubResource("ProceduralSkyMaterial_7yl8v")
+
+[sub_resource type="Environment" id="Environment_1w5qu"]
+background_mode = 2
+sky = SubResource("Sky_tavjh")
+ambient_light_sky_contribution = 0.65
 
 [node name="Main" type="Node3D"]
 script = ExtResource("1_4f72t")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_1w5qu")
 
 [node name="Room" type="Node3D" parent="."]
 
@@ -67,43 +111,19 @@ material_override = SubResource("StandardMaterial3D_floor")
 shape = SubResource("BoxShape3D_floor")
 
 [node name="Ceiling" type="StaticBody3D" parent="Room"]
-position = Vector3(0, 6.5, 0)
+position = Vector3(0, 9.5, 0)
 collision_layer = 1
 collision_mask = 0
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Room/Ceiling"]
 mesh = SubResource("BoxMesh_floor")
-material_override = SubResource("StandardMaterial3D_wall")
+material_override = SubResource("StandardMaterial3D_ceiling")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Room/Ceiling"]
 shape = SubResource("BoxShape3D_floor")
 
-[node name="WallNorth" type="StaticBody3D" parent="Room"]
-position = Vector3(0, 3, -10.5)
-collision_layer = 1
-collision_mask = 0
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Room/WallNorth"]
-mesh = SubResource("BoxMesh_wall_ns")
-material_override = SubResource("StandardMaterial3D_wall")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Room/WallNorth"]
-shape = SubResource("BoxShape3D_wall_ns")
-
-[node name="WallSouth" type="StaticBody3D" parent="Room"]
-position = Vector3(0, 3, 10.5)
-collision_layer = 1
-collision_mask = 0
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Room/WallSouth"]
-mesh = SubResource("BoxMesh_wall_ns")
-material_override = SubResource("StandardMaterial3D_wall")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Room/WallSouth"]
-shape = SubResource("BoxShape3D_wall_ns")
-
 [node name="WallWest" type="StaticBody3D" parent="Room"]
-position = Vector3(-10.5, 3, 0)
+position = Vector3(-16.5, 4.5, 0)
 collision_layer = 1
 collision_mask = 0
 
@@ -115,7 +135,7 @@ material_override = SubResource("StandardMaterial3D_wall")
 shape = SubResource("BoxShape3D_wall_ew")
 
 [node name="WallEast" type="StaticBody3D" parent="Room"]
-position = Vector3(10.5, 3, 0)
+position = Vector3(16.5, 4.5, 0)
 collision_layer = 1
 collision_mask = 0
 
@@ -126,8 +146,224 @@ material_override = SubResource("StandardMaterial3D_wall")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Room/WallEast"]
 shape = SubResource("BoxShape3D_wall_ew")
 
+[node name="WallNorthOuterLeft" type="StaticBody3D" parent="Room"]
+position = Vector3(-13.25, 4.5, -16.5)
+collision_layer = 1
+collision_mask = 0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Room/WallNorthOuterLeft"]
+mesh = SubResource("BoxMesh_wall_ns_outer")
+material_override = SubResource("StandardMaterial3D_wall")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Room/WallNorthOuterLeft"]
+shape = SubResource("BoxShape3D_wall_ns_outer")
+
+[node name="WallNorthCenter" type="StaticBody3D" parent="Room"]
+position = Vector3(0, 4.5, -16.5)
+collision_layer = 1
+collision_mask = 0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Room/WallNorthCenter"]
+mesh = SubResource("BoxMesh_wall_ns_center")
+material_override = SubResource("StandardMaterial3D_wall")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Room/WallNorthCenter"]
+shape = SubResource("BoxShape3D_wall_ns_center")
+
+[node name="WallNorthOuterRight" type="StaticBody3D" parent="Room"]
+position = Vector3(13.25, 4.5, -16.5)
+collision_layer = 1
+collision_mask = 0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Room/WallNorthOuterRight"]
+mesh = SubResource("BoxMesh_wall_ns_outer")
+material_override = SubResource("StandardMaterial3D_wall")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Room/WallNorthOuterRight"]
+shape = SubResource("BoxShape3D_wall_ns_outer")
+
+[node name="WallNorthWindowLeftBottom" type="StaticBody3D" parent="Room"]
+position = Vector3(-8, 1.5, -16.5)
+collision_layer = 1
+collision_mask = 0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Room/WallNorthWindowLeftBottom"]
+mesh = SubResource("BoxMesh_wall_ns_band")
+material_override = SubResource("StandardMaterial3D_wall")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Room/WallNorthWindowLeftBottom"]
+shape = SubResource("BoxShape3D_wall_ns_band")
+
+[node name="WallNorthWindowLeftTop" type="StaticBody3D" parent="Room"]
+position = Vector3(-8, 7.5, -16.5)
+collision_layer = 1
+collision_mask = 0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Room/WallNorthWindowLeftTop"]
+mesh = SubResource("BoxMesh_wall_ns_band")
+material_override = SubResource("StandardMaterial3D_wall")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Room/WallNorthWindowLeftTop"]
+shape = SubResource("BoxShape3D_wall_ns_band")
+
+[node name="WallNorthWindowRightBottom" type="StaticBody3D" parent="Room"]
+position = Vector3(8, 1.5, -16.5)
+collision_layer = 1
+collision_mask = 0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Room/WallNorthWindowRightBottom"]
+mesh = SubResource("BoxMesh_wall_ns_band")
+material_override = SubResource("StandardMaterial3D_wall")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Room/WallNorthWindowRightBottom"]
+shape = SubResource("BoxShape3D_wall_ns_band")
+
+[node name="WallNorthWindowRightTop" type="StaticBody3D" parent="Room"]
+position = Vector3(8, 7.5, -16.5)
+collision_layer = 1
+collision_mask = 0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Room/WallNorthWindowRightTop"]
+mesh = SubResource("BoxMesh_wall_ns_band")
+material_override = SubResource("StandardMaterial3D_wall")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Room/WallNorthWindowRightTop"]
+shape = SubResource("BoxShape3D_wall_ns_band")
+
+[node name="WallSouthOuterLeft" type="StaticBody3D" parent="Room"]
+position = Vector3(-13.25, 4.5, 16.5)
+collision_layer = 1
+collision_mask = 0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Room/WallSouthOuterLeft"]
+mesh = SubResource("BoxMesh_wall_ns_outer")
+material_override = SubResource("StandardMaterial3D_wall")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Room/WallSouthOuterLeft"]
+shape = SubResource("BoxShape3D_wall_ns_outer")
+
+[node name="WallSouthCenter" type="StaticBody3D" parent="Room"]
+position = Vector3(0, 4.5, 16.5)
+collision_layer = 1
+collision_mask = 0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Room/WallSouthCenter"]
+mesh = SubResource("BoxMesh_wall_ns_center")
+material_override = SubResource("StandardMaterial3D_wall")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Room/WallSouthCenter"]
+shape = SubResource("BoxShape3D_wall_ns_center")
+
+[node name="WallSouthOuterRight" type="StaticBody3D" parent="Room"]
+position = Vector3(13.25, 4.5, 16.5)
+collision_layer = 1
+collision_mask = 0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Room/WallSouthOuterRight"]
+mesh = SubResource("BoxMesh_wall_ns_outer")
+material_override = SubResource("StandardMaterial3D_wall")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Room/WallSouthOuterRight"]
+shape = SubResource("BoxShape3D_wall_ns_outer")
+
+[node name="WallSouthWindowLeftBottom" type="StaticBody3D" parent="Room"]
+position = Vector3(-8, 1.5, 16.5)
+collision_layer = 1
+collision_mask = 0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Room/WallSouthWindowLeftBottom"]
+mesh = SubResource("BoxMesh_wall_ns_band")
+material_override = SubResource("StandardMaterial3D_wall")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Room/WallSouthWindowLeftBottom"]
+shape = SubResource("BoxShape3D_wall_ns_band")
+
+[node name="WallSouthWindowLeftTop" type="StaticBody3D" parent="Room"]
+position = Vector3(-8, 7.5, 16.5)
+collision_layer = 1
+collision_mask = 0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Room/WallSouthWindowLeftTop"]
+mesh = SubResource("BoxMesh_wall_ns_band")
+material_override = SubResource("StandardMaterial3D_wall")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Room/WallSouthWindowLeftTop"]
+shape = SubResource("BoxShape3D_wall_ns_band")
+
+[node name="WallSouthWindowRightBottom" type="StaticBody3D" parent="Room"]
+position = Vector3(8, 1.5, 16.5)
+collision_layer = 1
+collision_mask = 0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Room/WallSouthWindowRightBottom"]
+mesh = SubResource("BoxMesh_wall_ns_band")
+material_override = SubResource("StandardMaterial3D_wall")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Room/WallSouthWindowRightBottom"]
+shape = SubResource("BoxShape3D_wall_ns_band")
+
+[node name="WallSouthWindowRightTop" type="StaticBody3D" parent="Room"]
+position = Vector3(8, 7.5, 16.5)
+collision_layer = 1
+collision_mask = 0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Room/WallSouthWindowRightTop"]
+mesh = SubResource("BoxMesh_wall_ns_band")
+material_override = SubResource("StandardMaterial3D_wall")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Room/WallSouthWindowRightTop"]
+shape = SubResource("BoxShape3D_wall_ns_band")
+
+[node name="WindowNorthLeft" type="StaticBody3D" parent="Room"]
+position = Vector3(-8, 4.5, -16.5)
+collision_layer = 1
+collision_mask = 0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Room/WindowNorthLeft"]
+mesh = SubResource("BoxMesh_window")
+material_override = SubResource("StandardMaterial3D_window")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Room/WindowNorthLeft"]
+shape = SubResource("BoxShape3D_window")
+
+[node name="WindowNorthRight" type="StaticBody3D" parent="Room"]
+position = Vector3(8, 4.5, -16.5)
+collision_layer = 1
+collision_mask = 0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Room/WindowNorthRight"]
+mesh = SubResource("BoxMesh_window")
+material_override = SubResource("StandardMaterial3D_window")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Room/WindowNorthRight"]
+shape = SubResource("BoxShape3D_window")
+
+[node name="WindowSouthLeft" type="StaticBody3D" parent="Room"]
+position = Vector3(-8, 4.5, 16.5)
+collision_layer = 1
+collision_mask = 0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Room/WindowSouthLeft"]
+mesh = SubResource("BoxMesh_window")
+material_override = SubResource("StandardMaterial3D_window")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Room/WindowSouthLeft"]
+shape = SubResource("BoxShape3D_window")
+
+[node name="WindowSouthRight" type="StaticBody3D" parent="Room"]
+position = Vector3(8, 4.5, 16.5)
+collision_layer = 1
+collision_mask = 0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Room/WindowSouthRight"]
+mesh = SubResource("BoxMesh_window")
+material_override = SubResource("StandardMaterial3D_window")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Room/WindowSouthRight"]
+shape = SubResource("BoxShape3D_window")
+
 [node name="RampWest" type="StaticBody3D" parent="Room"]
-position = Vector3(-4, 1.46, 0)
+position = Vector3(-6, 1.46, 0)
 rotation_degrees = Vector3(-25, 0, 0)
 collision_layer = 2
 collision_mask = 0
@@ -140,7 +376,7 @@ material_override = SubResource("StandardMaterial3D_ramp")
 shape = SubResource("BoxShape3D_ramp")
 
 [node name="RampEast" type="StaticBody3D" parent="Room"]
-position = Vector3(4, 1.46, 0)
+position = Vector3(6, 1.46, 0)
 rotation_degrees = Vector3(-25, 180, 0)
 collision_layer = 2
 collision_mask = 0
@@ -176,7 +412,7 @@ collision_mask = 1
 current = true
 
 [node name="OmniLight3D" type="OmniLight3D" parent="."]
-position = Vector3(0, 4.5, 0)
+position = Vector3(0, 6.2, 0)
 light_color = Color(1, 0.97, 0.92, 1)
-light_energy = 3.5
-omni_range = 28.0
+light_energy = 4.0
+omni_range = 42.0
