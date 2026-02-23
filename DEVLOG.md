@@ -88,6 +88,20 @@
 2. `HOME=/tmp XDG_DATA_HOME=/tmp XDG_CONFIG_HOME=/tmp /ssd2/godot/4.6.1/Godot_v4.6.1-stable_linux.x86_64 --headless --path /ssd2/projects/godot/octotest --script res://tests/movement_math_test.gd`
 3. `HOME=/tmp XDG_DATA_HOME=/tmp XDG_CONFIG_HOME=/tmp /ssd2/godot/4.6.1/Godot_v4.6.1-stable_linux.x86_64 --headless --path /ssd2/projects/godot/octotest --script res://tests/slope_movement_test.gd`
 
+### Step 11 - Canonical branch reset and restart hardening
+- Synced `main` with latest work (merged prior `master` history forward into `main`).
+- Set workflow docs to treat `main` as canonical stable branch.
+- Added missing restart docs:
+  - `README.md` (quickstart, controls, run/validate commands, docs map).
+  - `TESTING.md` (automated + manual visual QA checklist).
+- Added unified validation script:
+  - `scripts/check.sh` (boot smoke + movement math test + slope integration test).
+- Added additional hard-won pitfalls not previously centralized:
+  - Transparent windows need real wall openings to reveal sky.
+  - Ramp base alignment matters; floating ramps cause false slope failures.
+- Validation:
+  - Ran `./scripts/check.sh` -> PASS.
+
 ### Step 10 - Merge room-window visuals and add architecture docs
 - Merged `feat/room-scale-windows` into `master` (fast-forward).
 - Added `ARCHITECTURE.md` documenting:
