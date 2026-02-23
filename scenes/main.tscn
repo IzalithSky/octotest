@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3]
+[gd_scene load_steps=16 format=3]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_4f72t"]
 [ext_resource type="Script" path="res://scripts/player_controller.gd" id="2_vrsh6"]
@@ -38,6 +38,16 @@ size = Vector3(20, 6, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_wall_ew"]
 size = Vector3(1, 6, 20)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ramp"]
+size = Vector3(4, 0.5, 8)
+
+[sub_resource type="BoxMesh" id="BoxMesh_ramp"]
+size = Vector3(4, 0.5, 8)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ramp"]
+albedo_color = Color(0.56, 0.62, 0.7, 1)
+roughness = 0.9
 
 [node name="Main" type="Node3D"]
 script = ExtResource("1_4f72t")
@@ -115,6 +125,32 @@ material_override = SubResource("StandardMaterial3D_wall")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Room/WallEast"]
 shape = SubResource("BoxShape3D_wall_ew")
+
+[node name="RampWest" type="StaticBody3D" parent="Room"]
+position = Vector3(-4, 1.46, 0)
+rotation_degrees = Vector3(-25, 0, 0)
+collision_layer = 2
+collision_mask = 0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Room/RampWest"]
+mesh = SubResource("BoxMesh_ramp")
+material_override = SubResource("StandardMaterial3D_ramp")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Room/RampWest"]
+shape = SubResource("BoxShape3D_ramp")
+
+[node name="RampEast" type="StaticBody3D" parent="Room"]
+position = Vector3(4, 1.46, 0)
+rotation_degrees = Vector3(-25, 180, 0)
+collision_layer = 2
+collision_mask = 0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Room/RampEast"]
+mesh = SubResource("BoxMesh_ramp")
+material_override = SubResource("StandardMaterial3D_ramp")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Room/RampEast"]
+shape = SubResource("BoxShape3D_ramp")
 
 [node name="Player" type="CharacterBody3D" parent="."]
 script = ExtResource("2_vrsh6")

@@ -67,3 +67,23 @@
   - Dev log maintenance requirements.
   - Known pitfalls discovered in this project so far.
 - Purpose: reduce re-onboarding time and prevent repeated setup mistakes in future sessions.
+
+### Step 7 - Slope/ramp test branch and movement validation
+- Created branch: `feat/slope-ramps`.
+- Added authored ramps to main scene (`scenes/main.tscn`) to test slope traversal in gameplay:
+  - `Room/RampWest`
+  - `Room/RampEast`
+- Ramps are on ground collision layer (`collision_layer = 2`) so point-and-click raycasts can target them.
+- Added slope-related movement helper in `scripts/movement_math.gd`:
+  - `project_planar_direction_on_surface(direction, surface_normal)`
+- Updated `scripts/player_controller.gd` to align planar movement direction with floor slope when grounded.
+- Expanded unit tests in `tests/movement_math_test.gd` with slope projection checks.
+- Added headless physics integration test assets:
+  - `tests/slope_movement_test_scene.tscn`
+  - `tests/slope_movement_test.gd`
+- Found/fixed a ramp placement issue during testing (initially too high above floor, causing failed uphill/downhill checks).
+
+### Validation commands (pass)
+1. `HOME=/tmp XDG_DATA_HOME=/tmp XDG_CONFIG_HOME=/tmp /ssd2/godot/4.6.1/Godot_v4.6.1-stable_linux.x86_64 --headless --path /ssd2/projects/godot/octotest --quit-after 5`
+2. `HOME=/tmp XDG_DATA_HOME=/tmp XDG_CONFIG_HOME=/tmp /ssd2/godot/4.6.1/Godot_v4.6.1-stable_linux.x86_64 --headless --path /ssd2/projects/godot/octotest --script res://tests/movement_math_test.gd`
+3. `HOME=/tmp XDG_DATA_HOME=/tmp XDG_CONFIG_HOME=/tmp /ssd2/godot/4.6.1/Godot_v4.6.1-stable_linux.x86_64 --headless --path /ssd2/projects/godot/octotest --script res://tests/slope_movement_test.gd`

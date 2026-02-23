@@ -11,6 +11,8 @@ func _init() -> void:
 	_test_arrived_2d()
 	_test_next_velocity_accelerates_toward_target()
 	_test_next_velocity_brakes_inside_stop_distance()
+	_test_project_planar_direction_on_surface_flat()
+	_test_project_planar_direction_on_surface_slope()
 	_test_simulated_path_gets_close_to_target()
 
 	if _failures == 0:
@@ -61,6 +63,26 @@ func _test_next_velocity_brakes_inside_stop_distance() -> void:
 	)
 	_expect_approx(next_velocity.x, 2.0, "planar velocity should brake by acceleration * delta")
 	_expect_approx(next_velocity.y, 1.5, "vertical velocity should remain unchanged by planar solver")
+
+
+func _test_project_planar_direction_on_surface_flat() -> void:
+	var projected := MovementMath.project_planar_direction_on_surface(
+		Vector3(4.0, 0.0, 2.0),
+		Vector3.UP
+	)
+	_expect_approx(projected.length(), 1.0, "projected flat direction should be normalized")
+	_expect_approx(projected.y, 0.0, "flat projection should not create vertical component")
+	_expect_true(projected.x > 0.0 and projected.z > 0.0, "flat projection should preserve heading")
+
+
+func _test_project_planar_direction_on_surface_slope() -> void:
+	var slope_normal := Vector3(0.0, cos(deg_to_rad(25.0)), -sin(deg_to_rad(25.0))).normalized()
+	var projected := MovementMath.project_planar_direction_on_surface(Vector3(0.0, 0.0, 1.0), slope_normal)
+	_expect_approx(projected.length(), 1.0, "slope projection should remain normalized")
+	_expect_true(projected.y > 0.0, "moving uphill should include positive vertical direction")
+	_expect_true(absf(projected.dot(slope_normal)) <= EPSILON, "projected direction should be tangent to slope")
+	var zero_projected := MovementMath.project_planar_direction_on_surface(Vector3.ZERO, slope_normal)
+	_expect_true(zero_projected == Vector3.ZERO, "zero direction should remain zero after projection")
 
 
 func _test_simulated_path_gets_close_to_target() -> void:

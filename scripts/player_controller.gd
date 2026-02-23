@@ -33,6 +33,11 @@ func clear_move_target() -> void:
 
 
 func _physics_process(delta: float) -> void:
+	var floor_normal := Vector3.UP
+	var grounded := is_on_floor()
+	if grounded:
+		floor_normal = get_floor_normal()
+
 	if _has_target and MovementMath.arrived_2d(global_position, _target_position, stop_distance):
 		_has_target = false
 
@@ -50,7 +55,10 @@ func _physics_process(delta: float) -> void:
 		delta
 	)
 
-	if not is_on_floor():
+	if grounded:
+		_align_planar_velocity_to_slope(floor_normal)
+
+	if not grounded:
 		velocity.y -= _gravity * gravity_scale * delta
 	elif velocity.y < 0.0:
 		velocity.y = 0.0
@@ -66,3 +74,20 @@ func _rotate_toward_motion(delta: float) -> void:
 
 	var target_yaw := atan2(planar_velocity.x, planar_velocity.y)
 	rotation.y = lerp_angle(rotation.y, target_yaw, minf(1.0, turn_speed * delta))
+
+
+func _align_planar_velocity_to_slope(floor_normal: Vector3) -> void:
+	var planar_speed := Vector2(velocity.x, velocity.z).length()
+	if planar_speed <= 0.001:
+		return
+
+	var direction_hint := Vector3(velocity.x, 0.0, velocity.z)
+	if _has_target:
+		direction_hint = _target_position - global_position
+
+	var slope_direction := MovementMath.project_planar_direction_on_surface(direction_hint, floor_normal)
+	if slope_direction == Vector3.ZERO:
+		return
+
+	velocity.x = slope_direction.x * planar_speed
+	velocity.z = slope_direction.z * planar_speed
