@@ -39,3 +39,4 @@ Run the unified check script:
 2. Runtime/code structure: `docs/ARCHITECTURE.md`
 3. Running change history: `docs/DEVLOG.md`
 4. Manual + automated test checklist: `docs/TESTING.md`
+5. Gameplay implementation notes: `docs/misc/STAIRS.md`

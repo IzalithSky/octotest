@@ -88,6 +88,15 @@
 2. `HOME=/tmp XDG_DATA_HOME=/tmp XDG_CONFIG_HOME=/tmp /ssd2/godot/4.6.1/Godot_v4.6.1-stable_linux.x86_64 --headless --path /ssd2/projects/godot/octotest --script res://tests/movement_math_test.gd`
 3. `HOME=/tmp XDG_DATA_HOME=/tmp XDG_CONFIG_HOME=/tmp /ssd2/godot/4.6.1/Godot_v4.6.1-stable_linux.x86_64 --headless --path /ssd2/projects/godot/octotest --script res://tests/slope_movement_test.gd`
 
+### Step 13 - Stair implementation research note
+- Added `docs/misc/STAIRS.md` with a practical Godot stair-handling guide.
+- Documented the most reliable pattern seen in practice:
+  - pre-move step-up probe,
+  - normal `move_and_slide()`,
+  - post-move step-down probe.
+- Included parameter tuning guidance (`step_height_max`, `floor_snap_length`, `safe_margin`) and geometry pitfalls.
+- Linked the new note from `docs/README.md` so it is discoverable during session restarts.
+
 ### Step 11 - Canonical branch reset and restart hardening
 - Synced `main` with latest work (merged prior `master` history forward into `main`).
 - Set workflow docs to treat `main` as canonical stable branch.
