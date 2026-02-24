@@ -10,6 +10,8 @@ Godot `4.6.1` 3D isometric prototype with:
 6. Interactable object system with hover/in-range/blocked visualization.
 7. Clickable wall light switch.
 8. Multi-item octopus carry system (up to 8 held items) with overload movement penalties.
+9. Focus-mode interaction system for precision objects (e.g. card reader).
+10. Card reader gameplay with one-slot insertion, LED feedback, and clickable card ejection.
 
 ## Canonical Branch
 
@@ -57,6 +59,11 @@ GODOT_BIN=/absolute/path/to/godot ./scripts/check.sh
 8. `F`: drop last held item.
 9. `Shift + F`: drop all held items.
 10. `Esc`: toggle in-game menu.
+11. Focus mode:
+- Auto-zooms when a focus-enabled object is clicked and the player reaches interaction distance.
+- `RMB` exits focus.
+- `LMB` outside interaction area exits focus.
+- While focused, held items are selectable at the bottom of the screen.
 
 ## Validate
 

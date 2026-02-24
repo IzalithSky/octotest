@@ -12,6 +12,9 @@ This file is intentionally editable and project-specific.
 - [x] Orbit camera (`SpringArm3D`) with zoom.
 - [x] Gravity + slope traversal behavior.
 - [x] Headless checks and movement tests in place.
+- [x] Focus-mode interaction framework for precision objects.
+- [x] Card reader prototype with card insertion/ejection + LED validation feedback.
+- [x] Headless card-reader interaction integration test in check pipeline.
 
 ## Working Rules
 

@@ -1,9 +1,10 @@
-[gd_scene load_steps=47 format=3]
+[gd_scene load_steps=48 format=3]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_4f72t"]
 [ext_resource type="Script" path="res://scripts/player_controller.gd" id="2_vrsh6"]
 [ext_resource type="Script" path="res://scripts/interactable.gd" id="3_3ygbf"]
 [ext_resource type="Script" path="res://scripts/card_reader.gd" id="4_b6dyj"]
+[ext_resource type="Script" path="res://scripts/focus_target.gd" id="5_lmyi0"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_player"]
 size = Vector3(1, 1, 1)
@@ -525,6 +526,12 @@ material_override = SubResource("StandardMaterial3D_card_reader_led")
 
 [node name="CardSlotAnchor" type="Node3D" parent="Interactables/CardReader"]
 position = Vector3(0, -0.16, -0.1)
+
+[node name="FocusTarget" type="Node3D" parent="Interactables/CardReader"]
+position = Vector3(0, 0.08, -0.12)
+script = ExtResource("5_lmyi0")
+auto_exit_on_solved = false
+solved_method_name = "is_correct_card_inserted"
 
 [node name="Interactable" type="Area3D" parent="Interactables/CardReader"]
 collision_layer = 8

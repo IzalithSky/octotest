@@ -10,7 +10,7 @@ This document describes the current runtime architecture of the prototype and mu
 4. `Main` (`Node3D`) owns world setup, camera behavior, click-to-move input routing, and in-game UI menu flow.
 5. `Player` (`CharacterBody3D`) owns locomotion, gravity handling, and slope alignment.
 6. `Room` contains authored static geometry (floor, ceiling, walls, ramps, windows).
-7. `Interactables` contains authored clickable and pickup objects (`Area3D` + `RigidBody3D`/`StaticBody3D`).
+7. `Interactables` contains authored clickable and pickup objects (`Area3D` + `RigidBody3D`/`StaticBody3D`), including focus-enabled objects such as `CardReader`.
 8. `WorldEnvironment` provides sky/background visuals visible through wall openings.
 
 ## Scene Graph Responsibilities
@@ -39,6 +39,7 @@ This document describes the current runtime architecture of the prototype and mu
 6. `Interactables`:
 - `LightButton` (`StaticBody3D`) with `Interactable` child for click interaction.
 - Multiple pickup objects (`RigidBody3D`) with `Interactable` child areas.
+- `CardReader` (`StaticBody3D`) with `Interactable` and `FocusTarget` children for zoomed precision interaction.
 - All interactables use collision layer 8 for interaction raycasts.
 7. Camera rig:
 - `CameraPivot -> CameraYaw -> CameraPitch -> SpringArm3D -> Camera3D`.
@@ -55,6 +56,7 @@ This document describes the current runtime architecture of the prototype and mu
 - Owns camera orbit/zoom behavior.
 - Owns in-game menu visibility and scene change/quit actions.
 - Routes click-to-move and delegates interact/drop input to `InteractionController`.
+- Owns focus-mode transitions (auto-enter after approach, movement lock, click-based exit rules).
 3. `res://scripts/player_controller.gd`
 - Character movement state (`_target_position`, `_has_target`).
 - Gravity and grounded handling.
@@ -71,7 +73,15 @@ This document describes the current runtime architecture of the prototype and mu
 - Centralized interaction and carry system.
 - Handles interactable raycasts, hover state transitions, line-of-sight and range checks, and queued auto-interact.
 - Handles octopus hand-socket layout, held-item updates, targeted drop, and carry movement penalties.
-- Handles wall-switch callback and HUD interaction hints.
+- Handles wall-switch callback, HUD interaction hints, and focus-mode interaction routing.
+7. `res://scripts/focus_target.gd`
+- Configures per-object focus behavior (anchor, click-outside threshold, optional angle overrides, solved-state auto-exit).
+8. `res://scripts/card_reader.gd`
+- Manages card reader state (`EMPTY`, `WRONG`, `CORRECT`), LED state, insertion/ejection, and slot anchors.
+9. `res://scripts/focus_reject_feedback.gd`
+- Encapsulates short "apply failed" item motion toward slot and return.
+10. `res://scripts/interaction_hint_builder.gd`
+- Builds HUD hint text from controller state so text policy is not embedded in interaction flow logic.
 
 ## Movement Data Flow
 
@@ -90,6 +100,8 @@ This document describes the current runtime architecture of the prototype and mu
 2. `res://tests/slope_movement_test.gd`
 - Headless integration test validating uphill/downhill traversal with gravity.
 - Uses `res://tests/slope_movement_test_scene.tscn`.
+3. `res://tests/card_reader_interaction_test.gd`
+- Headless integration test validating reader insert/eject and occupied-slot behavior.
 
 ## Extension Points
 

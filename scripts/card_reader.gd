@@ -46,6 +46,8 @@ func is_correct_card_inserted() -> bool:
 func can_accept_card(card: Interactable) -> bool:
 	if card == null:
 		return false
+	if has_inserted_card():
+		return false
 	return card.is_card()
 
 
@@ -56,7 +58,7 @@ func insert_card(card: Interactable) -> bool:
 		return false
 
 	_inserted_card = card
-	_inserted_card.set_interaction_enabled(false)
+	_inserted_card.set_interaction_enabled(true)
 	var pickup_root := card.get_pickup_root()
 	pickup_root.reparent(_slot_anchor, true)
 	pickup_root.transform = Transform3D.IDENTITY
@@ -80,6 +82,20 @@ func eject_card() -> Interactable:
 	card.set_interaction_enabled(true)
 	_set_state(ReaderState.EMPTY)
 	return card
+
+
+func is_inserted_card(card: Interactable) -> bool:
+	return card != null and card == _inserted_card
+
+
+func get_inserted_card_position() -> Vector3:
+	if _inserted_card != null:
+		return _inserted_card.get_pickup_root().global_position
+	return _slot_anchor.global_position
+
+
+func get_slot_position() -> Vector3:
+	return _slot_anchor.global_position
 
 
 func _set_state(state: ReaderState) -> void:

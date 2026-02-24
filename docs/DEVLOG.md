@@ -2,6 +2,39 @@
 
 ## 2026-02-24
 
+### Step 20 - Focus interaction + card reader polish and controller modularization
+
+- Implemented focus-mode precision interaction flow:
+  - auto-enter focus after approach to `FocusTarget`,
+  - movement locked while focused,
+  - click-outside exits focus,
+  - no item dropping while focused.
+- Added `CardReader` gameplay loop with strict one-card occupancy:
+  - insert held card,
+  - LED states (`EMPTY` yellow, `WRONG` red, `CORRECT` green),
+  - click inserted card to eject/retrieve.
+- Added robust focus click routing improvements:
+  - inserted card click detection while focused,
+  - prevention of accidental near-click activations for held-item use,
+  - LOS exception handling for colliders within the same reader hierarchy.
+- Added feedback motion for invalid item application in focus mode:
+  - non-applicable held item moves to reader slot and returns.
+- Refactored `InteractionController` responsibilities by extracting helpers:
+  - `scripts/focus_reject_feedback.gd` (reject animation state/offset),
+  - `scripts/interaction_hint_builder.gd` (HUD hint text assembly).
+- Added/updated scripts and scene wiring:
+  - `scripts/focus_target.gd`,
+  - `scripts/card_reader.gd`,
+  - `scripts/main.gd`,
+  - `scenes/main.tscn`.
+- Added interaction integration coverage:
+  - `tests/card_reader_interaction_test.gd`,
+  - `scripts/check.sh` now runs this test.
+
+### Validation commands (pass)
+1. `./scripts/check.sh`
+   - Result: boot smoke PASS, `movement_math_test: PASS`, `slope_movement_test: PASS`, `card_reader_interaction_test: PASS`.
+
 ### Step 19 - Refactor gameplay interaction logic out of `main.gd`
 
 - Added `scripts/interaction_controller.gd` and moved interaction-heavy responsibilities out of `main.gd`:
