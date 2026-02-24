@@ -35,8 +35,8 @@ This file is intentionally editable and project-specific.
 - [ ] Add arm retract to rest pose.
 - [ ] Scale from one arm to eight arms with role categories.
 - [ ] Implement automatic arm selection priority.
-- [ ] Add interaction base class for all interactables.
-- [ ] Build first interactable button and interaction SFX.
+- [x] Add interaction base class for all interactables.
+- [x] Build first interactable button (interaction SFX pending).
 
 ### Tests
 
@@ -54,13 +54,13 @@ This file is intentionally editable and project-specific.
 
 ### Implementation
 
-- [ ] Implement one-object-per-arm carrying.
+- [x] Implement one-object-per-arm carrying.
 - [ ] Implement valid object placement on surfaces.
-- [ ] Block movement when all arms are occupied.
+- [x] Block movement when all arms are occupied.
 - [ ] Add two-arm heavy object behavior.
 - [ ] Persist object positions across room transitions. `[RISK]`
 - [ ] Implement code-lock node with sequence validation.
-- [ ] Implement light switch mechanic and room group toggles.
+- [x] Implement light switch mechanic and room group toggles.
 - [ ] Implement camouflage hold mechanic and interaction lockout.
 - [ ] Implement first human NPC with patrol and soft catch/reset. `[RISK]`
 - [ ] Implement device interactions: terminal, intercom, security panel.
@@ -165,4 +165,4 @@ This file is intentionally editable and project-specific.
 - [ ] Implement eye tracking.
 - [ ] Decide IK approach (`SkeletonIK3D` vs plugin).
 - [ ] Build one-arm reach prototype in an isolated test scene.
-- [ ] Introduce `Interactable` base node and button test.
+- [ ] Add interaction SFX pass for button/pickup/drop.

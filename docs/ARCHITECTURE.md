@@ -10,7 +10,8 @@ This document describes the current runtime architecture of the prototype and mu
 4. `Main` (`Node3D`) owns world setup, camera behavior, click-to-move input routing, and in-game UI menu flow.
 5. `Player` (`CharacterBody3D`) owns locomotion, gravity handling, and slope alignment.
 6. `Room` contains authored static geometry (floor, ceiling, walls, ramps, windows).
-7. `WorldEnvironment` provides sky/background visuals visible through wall openings.
+7. `Interactables` contains authored clickable and pickup objects (`Area3D` + `RigidBody3D`/`StaticBody3D`).
+8. `WorldEnvironment` provides sky/background visuals visible through wall openings.
 
 ## Scene Graph Responsibilities
 
@@ -19,6 +20,8 @@ This document describes the current runtime architecture of the prototype and mu
 - Handles mouse raycast targeting on ground collision layer.
 - Handles orbit camera controls (RMB drag, Q/E yaw, wheel zoom).
 - Handles in-game menu (`Esc` toggle) with `Main Menu` and `Quit` actions.
+- Handles interaction raycasts, hover/range/blocked state logic, and queued auto-interact.
+- Handles octopus carry state (up to 8 held items), drop controls, and carry movement penalties.
 2. `UI` (`CanvasLayer`) in gameplay scene:
 - `HUD` contains key hints anchored to screen corner.
 - HUD controls are set to ignore mouse input so world clicks pass through.
@@ -34,7 +37,11 @@ This document describes the current runtime architecture of the prototype and mu
 5. `Player`:
 - Uses `CollisionShape3D` + visible cube mesh.
 - Updated each physics frame by `player_controller.gd`.
-6. Camera rig:
+6. `Interactables`:
+- `LightButton` (`StaticBody3D`) with `Interactable` child for click interaction.
+- Multiple pickup objects (`RigidBody3D`) with `Interactable` child areas.
+- All interactables use collision layer 8 for interaction raycasts.
+7. Camera rig:
 - `CameraPivot -> CameraYaw -> CameraPitch -> SpringArm3D -> Camera3D`.
 - Pivot follows player position.
 
@@ -49,6 +56,8 @@ This document describes the current runtime architecture of the prototype and mu
 - Converts screen click to world target via physics raycast.
 - Calls `Player.set_move_target()`.
 - Owns in-game menu visibility and scene change/quit actions.
+- Owns interaction queue and click-to-interact behavior.
+- Owns carry/drop flow and hand-socket layout for held items.
 3. `res://scripts/player_controller.gd`
 - Character movement state (`_target_position`, `_has_target`).
 - Gravity and grounded handling.
@@ -57,6 +66,10 @@ This document describes the current runtime architecture of the prototype and mu
 4. `res://scripts/movement_math.gd`
 - Pure helper math (no scene dependencies).
 - Designed for headless logic testing.
+5. `res://scripts/interactable.gd`
+- Reusable `Area3D` interaction component.
+- Encapsulates interaction type (`CLICK`, `PICKUP`), range, prompts, held-state toggles, and visual overlays.
+- Emits `clicked`, `picked_up`, and `dropped` signals for gameplay-specific reactions.
 
 ## Movement Data Flow
 
@@ -66,6 +79,7 @@ This document describes the current runtime architecture of the prototype and mu
 4. If grounded, planar direction is projected onto floor tangent for slope handling.
 5. Gravity is applied when airborne.
 6. `move_and_slide()` resolves motion/collision.
+7. Interact clicks either execute immediately (in range) or queue movement + auto-interact when close.
 
 ## Test Architecture
 

@@ -25,6 +25,12 @@ resolve_godot_bin() {
 		return 0
 	fi
 
+	# Common macOS app bundle path (binary name in newer installs).
+	if [[ -x "/Applications/Godot.app/Contents/MacOS/godot" ]]; then
+		echo "/Applications/Godot.app/Contents/MacOS/godot"
+		return 0
+	fi
+
 	# Common macOS app bundle path.
 	if [[ -x "/Applications/Godot.app/Contents/MacOS/Godot" ]]; then
 		echo "/Applications/Godot.app/Contents/MacOS/Godot"
@@ -42,18 +48,19 @@ resolve_godot_bin() {
 }
 
 GODOT_BIN="$(resolve_godot_bin)"
+GODOT_LOG_FILE="${GODOT_LOG_FILE:-${TMPDIR:-/tmp}/octotest-godot.log}"
 
 export HOME=/tmp
 export XDG_DATA_HOME=/tmp
 export XDG_CONFIG_HOME=/tmp
 
 echo "[check] boot smoke test"
-"${GODOT_BIN}" --headless --path "${PROJECT_ROOT}" --quit-after 5
+"${GODOT_BIN}" --headless --path "${PROJECT_ROOT}" --log-file "${GODOT_LOG_FILE}" --quit-after 5
 
 echo "[check] movement math unit tests"
-"${GODOT_BIN}" --headless --path "${PROJECT_ROOT}" --script res://tests/movement_math_test.gd
+"${GODOT_BIN}" --headless --path "${PROJECT_ROOT}" --log-file "${GODOT_LOG_FILE}" --script res://tests/movement_math_test.gd
 
 echo "[check] slope integration test"
-"${GODOT_BIN}" --headless --path "${PROJECT_ROOT}" --script res://tests/slope_movement_test.gd
+"${GODOT_BIN}" --headless --path "${PROJECT_ROOT}" --log-file "${GODOT_LOG_FILE}" --script res://tests/slope_movement_test.gd
 
 echo "[check] PASS"

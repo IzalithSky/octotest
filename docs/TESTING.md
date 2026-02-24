@@ -37,9 +37,20 @@ HOME=/tmp XDG_DATA_HOME=/tmp XDG_CONFIG_HOME=/tmp godot --headless --path /path/
 9. Confirm camera orbit and zoom still behave as expected.
 10. Confirm HUD key-hint panel is visible in a corner and does not block click-to-move when clicking through it.
 11. Press `Esc` to open/close in-game menu; verify `Main Menu` returns to startup menu and `Quit` exits app.
+12. Confirm light switch is mounted on wall and toggles room light + button material.
+13. Confirm hover color state when out of range.
+14. Confirm in-range interaction color state.
+15. Confirm blocked interaction color state.
+16. Confirm click on out-of-range interactable moves player closer and auto-interacts when in range.
+17. Confirm octopus can hold up to 8 pickup items.
+18. Confirm movement slows at heavy carry threshold and stops when fully loaded.
+19. Confirm `LMB` on held item drops that specific item.
+20. Confirm `F` drops last held item and `Shift + F` drops all.
 
 ## Regression Focus Areas
 
 1. Scene authoring changes can break collision layers used by click raycast.
 2. Ramp position/height adjustments can invalidate slope movement expectations.
 3. Wall/window edits can accidentally remove visual access to sky.
+4. Interaction layer (`collision_layer = 8`) misconfiguration can break hover/click detection.
+5. Carry layout changes can cause held-item clipping or unstable drop behavior.

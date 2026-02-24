@@ -7,6 +7,9 @@ Godot `4.6.1` 3D isometric prototype with:
 3. Gravity and slope traversal ramps.
 4. Authored room geometry with window openings and transparent collidable glass.
 5. UI flow with a startup main menu, in-game menu, and gameplay HUD hints.
+6. Interactable object system with hover/in-range/blocked visualization.
+7. Clickable wall light switch.
+8. Multi-item octopus carry system (up to 8 held items) with overload movement penalties.
 
 ## Canonical Branch
 
@@ -32,8 +35,9 @@ For checks, `./scripts/check.sh` auto-detects, in order:
 2. `godot4` in `PATH`
 3. `godot` in `PATH`
 4. `Godot` in `PATH`
-5. `/Applications/Godot.app/Contents/MacOS/Godot` (macOS app install)
-6. `/ssd2/godot/4.6.1/Godot_v4.6.1-stable_linux.x86_64` (legacy team Linux path)
+5. `/Applications/Godot.app/Contents/MacOS/godot` (macOS app install, lowercase binary)
+6. `/Applications/Godot.app/Contents/MacOS/Godot` (macOS app install, legacy uppercase binary)
+7. `/ssd2/godot/4.6.1/Godot_v4.6.1-stable_linux.x86_64` (legacy team Linux path)
 
 You can still force a specific binary:
 
@@ -47,7 +51,12 @@ GODOT_BIN=/absolute/path/to/godot ./scripts/check.sh
 2. `RMB + drag`: orbit camera.
 3. `Q` / `E`: keyboard orbit.
 4. Mouse wheel: zoom camera.
-5. `Esc`: toggle in-game menu.
+5. `LMB` on interactable in range: interact immediately.
+6. `LMB` on interactable out of range: move closer and auto-interact when close.
+7. `LMB` on held item: drop that specific item.
+8. `F`: drop last held item.
+9. `Shift + F`: drop all held items.
+10. `Esc`: toggle in-game menu.
 
 ## Validate
 
