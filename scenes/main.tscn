@@ -1,4 +1,4 @@
-[gd_scene load_steps=49 format=3]
+[gd_scene load_steps=56 format=3]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_4f72t"]
 [ext_resource type="Script" path="res://scripts/player_controller.gd" id="2_vrsh6"]
@@ -8,10 +8,10 @@
 [ext_resource type="Script" path="res://scripts/code_panel.gd" id="6_5e7k2"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_player"]
-size = Vector3(1, 1, 1)
+size = Vector3(0.48, 0.48, 0.48)
 
 [sub_resource type="BoxMesh" id="BoxMesh_player"]
-size = Vector3(1, 1, 1)
+size = Vector3(0.48, 0.48, 0.48)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_player"]
 albedo_color = Color(0.88, 0.54, 0.27, 1)
@@ -68,6 +68,28 @@ size = Vector3(4, 0.5, 8)
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ramp"]
 albedo_color = Color(0.5, 0.58, 0.52, 1)
 roughness = 0.9
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_chair_seat"]
+size = Vector3(1.3, 0.1, 1.3)
+
+[sub_resource type="BoxMesh" id="BoxMesh_chair_seat"]
+size = Vector3(1.3, 0.1, 1.3)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_chair_leg"]
+size = Vector3(0.14, 0.5, 0.14)
+
+[sub_resource type="BoxMesh" id="BoxMesh_chair_leg"]
+size = Vector3(0.14, 0.5, 0.14)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_chair_back"]
+size = Vector3(1.3, 0.45, 0.1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_chair_back"]
+size = Vector3(1.3, 0.45, 0.1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_chair"]
+albedo_color = Color(0.42, 0.29, 0.2, 1)
+roughness = 0.75
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_window"]
 size = Vector3(5, 3, 0.5)
@@ -131,7 +153,7 @@ albedo_color = Color(0.76, 0.56, 0.42, 1)
 roughness = 0.72
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_box_interaction"]
-size = Vector3(1, 1, 1)
+size = Vector3(0.48, 0.48, 0.48)
 
 [sub_resource type="BoxMesh" id="BoxMesh_card"]
 size = Vector3(0.62, 0.05, 0.42)
@@ -473,6 +495,187 @@ material_override = SubResource("StandardMaterial3D_ramp")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Room/RampEast"]
 shape = SubResource("BoxShape3D_ramp")
+
+[node name="TestChairs" type="Node3D" parent="Room"]
+
+[node name="ChairA" type="StaticBody3D" parent="Room/TestChairs"]
+position = Vector3(-2.8, 0, 4.2)
+collision_layer = 1
+collision_mask = 0
+
+[node name="Seat" type="MeshInstance3D" parent="Room/TestChairs/ChairA"]
+position = Vector3(0, 0.5, 0)
+mesh = SubResource("BoxMesh_chair_seat")
+material_override = SubResource("StandardMaterial3D_chair")
+
+[node name="SeatCollision" type="CollisionShape3D" parent="Room/TestChairs/ChairA"]
+position = Vector3(0, 0.5, 0)
+shape = SubResource("BoxShape3D_chair_seat")
+
+[node name="LegFL" type="MeshInstance3D" parent="Room/TestChairs/ChairA"]
+position = Vector3(-0.53, 0.25, -0.53)
+mesh = SubResource("BoxMesh_chair_leg")
+material_override = SubResource("StandardMaterial3D_chair")
+
+[node name="LegFLCollision" type="CollisionShape3D" parent="Room/TestChairs/ChairA"]
+position = Vector3(-0.53, 0.25, -0.53)
+shape = SubResource("BoxShape3D_chair_leg")
+
+[node name="LegFR" type="MeshInstance3D" parent="Room/TestChairs/ChairA"]
+position = Vector3(0.53, 0.25, -0.53)
+mesh = SubResource("BoxMesh_chair_leg")
+material_override = SubResource("StandardMaterial3D_chair")
+
+[node name="LegFRCollision" type="CollisionShape3D" parent="Room/TestChairs/ChairA"]
+position = Vector3(0.53, 0.25, -0.53)
+shape = SubResource("BoxShape3D_chair_leg")
+
+[node name="LegBL" type="MeshInstance3D" parent="Room/TestChairs/ChairA"]
+position = Vector3(-0.53, 0.25, 0.53)
+mesh = SubResource("BoxMesh_chair_leg")
+material_override = SubResource("StandardMaterial3D_chair")
+
+[node name="LegBLCollision" type="CollisionShape3D" parent="Room/TestChairs/ChairA"]
+position = Vector3(-0.53, 0.25, 0.53)
+shape = SubResource("BoxShape3D_chair_leg")
+
+[node name="LegBR" type="MeshInstance3D" parent="Room/TestChairs/ChairA"]
+position = Vector3(0.53, 0.25, 0.53)
+mesh = SubResource("BoxMesh_chair_leg")
+material_override = SubResource("StandardMaterial3D_chair")
+
+[node name="LegBRCollision" type="CollisionShape3D" parent="Room/TestChairs/ChairA"]
+position = Vector3(0.53, 0.25, 0.53)
+shape = SubResource("BoxShape3D_chair_leg")
+
+[node name="Back" type="MeshInstance3D" parent="Room/TestChairs/ChairA"]
+position = Vector3(0, 0.775, 0.6)
+mesh = SubResource("BoxMesh_chair_back")
+material_override = SubResource("StandardMaterial3D_chair")
+
+[node name="BackCollision" type="CollisionShape3D" parent="Room/TestChairs/ChairA"]
+position = Vector3(0, 0.775, 0.6)
+shape = SubResource("BoxShape3D_chair_back")
+
+[node name="ChairB" type="StaticBody3D" parent="Room/TestChairs"]
+position = Vector3(0.9, 0, 6.3)
+rotation_degrees = Vector3(0, 24, 0)
+collision_layer = 1
+collision_mask = 0
+
+[node name="Seat" type="MeshInstance3D" parent="Room/TestChairs/ChairB"]
+position = Vector3(0, 0.5, 0)
+mesh = SubResource("BoxMesh_chair_seat")
+material_override = SubResource("StandardMaterial3D_chair")
+
+[node name="SeatCollision" type="CollisionShape3D" parent="Room/TestChairs/ChairB"]
+position = Vector3(0, 0.5, 0)
+shape = SubResource("BoxShape3D_chair_seat")
+
+[node name="LegFL" type="MeshInstance3D" parent="Room/TestChairs/ChairB"]
+position = Vector3(-0.53, 0.25, -0.53)
+mesh = SubResource("BoxMesh_chair_leg")
+material_override = SubResource("StandardMaterial3D_chair")
+
+[node name="LegFLCollision" type="CollisionShape3D" parent="Room/TestChairs/ChairB"]
+position = Vector3(-0.53, 0.25, -0.53)
+shape = SubResource("BoxShape3D_chair_leg")
+
+[node name="LegFR" type="MeshInstance3D" parent="Room/TestChairs/ChairB"]
+position = Vector3(0.53, 0.25, -0.53)
+mesh = SubResource("BoxMesh_chair_leg")
+material_override = SubResource("StandardMaterial3D_chair")
+
+[node name="LegFRCollision" type="CollisionShape3D" parent="Room/TestChairs/ChairB"]
+position = Vector3(0.53, 0.25, -0.53)
+shape = SubResource("BoxShape3D_chair_leg")
+
+[node name="LegBL" type="MeshInstance3D" parent="Room/TestChairs/ChairB"]
+position = Vector3(-0.53, 0.25, 0.53)
+mesh = SubResource("BoxMesh_chair_leg")
+material_override = SubResource("StandardMaterial3D_chair")
+
+[node name="LegBLCollision" type="CollisionShape3D" parent="Room/TestChairs/ChairB"]
+position = Vector3(-0.53, 0.25, 0.53)
+shape = SubResource("BoxShape3D_chair_leg")
+
+[node name="LegBR" type="MeshInstance3D" parent="Room/TestChairs/ChairB"]
+position = Vector3(0.53, 0.25, 0.53)
+mesh = SubResource("BoxMesh_chair_leg")
+material_override = SubResource("StandardMaterial3D_chair")
+
+[node name="LegBRCollision" type="CollisionShape3D" parent="Room/TestChairs/ChairB"]
+position = Vector3(0.53, 0.25, 0.53)
+shape = SubResource("BoxShape3D_chair_leg")
+
+[node name="Back" type="MeshInstance3D" parent="Room/TestChairs/ChairB"]
+position = Vector3(0, 0.775, 0.6)
+mesh = SubResource("BoxMesh_chair_back")
+material_override = SubResource("StandardMaterial3D_chair")
+
+[node name="BackCollision" type="CollisionShape3D" parent="Room/TestChairs/ChairB"]
+position = Vector3(0, 0.775, 0.6)
+shape = SubResource("BoxShape3D_chair_back")
+
+[node name="ChairC" type="StaticBody3D" parent="Room/TestChairs"]
+position = Vector3(4.1, 0, 3.8)
+rotation_degrees = Vector3(0, -32, 0)
+collision_layer = 1
+collision_mask = 0
+
+[node name="Seat" type="MeshInstance3D" parent="Room/TestChairs/ChairC"]
+position = Vector3(0, 0.5, 0)
+mesh = SubResource("BoxMesh_chair_seat")
+material_override = SubResource("StandardMaterial3D_chair")
+
+[node name="SeatCollision" type="CollisionShape3D" parent="Room/TestChairs/ChairC"]
+position = Vector3(0, 0.5, 0)
+shape = SubResource("BoxShape3D_chair_seat")
+
+[node name="LegFL" type="MeshInstance3D" parent="Room/TestChairs/ChairC"]
+position = Vector3(-0.53, 0.25, -0.53)
+mesh = SubResource("BoxMesh_chair_leg")
+material_override = SubResource("StandardMaterial3D_chair")
+
+[node name="LegFLCollision" type="CollisionShape3D" parent="Room/TestChairs/ChairC"]
+position = Vector3(-0.53, 0.25, -0.53)
+shape = SubResource("BoxShape3D_chair_leg")
+
+[node name="LegFR" type="MeshInstance3D" parent="Room/TestChairs/ChairC"]
+position = Vector3(0.53, 0.25, -0.53)
+mesh = SubResource("BoxMesh_chair_leg")
+material_override = SubResource("StandardMaterial3D_chair")
+
+[node name="LegFRCollision" type="CollisionShape3D" parent="Room/TestChairs/ChairC"]
+position = Vector3(0.53, 0.25, -0.53)
+shape = SubResource("BoxShape3D_chair_leg")
+
+[node name="LegBL" type="MeshInstance3D" parent="Room/TestChairs/ChairC"]
+position = Vector3(-0.53, 0.25, 0.53)
+mesh = SubResource("BoxMesh_chair_leg")
+material_override = SubResource("StandardMaterial3D_chair")
+
+[node name="LegBLCollision" type="CollisionShape3D" parent="Room/TestChairs/ChairC"]
+position = Vector3(-0.53, 0.25, 0.53)
+shape = SubResource("BoxShape3D_chair_leg")
+
+[node name="LegBR" type="MeshInstance3D" parent="Room/TestChairs/ChairC"]
+position = Vector3(0.53, 0.25, 0.53)
+mesh = SubResource("BoxMesh_chair_leg")
+material_override = SubResource("StandardMaterial3D_chair")
+
+[node name="LegBRCollision" type="CollisionShape3D" parent="Room/TestChairs/ChairC"]
+position = Vector3(0.53, 0.25, 0.53)
+shape = SubResource("BoxShape3D_chair_leg")
+
+[node name="Back" type="MeshInstance3D" parent="Room/TestChairs/ChairC"]
+position = Vector3(0, 0.775, 0.6)
+mesh = SubResource("BoxMesh_chair_back")
+material_override = SubResource("StandardMaterial3D_chair")
+
+[node name="BackCollision" type="CollisionShape3D" parent="Room/TestChairs/ChairC"]
+position = Vector3(0, 0.775, 0.6)
+shape = SubResource("BoxShape3D_chair_back")
 
 [node name="Interactables" type="Node3D" parent="."]
 
