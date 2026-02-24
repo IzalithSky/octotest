@@ -2,6 +2,26 @@
 
 ## 2026-02-24
 
+### Step 23 - Office room rescale/layout polish + climb/interaction fixes
+
+- Reworked gameplay room into the target data-office layout and scaled scene elements for consistent proportions.
+- Tuned octopus traversal for elevated props:
+  - stabilized chair/desk climbing behavior,
+  - reduced unwanted climbs onto chair backs,
+  - improved post-climb rotation behavior.
+- Updated camera follow behavior to keep camera above occluding furniture and reduced focus zoom distance for close interactables.
+- Adjusted held-item presentation:
+  - refined held-item spacing/orientation (8-direction layout),
+  - corrected hold/focus transform behavior so held pickups preserve visual size.
+- Fixed focus interaction issues:
+  - code panel keypad columns no longer become unclickable due to sibling LOS blocking,
+  - card reader insertion now preserves card world scale (no resize on insert/eject cycle).
+- Updated scene content with additional office props and pickup placement for interaction testing.
+
+### Validation commands (pass)
+1. `./scripts/check.sh`
+   - Result: boot smoke PASS, `movement_math_test: PASS`, `slope_movement_test: PASS`, `card_reader_interaction_test: PASS`.
+
 ### Step 22 - Unify focus held-item apply/reject routing for future interactables
 
 - Refactored focus held-item click handling in `InteractionController` into one pipeline used by both ray-picked and screen-picked held items.

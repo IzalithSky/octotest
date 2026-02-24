@@ -4,8 +4,8 @@ Godot `4.6.1` 3D isometric prototype with:
 
 1. Point-and-click movement.
 2. Orbit camera rig (`SpringArm3D`).
-3. Gravity and slope traversal ramps.
-4. Authored room geometry with window openings and transparent collidable glass.
+3. Gravity locomotion with authored climb/mantle movement for low elevated surfaces (chairs/desks).
+4. Authored data-office room geometry (walls, windows, doors, console, desks, chairs, storage, tank).
 5. UI flow with a startup main menu, in-game menu, and gameplay HUD hints.
 6. Interactable object system with hover/in-range/blocked visualization.
 7. Clickable wall light switch.
@@ -50,7 +50,7 @@ GODOT_BIN=/absolute/path/to/godot ./scripts/check.sh
 
 ## Controls
 
-1. `LMB`: set move target (floor/ramp).
+1. `LMB`: set move target.
 2. `RMB + drag`: orbit camera.
 3. `Q` / `E`: keyboard orbit.
 4. Mouse wheel: zoom camera.
@@ -66,6 +66,7 @@ GODOT_BIN=/absolute/path/to/godot ./scripts/check.sh
 - `LMB` outside interaction area exits focus.
 - While focused, held items are selectable at the bottom of the screen.
 - Code panel keypad buttons are only interactive while the panel is focused.
+12. Octopus does not jump; climb/mantle is triggered automatically when moving onto valid low elevated surfaces.
 
 ## Validate
 

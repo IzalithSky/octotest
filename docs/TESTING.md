@@ -33,8 +33,8 @@ HOME=/tmp XDG_DATA_HOME=/tmp XDG_CONFIG_HOME=/tmp godot --headless --path /path/
 4. Confirm north/south windows show sky (true wall openings, not just transparent overlays).
 5. Confirm transparent window blocks are still collidable (player cannot pass through).
 6. Confirm room palette is muted and lower contrast than player cube.
-7. Confirm ramps are reachable and traversal is smooth uphill/downhill.
-8. Confirm click targets on ramps work and player remains grounded appropriately.
+7. Confirm elevated office props (chairs/desks) are climbable with smooth mantle motion.
+8. Confirm player does not climb onto chair backs/non-walkable narrow tops.
 9. Confirm camera orbit and zoom still behave as expected.
 10. Confirm HUD key-hint panel is visible in a corner and does not block click-to-move when clicking through it.
 11. Press `Esc` to open/close in-game menu; verify `Main Menu` returns to startup menu and `Quit` exits app.
@@ -61,6 +61,8 @@ HOME=/tmp XDG_DATA_HOME=/tmp XDG_CONFIG_HOME=/tmp godot --headless --path /path/
 32. Confirm wrong code sets display to `DENIED`, red LED, then resets to `ENTER CODE` + yellow LED.
 33. Confirm code panel LED colors match card reader colors for idle/wrong/correct states.
 34. Confirm non-applicable held item click in code panel focus animates toward panel and returns.
+35. Confirm all code panel button columns are clickable (no blocked `2/3`, `5/6`, `8/9`, `0/OK` patterns).
+36. Confirm pickup item size stays consistent through hold -> reader insert -> eject -> hold cycles.
 
 ## Regression Focus Areas
 
@@ -70,3 +72,4 @@ HOME=/tmp XDG_DATA_HOME=/tmp XDG_CONFIG_HOME=/tmp godot --headless --path /path/
 4. Interaction layer (`collision_layer = 8`) misconfiguration can break hover/click detection.
 5. Carry layout changes can cause held-item clipping or unstable drop behavior.
 6. Focus click hit areas are sensitive to camera/layout tuning; verify no accidental near-click item activation.
+7. Reparenting items between world/hand/reader can cause scale drift; verify world scale is preserved.

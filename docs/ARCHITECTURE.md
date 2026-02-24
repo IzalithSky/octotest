@@ -9,8 +9,8 @@ This document describes the current runtime architecture of the prototype and mu
 3. `res://scenes/main.tscn` is the gameplay scene.
 4. `Main` (`Node3D`) owns world setup, camera behavior, click-to-move input routing, and in-game UI menu flow.
 5. `Player` (`CharacterBody3D`) owns locomotion, gravity handling, and slope alignment.
-6. `Room` contains authored static geometry (floor, ceiling, walls, ramps, windows).
-7. `Interactables` contains authored clickable and pickup objects (`Area3D` + `RigidBody3D`/`StaticBody3D`), including focus-enabled objects such as `CardReader`.
+6. `Room` contains authored static geometry for the office layout (floor, ceiling, walls, windows, doors, desks, chairs, console, storage/tank props).
+7. `Interactables` contains authored clickable and pickup objects (`Area3D` + `RigidBody3D`/`StaticBody3D`), including focus-enabled objects such as `CardReader` and `CodePanel`.
 8. `WorldEnvironment` provides sky/background visuals visible through wall openings.
 
 ## Scene Graph Responsibilities
@@ -30,9 +30,8 @@ This document describes the current runtime architecture of the prototype and mu
 4. `Room`:
 - `Floor` uses ground collision layer for click-to-move raycast targeting.
 - `Ceiling` and wall pieces use wall collision layer for physical boundaries.
-- North/south walls are segmented to create real window openings.
-- `Window*` nodes are transparent collidable blocks filling window apertures.
-- `RampWest`/`RampEast` provide slope traversal test surfaces.
+- Includes authored office set dressing and climbable elevated surfaces (chairs/desks).
+- Includes window/skylight geometry and door/cabinet blocking geometry used for navigation/LOS.
 5. `Player`:
 - Uses `CollisionShape3D` + visible cube mesh.
 - Updated each physics frame by `player_controller.gd`.
@@ -63,6 +62,7 @@ This document describes the current runtime architecture of the prototype and mu
 - Gravity and grounded handling.
 - Uses `MovementMath.next_velocity_2d()` for planar acceleration/deceleration.
 - Uses `MovementMath.project_planar_direction_on_surface()` to keep movement stable on slopes.
+- Includes click-to-climb mantle logic with landing-footprint validation for stable chair/desk climbing.
 4. `res://scripts/movement_math.gd`
 - Pure helper math (no scene dependencies).
 - Designed for headless logic testing.
@@ -75,6 +75,8 @@ This document describes the current runtime architecture of the prototype and mu
 - Handles interactable raycasts, hover state transitions, line-of-sight and range checks, and queued auto-interact.
 - Handles octopus hand-socket layout, held-item updates, targeted drop, and carry movement penalties.
 - Handles wall-switch callback, HUD interaction hints, and focus-mode interaction routing.
+- Handles same-object-family LOS exceptions for focus interactions (card reader/code panel subparts).
+- Preserves held item global scale while attached/focused.
 - Provides a unified focus-held item application pipeline with extension points:
   - `_can_focus_target_accept_held_item(...)`,
   - `_apply_held_item_to_focus_target(...)`,
@@ -83,6 +85,7 @@ This document describes the current runtime architecture of the prototype and mu
 - Configures per-object focus behavior (anchor, click-outside threshold, optional angle overrides, solved-state auto-exit).
 8. `res://scripts/card_reader.gd`
 - Manages card reader state (`EMPTY`, `WRONG`, `CORRECT`), LED state, insertion/ejection, and slot anchors.
+- Preserves inserted card world scale when snapping into the slot.
 9. `res://scripts/focus_reject_feedback.gd`
 - Encapsulates short "apply failed" item motion toward slot and return.
 10. `res://scripts/interaction_hint_builder.gd`

@@ -1,17 +1,20 @@
 extends Node3D
 
 
-const GROUND_COLLISION_MASK := 1 << 1
+const CLICK_TARGET_COLLISION_MASK := (1 << 0) | (1 << 1)
 const MAIN_MENU_SCENE_PATH := "res://scenes/main_menu.tscn"
 const InteractionController = preload("res://scripts/interaction_controller.gd")
 const FocusTargetType = preload("res://scripts/focus_target.gd")
+const OCTO_START_Y := 0.26
+const CAMERA_FOLLOW_HEIGHT := 0.65
+const CAMERA_MIN_WORLD_Y := 1.25
 
 @export var orbit_sensitivity := 0.2
 @export var key_orbit_speed := 65.0
 @export var min_zoom := 4.0
 @export var max_zoom := 14.0
 @export var zoom_step := 1.0
-@export var focus_zoom_distance := 3.6
+@export var focus_zoom_distance := 2.0
 @export var focus_tween_duration := 0.24
 
 @onready var player: CharacterBody3D = $Player
@@ -40,7 +43,7 @@ var _player_mesh: MeshInstance3D
 
 
 func _ready() -> void:
-	player.global_position = Vector3(0.0, 0.51, 0.0)
+	player.global_position = Vector3(0.0, OCTO_START_Y, 0.0)
 	_apply_camera_angles()
 	_make_click_through(hud_root)
 	_create_interaction_controller()
@@ -52,7 +55,9 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	if not _focus_mode:
-		camera_pivot.global_position = player.global_position + Vector3(0.0, 1.0, 0.0)
+		var follow_position := player.global_position + Vector3(0.0, CAMERA_FOLLOW_HEIGHT, 0.0)
+		follow_position.y = maxf(follow_position.y, CAMERA_MIN_WORLD_Y)
+		camera_pivot.global_position = follow_position
 
 	if in_game_menu.visible:
 		_interaction_controller.set_interaction_enabled(false)
@@ -201,7 +206,9 @@ func _exit_focus_mode() -> void:
 	_interaction_controller.set_focus_display(false, null)
 	_interaction_controller.set_focus_target(null)
 	_set_focus_visuals_enabled(true)
-	_start_focus_tween(player.global_position + Vector3(0.0, 1.0, 0.0), _saved_spring_length)
+	var follow_position := player.global_position + Vector3(0.0, CAMERA_FOLLOW_HEIGHT, 0.0)
+	follow_position.y = maxf(follow_position.y, CAMERA_MIN_WORLD_Y)
+	_start_focus_tween(follow_position, _saved_spring_length)
 
 
 func _start_focus_tween(target_pivot_position: Vector3, target_zoom: float) -> void:
@@ -244,10 +251,11 @@ func _apply_camera_angles() -> void:
 
 func _raycast_to_ground(screen_position: Vector2) -> Vector3:
 	var from := camera.project_ray_origin(screen_position)
-	var to := from + camera.project_ray_normal(screen_position) * 500.0
+	var ray_normal := camera.project_ray_normal(screen_position)
+	var to := from + ray_normal * 500.0
 
 	var query := PhysicsRayQueryParameters3D.create(from, to)
-	query.collision_mask = GROUND_COLLISION_MASK
+	query.collision_mask = CLICK_TARGET_COLLISION_MASK
 	query.collide_with_areas = false
 	query.exclude = [player]
 
@@ -255,7 +263,23 @@ func _raycast_to_ground(screen_position: Vector2) -> Vector3:
 	if result.is_empty():
 		return Vector3.INF
 
-	return result.position
+	var hit_position: Vector3 = result.position
+	var hit_normal: Vector3 = result.normal
+	if hit_normal.dot(Vector3.UP) >= 0.65:
+		return hit_position
+
+	# If player clicks an object side, bias target to its top surface.
+	var down_from := hit_position + Vector3.UP * 1.6
+	var down_to := hit_position + Vector3.DOWN * 0.6
+	var down_query := PhysicsRayQueryParameters3D.create(down_from, down_to)
+	down_query.collision_mask = CLICK_TARGET_COLLISION_MASK
+	down_query.collide_with_areas = false
+	down_query.exclude = [player]
+	var top_result := get_world_3d().direct_space_state.intersect_ray(down_query)
+	if not top_result.is_empty() and (top_result.normal as Vector3).dot(Vector3.UP) >= 0.65:
+		return top_result.position
+
+	return hit_position
 
 
 func _is_escape_press(event: InputEvent) -> bool:
