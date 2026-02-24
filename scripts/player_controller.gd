@@ -19,6 +19,7 @@ const MovementMath = preload("res://scripts/movement_math.gd")
 @export var climb_wall_max_up_dot := 0.3
 @export var mantle_landing_forward := 0.28
 @export var mantle_clearance := 0.08
+@export var min_landing_half_extent := 0.14
 @export_flags_3d_physics var climb_collision_mask := WALL_COLLISION_MASK | GROUND_COLLISION_MASK
 
 var _has_target := false
@@ -169,6 +170,8 @@ func _try_begin_climb() -> void:
 	var top_normal: Vector3 = top_hit.normal
 	if top_normal.dot(Vector3.UP) < climb_surface_min_up_dot:
 		return
+	if not _has_landing_footprint(top_hit.position, planar_direction):
+		return
 
 	var target_center_y: float = top_hit.position.y + _half_height + 0.01
 	var climb_delta: float = target_center_y - global_position.y
@@ -245,3 +248,26 @@ func _find_target_top_hit() -> Dictionary:
 		_target_position.z
 	)
 	return _cast_ray(down_from, down_to, climb_collision_mask)
+
+
+func _has_landing_footprint(top_point: Vector3, planar_direction: Vector3) -> bool:
+	var right := Vector3.UP.cross(planar_direction).normalized()
+	var offsets := [
+		planar_direction * min_landing_half_extent,
+		-planar_direction * min_landing_half_extent,
+		right * min_landing_half_extent,
+		-right * min_landing_half_extent
+	]
+	for offset in offsets:
+		var sample_point: Vector3 = top_point + offset
+		var from: Vector3 = sample_point + Vector3.UP * 0.3
+		var to: Vector3 = sample_point + Vector3.DOWN * 0.4
+		var sample_hit := _cast_ray(from, to, climb_collision_mask)
+		if sample_hit.is_empty():
+			return false
+		var sample_normal: Vector3 = sample_hit.normal
+		if sample_normal.dot(Vector3.UP) < climb_surface_min_up_dot:
+			return false
+		if absf((sample_hit.position as Vector3).y - top_point.y) > 0.06:
+			return false
+	return true

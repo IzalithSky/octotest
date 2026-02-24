@@ -5,15 +5,16 @@ const CLICK_TARGET_COLLISION_MASK := (1 << 0) | (1 << 1)
 const MAIN_MENU_SCENE_PATH := "res://scenes/main_menu.tscn"
 const InteractionController = preload("res://scripts/interaction_controller.gd")
 const FocusTargetType = preload("res://scripts/focus_target.gd")
-const OCTO_START_Y := 0.25
-const CAMERA_FOLLOW_HEIGHT := 0.62
+const OCTO_START_Y := 0.26
+const CAMERA_FOLLOW_HEIGHT := 0.65
+const CAMERA_MIN_WORLD_Y := 1.25
 
 @export var orbit_sensitivity := 0.2
 @export var key_orbit_speed := 65.0
 @export var min_zoom := 4.0
 @export var max_zoom := 14.0
 @export var zoom_step := 1.0
-@export var focus_zoom_distance := 3.6
+@export var focus_zoom_distance := 2.0
 @export var focus_tween_duration := 0.24
 
 @onready var player: CharacterBody3D = $Player
@@ -54,7 +55,9 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	if not _focus_mode:
-		camera_pivot.global_position = player.global_position + Vector3(0.0, CAMERA_FOLLOW_HEIGHT, 0.0)
+		var follow_position := player.global_position + Vector3(0.0, CAMERA_FOLLOW_HEIGHT, 0.0)
+		follow_position.y = maxf(follow_position.y, CAMERA_MIN_WORLD_Y)
+		camera_pivot.global_position = follow_position
 
 	if in_game_menu.visible:
 		_interaction_controller.set_interaction_enabled(false)
@@ -203,7 +206,9 @@ func _exit_focus_mode() -> void:
 	_interaction_controller.set_focus_display(false, null)
 	_interaction_controller.set_focus_target(null)
 	_set_focus_visuals_enabled(true)
-	_start_focus_tween(player.global_position + Vector3(0.0, CAMERA_FOLLOW_HEIGHT, 0.0), _saved_spring_length)
+	var follow_position := player.global_position + Vector3(0.0, CAMERA_FOLLOW_HEIGHT, 0.0)
+	follow_position.y = maxf(follow_position.y, CAMERA_MIN_WORLD_Y)
+	_start_focus_tween(follow_position, _saved_spring_length)
 
 
 func _start_focus_tween(target_pivot_position: Vector3, target_zoom: float) -> void:

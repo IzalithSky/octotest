@@ -60,10 +60,18 @@ func insert_card(card: Interactable) -> bool:
 	_inserted_card = card
 	_inserted_card.set_interaction_enabled(true)
 	var pickup_root := card.get_pickup_root()
+	var preserved_global_scale := pickup_root.global_basis.get_scale().abs()
 	pickup_root.reparent(_slot_anchor, true)
-	pickup_root.transform = Transform3D.IDENTITY
-	pickup_root.position = inserted_card_local_position
-	pickup_root.rotation_degrees = inserted_card_local_rotation_degrees
+	var local_basis := Basis.from_euler(Vector3(
+		deg_to_rad(inserted_card_local_rotation_degrees.x),
+		deg_to_rad(inserted_card_local_rotation_degrees.y),
+		deg_to_rad(inserted_card_local_rotation_degrees.z)
+	))
+	var slot_local_transform := Transform3D(local_basis, inserted_card_local_position)
+	var target_global := _slot_anchor.global_transform * slot_local_transform
+	var target_rotation := target_global.basis.orthonormalized()
+	target_global.basis = target_rotation.scaled(preserved_global_scale)
+	pickup_root.global_transform = target_global
 
 	if _inserted_card.item_id == required_card_id:
 		_set_state(ReaderState.CORRECT)

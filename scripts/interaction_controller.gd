@@ -5,6 +5,7 @@ class_name InteractionController
 const WALL_COLLISION_MASK := 1 << 0
 const INTERACTABLE_COLLISION_MASK := 1 << 3
 const CardReaderType = preload("res://scripts/card_reader.gd")
+const CodePanelType = preload("res://scripts/code_panel.gd")
 const FocusTargetType = preload("res://scripts/focus_target.gd")
 const FocusRejectFeedbackType = preload("res://scripts/focus_reject_feedback.gd")
 const InteractionHintBuilderType = preload("res://scripts/interaction_hint_builder.gd")
@@ -18,9 +19,9 @@ const FOCUS_READER_INSERTED_CLICK_RADIUS := 190.0
 @export var slow_at_item_count := 5
 @export var immobilized_at_item_count := 8
 @export var heavy_carry_speed_multiplier := 0.45
-@export var hand_socket_inner_radius := 1.0
-@export var hand_socket_outer_radius := 1.35
-@export var hand_socket_height := 1.05
+@export var hand_socket_inner_radius := 0.3
+@export var hand_socket_outer_radius := 0.54
+@export var hand_socket_height := 0.34
 @export var drop_clamp_extent := 15.2
 @export var debug_interaction_logs := false
 @export var focus_reject_feedback_duration := 0.32
@@ -38,6 +39,7 @@ var _hovered_blocked := false
 var _held_interactables: Array[Interactable] = []
 var _hand_sockets: Array[Node3D] = []
 var _held_socket_by_item_id: Dictionary = {}
+var _held_global_scale_by_item_id: Dictionary = {}
 var _queued_interaction_target: Interactable
 var _pending_card_reader: CardReaderType
 var _awaiting_card_selection := false
@@ -644,6 +646,8 @@ func _has_line_of_sight(target: Interactable) -> bool:
 		return true
 	if _belongs_to_same_card_reader(target, collider):
 		return true
+	if _belongs_to_same_code_panel(target, collider):
+		return true
 	return false
 
 
@@ -655,6 +659,27 @@ func _belongs_to_same_card_reader(target: Interactable, collider: Variant) -> bo
 		return false
 	var collider_node := collider as Node
 	return collider_node == reader or reader.is_ancestor_of(collider_node)
+
+
+func _belongs_to_same_code_panel(target: Interactable, collider: Variant) -> bool:
+	var code_panel := _get_code_panel_for_interactable(target)
+	if code_panel == null:
+		return false
+	if not (collider is Node):
+		return false
+	var collider_node := collider as Node
+	return collider_node == code_panel or code_panel.is_ancestor_of(collider_node)
+
+
+func _get_code_panel_for_interactable(target: Interactable) -> CodePanelType:
+	if target == null:
+		return null
+	var node := target.get_parent()
+	while node != null:
+		if node is CodePanelType:
+			return node as CodePanelType
+		node = node.get_parent()
+	return null
 
 
 func _move_toward_interactable(target: Interactable) -> void:
@@ -748,13 +773,15 @@ func _update_held_item_transform(delta: float) -> void:
 
 	var alpha := minf(1.0, held_item_follow_speed * delta)
 	for held_item in _held_interactables:
-		var socket_index := int(_held_socket_by_item_id.get(held_item.get_instance_id(), -1))
+		var item_id := held_item.get_instance_id()
+		var socket_index := int(_held_socket_by_item_id.get(item_id, -1))
 		if socket_index < 0 or socket_index >= _hand_sockets.size():
 			continue
 		var pickup_root := held_item.get_pickup_root()
 		var socket := _hand_sockets[socket_index]
 		var target_transform := socket.global_transform * held_item.get_hold_transform()
 		pickup_root.global_transform = pickup_root.global_transform.interpolate_with(target_transform, alpha)
+		_reapply_held_global_scale(item_id, pickup_root)
 
 
 func _update_focus_display_transforms(delta: float) -> void:
@@ -766,6 +793,7 @@ func _update_focus_display_transforms(delta: float) -> void:
 
 	for i in range(count):
 		var held_item := _held_interactables[i]
+		var item_id := held_item.get_instance_id()
 		var pickup_root := held_item.get_pickup_root()
 		var col := i % columns
 		var row := i / columns
@@ -789,6 +817,7 @@ func _update_focus_display_transforms(delta: float) -> void:
 		var target_basis := Basis.looking_at(-camera_forward, Vector3.UP)
 		var target_transform := Transform3D(target_basis, target_pos)
 		pickup_root.global_transform = pickup_root.global_transform.interpolate_with(target_transform, alpha)
+		_reapply_held_global_scale(item_id, pickup_root)
 
 
 func _trigger_focus_reject_feedback(item: Interactable) -> void:
@@ -879,29 +908,17 @@ func _refresh_hand_socket_layout() -> void:
 	for i in range(held_count):
 		_held_socket_by_item_id[_held_interactables[i].get_instance_id()] = i
 
-	var inner_count := mini(held_count, 4)
-	var outer_count := maxi(held_count - inner_count, 0)
+	var t := clampf(float(held_count - 1) / float(maxi(max_held_items - 1, 1)), 0.0, 1.0)
+	var radius := lerpf(hand_socket_inner_radius, hand_socket_outer_radius, t)
+	var angle_offset := PI * 0.5
 	for i in range(_hand_sockets.size()):
 		var socket := _hand_sockets[i]
 		if i >= held_count:
 			socket.position = Vector3(0.0, hand_socket_height, 0.0)
 			continue
 
-		var ring_index := 0
-		var slot_index := i
-		var slots_in_ring := inner_count
-		var radius := hand_socket_inner_radius
-		var height_offset := 0.0
-		if i >= inner_count:
-			ring_index = 1
-			slot_index = i - inner_count
-			slots_in_ring = maxi(outer_count, 1)
-			radius = hand_socket_outer_radius
-			height_offset = 0.2
-
-		var angle_offset := 0.0 if ring_index == 0 else PI / float(slots_in_ring)
-		var angle := TAU * float(slot_index) / float(slots_in_ring) + angle_offset
-		var local_pos := Vector3(cos(angle) * radius, hand_socket_height + height_offset, sin(angle) * radius)
+		var angle := TAU * float(i) / float(held_count) + angle_offset
+		var local_pos := Vector3(cos(angle) * radius, hand_socket_height, sin(angle) * radius)
 		socket.position = local_pos
 
 		var outward := Vector3(local_pos.x, 0.0, local_pos.z).normalized()
@@ -922,6 +939,7 @@ func _remove_held_item(item: Interactable) -> Interactable:
 	if index == -1:
 		return null
 	_held_interactables.remove_at(index)
+	_held_global_scale_by_item_id.erase(item.get_instance_id())
 	_refresh_hand_socket_layout()
 	_update_carry_mobility()
 	return item
@@ -946,16 +964,32 @@ func _attach_item_to_hands(item: Interactable, clear_motion_target: bool) -> boo
 
 	var pickup_root := item.get_pickup_root()
 	var socket := _hand_sockets[socket_index]
+	var item_id := item.get_instance_id()
+	_held_global_scale_by_item_id[item_id] = pickup_root.global_basis.get_scale().abs()
 	pickup_root.reparent(socket, true)
 	item.set_interaction_enabled(true)
 	item.set_held(true)
 	pickup_root.transform = item.get_hold_transform()
+	_reapply_held_global_scale(item_id, pickup_root)
 
 	if clear_motion_target:
 		_player.clear_move_target()
 
 	_update_carry_mobility()
 	return true
+
+
+func _reapply_held_global_scale(item_id: int, pickup_root: Node3D) -> void:
+	if pickup_root == null:
+		return
+	var held_scale_variant: Variant = _held_global_scale_by_item_id.get(item_id, null)
+	if held_scale_variant == null:
+		return
+	var held_global_scale := held_scale_variant as Vector3
+	var current_global := pickup_root.global_transform
+	var rotation_basis := current_global.basis.orthonormalized()
+	current_global.basis = rotation_basis.scaled(held_global_scale)
+	pickup_root.global_transform = current_global
 
 
 func _update_carry_mobility() -> void:

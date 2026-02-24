@@ -8,10 +8,10 @@
 [ext_resource type="Script" path="res://scripts/code_panel.gd" id="6_5e7k2"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_player"]
-size = Vector3(0.48, 0.48, 0.48)
+size = Vector3(0.5, 0.5, 0.5)
 
 [sub_resource type="BoxMesh" id="BoxMesh_player"]
-size = Vector3(0.48, 0.48, 0.48)
+size = Vector3(0.5, 0.5, 0.5)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_player"]
 albedo_color = Color(0.88, 0.54, 0.27, 1)
@@ -30,16 +30,16 @@ albedo_color = Color(0.78, 0.77, 0.7, 1)
 roughness = 0.9
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_floor"]
-size = Vector3(32, 1, 32)
+size = Vector3(7, 1, 9)
 
 [sub_resource type="BoxMesh" id="BoxMesh_floor"]
-size = Vector3(32, 1, 32)
+size = Vector3(7, 1, 9)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_wall_ew"]
-size = Vector3(1, 9, 32)
+size = Vector3(1, 3, 9)
 
 [sub_resource type="BoxMesh" id="BoxMesh_wall_ew"]
-size = Vector3(1, 9, 32)
+size = Vector3(1, 3, 9)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_wall_ns_outer"]
 size = Vector3(5.5, 9, 1)
@@ -48,10 +48,10 @@ size = Vector3(5.5, 9, 1)
 size = Vector3(5.5, 9, 1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_wall_ns_center"]
-size = Vector3(11, 9, 1)
+size = Vector3(7, 3, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_wall_ns_center"]
-size = Vector3(11, 9, 1)
+size = Vector3(7, 3, 1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_wall_ns_band"]
 size = Vector3(5, 3, 1)
@@ -70,32 +70,32 @@ albedo_color = Color(0.5, 0.58, 0.52, 1)
 roughness = 0.9
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_chair_seat"]
-size = Vector3(1.3, 0.1, 1.3)
+size = Vector3(0.5, 0.08, 0.5)
 
 [sub_resource type="BoxMesh" id="BoxMesh_chair_seat"]
-size = Vector3(1.3, 0.1, 1.3)
+size = Vector3(0.5, 0.08, 0.5)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_chair_leg"]
-size = Vector3(0.14, 0.5, 0.14)
+size = Vector3(0.06, 0.5, 0.06)
 
 [sub_resource type="BoxMesh" id="BoxMesh_chair_leg"]
-size = Vector3(0.14, 0.5, 0.14)
+size = Vector3(0.06, 0.5, 0.06)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_chair_back"]
-size = Vector3(1.3, 0.45, 0.1)
+size = Vector3(0.5, 0.45, 0.08)
 
 [sub_resource type="BoxMesh" id="BoxMesh_chair_back"]
-size = Vector3(1.3, 0.45, 0.1)
+size = Vector3(0.5, 0.45, 0.08)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_chair"]
 albedo_color = Color(0.42, 0.29, 0.2, 1)
 roughness = 0.75
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_window"]
-size = Vector3(5, 3, 0.5)
+size = Vector3(1.2, 0.2, 0.8)
 
 [sub_resource type="BoxMesh" id="BoxMesh_window"]
-size = Vector3(5, 3, 0.5)
+size = Vector3(1.2, 0.2, 0.8)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_window"]
 transparency = 1
@@ -153,13 +153,13 @@ albedo_color = Color(0.76, 0.56, 0.42, 1)
 roughness = 0.72
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_box_interaction"]
-size = Vector3(0.48, 0.48, 0.48)
+size = Vector3(1, 1, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_card"]
-size = Vector3(0.62, 0.05, 0.42)
+size = Vector3(0.28, 0.03, 0.19)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_card"]
-size = Vector3(0.62, 0.05, 0.42)
+size = Vector3(0.28, 0.03, 0.19)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_card"]
 albedo_color = Color(0.22, 0.67, 0.94, 1)
@@ -205,6 +205,7 @@ script = ExtResource("1_4f72t")
 environment = SubResource("Environment_1w5qu")
 
 [node name="Room" type="Node3D" parent="."]
+scale = Vector3(1.5, 1.5, 1.5)
 
 [node name="Floor" type="StaticBody3D" parent="Room"]
 position = Vector3(0, -0.5, 0)
@@ -219,8 +220,8 @@ material_override = SubResource("StandardMaterial3D_floor")
 shape = SubResource("BoxShape3D_floor")
 
 [node name="Ceiling" type="StaticBody3D" parent="Room"]
-position = Vector3(0, 9.5, 0)
-collision_layer = 1
+position = Vector3(0, 3.5, 0)
+collision_layer = 2
 collision_mask = 0
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Room/Ceiling"]
@@ -231,8 +232,8 @@ material_override = SubResource("StandardMaterial3D_ceiling")
 shape = SubResource("BoxShape3D_floor")
 
 [node name="WallWest" type="StaticBody3D" parent="Room"]
-position = Vector3(-16.5, 4.5, 0)
-collision_layer = 1
+position = Vector3(-4, 1.5, 0)
+collision_layer = 2
 collision_mask = 0
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Room/WallWest"]
@@ -243,8 +244,8 @@ material_override = SubResource("StandardMaterial3D_wall")
 shape = SubResource("BoxShape3D_wall_ew")
 
 [node name="WallEast" type="StaticBody3D" parent="Room"]
-position = Vector3(16.5, 4.5, 0)
-collision_layer = 1
+position = Vector3(4, 1.5, 0)
+collision_layer = 2
 collision_mask = 0
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Room/WallEast"]
@@ -254,21 +255,9 @@ material_override = SubResource("StandardMaterial3D_wall")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Room/WallEast"]
 shape = SubResource("BoxShape3D_wall_ew")
 
-[node name="WallNorthOuterLeft" type="StaticBody3D" parent="Room"]
-position = Vector3(-13.25, 4.5, -16.5)
-collision_layer = 1
-collision_mask = 0
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Room/WallNorthOuterLeft"]
-mesh = SubResource("BoxMesh_wall_ns_outer")
-material_override = SubResource("StandardMaterial3D_wall")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Room/WallNorthOuterLeft"]
-shape = SubResource("BoxShape3D_wall_ns_outer")
-
 [node name="WallNorthCenter" type="StaticBody3D" parent="Room"]
-position = Vector3(0, 4.5, -16.5)
-collision_layer = 1
+position = Vector3(0, 1.5, -5)
+collision_layer = 2
 collision_mask = 0
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Room/WallNorthCenter"]
@@ -278,81 +267,9 @@ material_override = SubResource("StandardMaterial3D_wall")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Room/WallNorthCenter"]
 shape = SubResource("BoxShape3D_wall_ns_center")
 
-[node name="WallNorthOuterRight" type="StaticBody3D" parent="Room"]
-position = Vector3(13.25, 4.5, -16.5)
-collision_layer = 1
-collision_mask = 0
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Room/WallNorthOuterRight"]
-mesh = SubResource("BoxMesh_wall_ns_outer")
-material_override = SubResource("StandardMaterial3D_wall")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Room/WallNorthOuterRight"]
-shape = SubResource("BoxShape3D_wall_ns_outer")
-
-[node name="WallNorthWindowLeftBottom" type="StaticBody3D" parent="Room"]
-position = Vector3(-8, 1.5, -16.5)
-collision_layer = 1
-collision_mask = 0
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Room/WallNorthWindowLeftBottom"]
-mesh = SubResource("BoxMesh_wall_ns_band")
-material_override = SubResource("StandardMaterial3D_wall")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Room/WallNorthWindowLeftBottom"]
-shape = SubResource("BoxShape3D_wall_ns_band")
-
-[node name="WallNorthWindowLeftTop" type="StaticBody3D" parent="Room"]
-position = Vector3(-8, 7.5, -16.5)
-collision_layer = 1
-collision_mask = 0
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Room/WallNorthWindowLeftTop"]
-mesh = SubResource("BoxMesh_wall_ns_band")
-material_override = SubResource("StandardMaterial3D_wall")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Room/WallNorthWindowLeftTop"]
-shape = SubResource("BoxShape3D_wall_ns_band")
-
-[node name="WallNorthWindowRightBottom" type="StaticBody3D" parent="Room"]
-position = Vector3(8, 1.5, -16.5)
-collision_layer = 1
-collision_mask = 0
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Room/WallNorthWindowRightBottom"]
-mesh = SubResource("BoxMesh_wall_ns_band")
-material_override = SubResource("StandardMaterial3D_wall")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Room/WallNorthWindowRightBottom"]
-shape = SubResource("BoxShape3D_wall_ns_band")
-
-[node name="WallNorthWindowRightTop" type="StaticBody3D" parent="Room"]
-position = Vector3(8, 7.5, -16.5)
-collision_layer = 1
-collision_mask = 0
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Room/WallNorthWindowRightTop"]
-mesh = SubResource("BoxMesh_wall_ns_band")
-material_override = SubResource("StandardMaterial3D_wall")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Room/WallNorthWindowRightTop"]
-shape = SubResource("BoxShape3D_wall_ns_band")
-
-[node name="WallSouthOuterLeft" type="StaticBody3D" parent="Room"]
-position = Vector3(-13.25, 4.5, 16.5)
-collision_layer = 1
-collision_mask = 0
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Room/WallSouthOuterLeft"]
-mesh = SubResource("BoxMesh_wall_ns_outer")
-material_override = SubResource("StandardMaterial3D_wall")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Room/WallSouthOuterLeft"]
-shape = SubResource("BoxShape3D_wall_ns_outer")
-
 [node name="WallSouthCenter" type="StaticBody3D" parent="Room"]
-position = Vector3(0, 4.5, 16.5)
-collision_layer = 1
+position = Vector3(0, 1.5, 5)
+collision_layer = 2
 collision_mask = 0
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Room/WallSouthCenter"]
@@ -362,322 +279,293 @@ material_override = SubResource("StandardMaterial3D_wall")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Room/WallSouthCenter"]
 shape = SubResource("BoxShape3D_wall_ns_center")
 
-[node name="WallSouthOuterRight" type="StaticBody3D" parent="Room"]
-position = Vector3(13.25, 4.5, 16.5)
-collision_layer = 1
-collision_mask = 0
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Room/WallSouthOuterRight"]
-mesh = SubResource("BoxMesh_wall_ns_outer")
-material_override = SubResource("StandardMaterial3D_wall")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Room/WallSouthOuterRight"]
-shape = SubResource("BoxShape3D_wall_ns_outer")
-
-[node name="WallSouthWindowLeftBottom" type="StaticBody3D" parent="Room"]
-position = Vector3(-8, 1.5, 16.5)
-collision_layer = 1
-collision_mask = 0
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Room/WallSouthWindowLeftBottom"]
-mesh = SubResource("BoxMesh_wall_ns_band")
-material_override = SubResource("StandardMaterial3D_wall")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Room/WallSouthWindowLeftBottom"]
-shape = SubResource("BoxShape3D_wall_ns_band")
-
-[node name="WallSouthWindowLeftTop" type="StaticBody3D" parent="Room"]
-position = Vector3(-8, 7.5, 16.5)
-collision_layer = 1
-collision_mask = 0
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Room/WallSouthWindowLeftTop"]
-mesh = SubResource("BoxMesh_wall_ns_band")
-material_override = SubResource("StandardMaterial3D_wall")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Room/WallSouthWindowLeftTop"]
-shape = SubResource("BoxShape3D_wall_ns_band")
-
-[node name="WallSouthWindowRightBottom" type="StaticBody3D" parent="Room"]
-position = Vector3(8, 1.5, 16.5)
-collision_layer = 1
-collision_mask = 0
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Room/WallSouthWindowRightBottom"]
-mesh = SubResource("BoxMesh_wall_ns_band")
-material_override = SubResource("StandardMaterial3D_wall")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Room/WallSouthWindowRightBottom"]
-shape = SubResource("BoxShape3D_wall_ns_band")
-
-[node name="WallSouthWindowRightTop" type="StaticBody3D" parent="Room"]
-position = Vector3(8, 7.5, 16.5)
-collision_layer = 1
-collision_mask = 0
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Room/WallSouthWindowRightTop"]
-mesh = SubResource("BoxMesh_wall_ns_band")
-material_override = SubResource("StandardMaterial3D_wall")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Room/WallSouthWindowRightTop"]
-shape = SubResource("BoxShape3D_wall_ns_band")
-
-[node name="WindowNorthLeft" type="StaticBody3D" parent="Room"]
-position = Vector3(-8, 4.5, -16.5)
-collision_layer = 1
-collision_mask = 0
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Room/WindowNorthLeft"]
-mesh = SubResource("BoxMesh_window")
-material_override = SubResource("StandardMaterial3D_window")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Room/WindowNorthLeft"]
-shape = SubResource("BoxShape3D_window")
-
-[node name="WindowNorthRight" type="StaticBody3D" parent="Room"]
-position = Vector3(8, 4.5, -16.5)
-collision_layer = 1
-collision_mask = 0
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Room/WindowNorthRight"]
-mesh = SubResource("BoxMesh_window")
-material_override = SubResource("StandardMaterial3D_window")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Room/WindowNorthRight"]
-shape = SubResource("BoxShape3D_window")
-
-[node name="WindowSouthLeft" type="StaticBody3D" parent="Room"]
-position = Vector3(-8, 4.5, 16.5)
-collision_layer = 1
-collision_mask = 0
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Room/WindowSouthLeft"]
-mesh = SubResource("BoxMesh_window")
-material_override = SubResource("StandardMaterial3D_window")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Room/WindowSouthLeft"]
-shape = SubResource("BoxShape3D_window")
-
-[node name="WindowSouthRight" type="StaticBody3D" parent="Room"]
-position = Vector3(8, 4.5, 16.5)
-collision_layer = 1
-collision_mask = 0
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Room/WindowSouthRight"]
-mesh = SubResource("BoxMesh_window")
-material_override = SubResource("StandardMaterial3D_window")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Room/WindowSouthRight"]
-shape = SubResource("BoxShape3D_window")
-
-[node name="RampWest" type="StaticBody3D" parent="Room"]
-position = Vector3(-6, 1.46, 0)
-rotation_degrees = Vector3(-25, 0, 0)
+[node name="TankSkylight" type="StaticBody3D" parent="Room"]
+position = Vector3(2.4, 2.99, -3.7)
 collision_layer = 2
 collision_mask = 0
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Room/RampWest"]
-mesh = SubResource("BoxMesh_ramp")
-material_override = SubResource("StandardMaterial3D_ramp")
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Room/TankSkylight"]
+mesh = SubResource("BoxMesh_window")
+material_override = SubResource("StandardMaterial3D_window")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Room/RampWest"]
-shape = SubResource("BoxShape3D_ramp")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Room/TankSkylight"]
+shape = SubResource("BoxShape3D_window")
 
-[node name="RampEast" type="StaticBody3D" parent="Room"]
-position = Vector3(6, 1.46, 0)
-rotation_degrees = Vector3(-25, 180, 0)
+[node name="NorthWindow" type="StaticBody3D" parent="Room"]
+position = Vector3(-2.0, 2.0, -4.95)
 collision_layer = 2
 collision_mask = 0
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Room/RampEast"]
-mesh = SubResource("BoxMesh_ramp")
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Room/NorthWindow"]
+rotation_degrees = Vector3(90, 0, 0)
+mesh = SubResource("BoxMesh_window")
+material_override = SubResource("StandardMaterial3D_window")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Room/NorthWindow"]
+rotation_degrees = Vector3(90, 0, 0)
+shape = SubResource("BoxShape3D_window")
+
+[node name="OfficeSet" type="Node3D" parent="Room"]
+
+[node name="SystemsDoorLeft" type="StaticBody3D" parent="Room/OfficeSet"]
+position = Vector3(-2.98, 1.1, 0.8)
+collision_layer = 1
+collision_mask = 0
+
+[node name="DoorPanel" type="MeshInstance3D" parent="Room/OfficeSet/SystemsDoorLeft"]
+scale = Vector3(0.18, 2.2, 2.0)
+mesh = SubResource("BoxMesh_chair_leg")
+material_override = SubResource("StandardMaterial3D_wall")
+
+[node name="DoorCollision" type="CollisionShape3D" parent="Room/OfficeSet/SystemsDoorLeft"]
+scale = Vector3(0.18, 2.2, 2.0)
+shape = SubResource("BoxShape3D_chair_leg")
+
+[node name="BackDoorRight" type="StaticBody3D" parent="Room/OfficeSet"]
+position = Vector3(0, 1.17, 4.45)
+collision_layer = 1
+collision_mask = 0
+
+[node name="DoorPanel" type="MeshInstance3D" parent="Room/OfficeSet/BackDoorRight"]
+scale = Vector3(0.165, 0.78, 0.27)
+mesh = SubResource("BoxMesh_wall_ns_center")
+material_override = SubResource("StandardMaterial3D_chair")
+
+[node name="DoorCollision" type="CollisionShape3D" parent="Room/OfficeSet/BackDoorRight"]
+scale = Vector3(0.165, 0.78, 0.27)
+shape = SubResource("BoxShape3D_wall_ns_center")
+
+[node name="SensorConsole" type="StaticBody3D" parent="Room/OfficeSet"]
+position = Vector3(0, 0.95, -4.25)
+collision_layer = 1
+collision_mask = 0
+
+[node name="ConsoleBody" type="MeshInstance3D" parent="Room/OfficeSet/SensorConsole"]
+scale = Vector3(10, 1.6, 0.8)
+mesh = SubResource("BoxMesh_chair_seat")
+material_override = SubResource("StandardMaterial3D_card_reader")
+
+[node name="ConsoleCollision" type="CollisionShape3D" parent="Room/OfficeSet/SensorConsole"]
+scale = Vector3(10, 1.6, 0.8)
+shape = SubResource("BoxShape3D_chair_seat")
+
+[node name="MonitorA" type="MeshInstance3D" parent="Room/OfficeSet/SensorConsole"]
+position = Vector3(-1.25, 0.35, -0.05)
+scale = Vector3(1.3, 2.4, 0.2)
+mesh = SubResource("BoxMesh_card_reader_led")
+material_override = SubResource("StandardMaterial3D_card_reader_led")
+
+[node name="MonitorB" type="MeshInstance3D" parent="Room/OfficeSet/SensorConsole"]
+position = Vector3(-0.75, 0.35, -0.05)
+scale = Vector3(1.3, 2.4, 0.2)
+mesh = SubResource("BoxMesh_card_reader_led")
+material_override = SubResource("StandardMaterial3D_card_reader_led")
+
+[node name="MonitorC" type="MeshInstance3D" parent="Room/OfficeSet/SensorConsole"]
+position = Vector3(-0.25, 0.35, -0.05)
+scale = Vector3(1.3, 2.4, 0.2)
+mesh = SubResource("BoxMesh_card_reader_led")
+material_override = SubResource("StandardMaterial3D_card_reader_led")
+
+[node name="MonitorD" type="MeshInstance3D" parent="Room/OfficeSet/SensorConsole"]
+position = Vector3(0.25, 0.35, -0.05)
+scale = Vector3(1.3, 2.4, 0.2)
+mesh = SubResource("BoxMesh_card_reader_led")
+material_override = SubResource("StandardMaterial3D_card_reader_led")
+
+[node name="MonitorE" type="MeshInstance3D" parent="Room/OfficeSet/SensorConsole"]
+position = Vector3(0.75, 0.35, -0.05)
+scale = Vector3(1.3, 2.4, 0.2)
+mesh = SubResource("BoxMesh_card_reader_led")
+material_override = SubResource("StandardMaterial3D_card_reader_led")
+
+[node name="MonitorF" type="MeshInstance3D" parent="Room/OfficeSet/SensorConsole"]
+position = Vector3(1.25, 0.35, -0.05)
+scale = Vector3(1.3, 2.4, 0.2)
+mesh = SubResource("BoxMesh_card_reader_led")
+material_override = SubResource("StandardMaterial3D_card_reader_led")
+
+[node name="DeskA" type="StaticBody3D" parent="Room/OfficeSet"]
+position = Vector3(-1.5, 0, 0.6)
+collision_layer = 1
+collision_mask = 0
+
+[node name="DeskTopMesh" type="MeshInstance3D" parent="Room/OfficeSet/DeskA"]
+position = Vector3(0, 0.75, 0)
+scale = Vector3(2.4, 1, 1.6)
+mesh = SubResource("BoxMesh_chair_seat")
 material_override = SubResource("StandardMaterial3D_ramp")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Room/RampEast"]
-shape = SubResource("BoxShape3D_ramp")
+[node name="DeskTopCollision" type="CollisionShape3D" parent="Room/OfficeSet/DeskA"]
+position = Vector3(0, 0.75, 0)
+scale = Vector3(2.4, 1, 1.6)
+shape = SubResource("BoxShape3D_chair_seat")
 
-[node name="TestChairs" type="Node3D" parent="Room"]
+[node name="DeskMonitor" type="MeshInstance3D" parent="Room/OfficeSet/DeskA"]
+position = Vector3(0, 1.0, -0.28)
+scale = Vector3(1.1, 1.6, 0.18)
+mesh = SubResource("BoxMesh_card_reader_led")
+material_override = SubResource("StandardMaterial3D_card_reader_led")
 
-[node name="ChairA" type="StaticBody3D" parent="Room/TestChairs"]
-position = Vector3(-2.8, 0, 4.2)
+[node name="DeskB" type="StaticBody3D" parent="Room/OfficeSet"]
+position = Vector3(1.5, 0, 0.6)
 collision_layer = 1
 collision_mask = 0
 
-[node name="Seat" type="MeshInstance3D" parent="Room/TestChairs/ChairA"]
+[node name="DeskTopMesh" type="MeshInstance3D" parent="Room/OfficeSet/DeskB"]
+position = Vector3(0, 0.75, 0)
+scale = Vector3(2.4, 1, 1.6)
+mesh = SubResource("BoxMesh_chair_seat")
+material_override = SubResource("StandardMaterial3D_ramp")
+
+[node name="DeskTopCollision" type="CollisionShape3D" parent="Room/OfficeSet/DeskB"]
+position = Vector3(0, 0.75, 0)
+scale = Vector3(2.4, 1, 1.6)
+shape = SubResource("BoxShape3D_chair_seat")
+
+[node name="DeskMonitor" type="MeshInstance3D" parent="Room/OfficeSet/DeskB"]
+position = Vector3(0, 1.0, -0.28)
+scale = Vector3(1.1, 1.6, 0.18)
+mesh = SubResource("BoxMesh_card_reader_led")
+material_override = SubResource("StandardMaterial3D_card_reader_led")
+
+[node name="ChairDeskA" type="StaticBody3D" parent="Room/OfficeSet"]
+position = Vector3(-1.5, 0, 1.75)
+collision_layer = 1
+collision_mask = 0
+
+[node name="SeatMesh" type="MeshInstance3D" parent="Room/OfficeSet/ChairDeskA"]
 position = Vector3(0, 0.5, 0)
 mesh = SubResource("BoxMesh_chair_seat")
 material_override = SubResource("StandardMaterial3D_chair")
 
-[node name="SeatCollision" type="CollisionShape3D" parent="Room/TestChairs/ChairA"]
+[node name="SeatCollisionShape" type="CollisionShape3D" parent="Room/OfficeSet/ChairDeskA"]
 position = Vector3(0, 0.5, 0)
 shape = SubResource("BoxShape3D_chair_seat")
 
-[node name="LegFL" type="MeshInstance3D" parent="Room/TestChairs/ChairA"]
-position = Vector3(-0.53, 0.25, -0.53)
-mesh = SubResource("BoxMesh_chair_leg")
-material_override = SubResource("StandardMaterial3D_chair")
-
-[node name="LegFLCollision" type="CollisionShape3D" parent="Room/TestChairs/ChairA"]
-position = Vector3(-0.53, 0.25, -0.53)
-shape = SubResource("BoxShape3D_chair_leg")
-
-[node name="LegFR" type="MeshInstance3D" parent="Room/TestChairs/ChairA"]
-position = Vector3(0.53, 0.25, -0.53)
-mesh = SubResource("BoxMesh_chair_leg")
-material_override = SubResource("StandardMaterial3D_chair")
-
-[node name="LegFRCollision" type="CollisionShape3D" parent="Room/TestChairs/ChairA"]
-position = Vector3(0.53, 0.25, -0.53)
-shape = SubResource("BoxShape3D_chair_leg")
-
-[node name="LegBL" type="MeshInstance3D" parent="Room/TestChairs/ChairA"]
-position = Vector3(-0.53, 0.25, 0.53)
-mesh = SubResource("BoxMesh_chair_leg")
-material_override = SubResource("StandardMaterial3D_chair")
-
-[node name="LegBLCollision" type="CollisionShape3D" parent="Room/TestChairs/ChairA"]
-position = Vector3(-0.53, 0.25, 0.53)
-shape = SubResource("BoxShape3D_chair_leg")
-
-[node name="LegBR" type="MeshInstance3D" parent="Room/TestChairs/ChairA"]
-position = Vector3(0.53, 0.25, 0.53)
-mesh = SubResource("BoxMesh_chair_leg")
-material_override = SubResource("StandardMaterial3D_chair")
-
-[node name="LegBRCollision" type="CollisionShape3D" parent="Room/TestChairs/ChairA"]
-position = Vector3(0.53, 0.25, 0.53)
-shape = SubResource("BoxShape3D_chair_leg")
-
-[node name="Back" type="MeshInstance3D" parent="Room/TestChairs/ChairA"]
-position = Vector3(0, 0.775, 0.6)
+[node name="BackrestMesh" type="MeshInstance3D" parent="Room/OfficeSet/ChairDeskA"]
+position = Vector3(0, 0.77, 0.21)
 mesh = SubResource("BoxMesh_chair_back")
 material_override = SubResource("StandardMaterial3D_chair")
 
-[node name="BackCollision" type="CollisionShape3D" parent="Room/TestChairs/ChairA"]
-position = Vector3(0, 0.775, 0.6)
+[node name="BackrestCollisionShape" type="CollisionShape3D" parent="Room/OfficeSet/ChairDeskA"]
+position = Vector3(0, 0.77, 0.21)
 shape = SubResource("BoxShape3D_chair_back")
 
-[node name="ChairB" type="StaticBody3D" parent="Room/TestChairs"]
-position = Vector3(0.9, 0, 6.3)
-rotation_degrees = Vector3(0, 24, 0)
+[node name="ChairDeskB" type="StaticBody3D" parent="Room/OfficeSet"]
+position = Vector3(1.5, 0, 1.75)
 collision_layer = 1
 collision_mask = 0
 
-[node name="Seat" type="MeshInstance3D" parent="Room/TestChairs/ChairB"]
+[node name="SeatMesh" type="MeshInstance3D" parent="Room/OfficeSet/ChairDeskB"]
 position = Vector3(0, 0.5, 0)
 mesh = SubResource("BoxMesh_chair_seat")
 material_override = SubResource("StandardMaterial3D_chair")
 
-[node name="SeatCollision" type="CollisionShape3D" parent="Room/TestChairs/ChairB"]
+[node name="SeatCollisionShape" type="CollisionShape3D" parent="Room/OfficeSet/ChairDeskB"]
 position = Vector3(0, 0.5, 0)
 shape = SubResource("BoxShape3D_chair_seat")
 
-[node name="LegFL" type="MeshInstance3D" parent="Room/TestChairs/ChairB"]
-position = Vector3(-0.53, 0.25, -0.53)
-mesh = SubResource("BoxMesh_chair_leg")
-material_override = SubResource("StandardMaterial3D_chair")
-
-[node name="LegFLCollision" type="CollisionShape3D" parent="Room/TestChairs/ChairB"]
-position = Vector3(-0.53, 0.25, -0.53)
-shape = SubResource("BoxShape3D_chair_leg")
-
-[node name="LegFR" type="MeshInstance3D" parent="Room/TestChairs/ChairB"]
-position = Vector3(0.53, 0.25, -0.53)
-mesh = SubResource("BoxMesh_chair_leg")
-material_override = SubResource("StandardMaterial3D_chair")
-
-[node name="LegFRCollision" type="CollisionShape3D" parent="Room/TestChairs/ChairB"]
-position = Vector3(0.53, 0.25, -0.53)
-shape = SubResource("BoxShape3D_chair_leg")
-
-[node name="LegBL" type="MeshInstance3D" parent="Room/TestChairs/ChairB"]
-position = Vector3(-0.53, 0.25, 0.53)
-mesh = SubResource("BoxMesh_chair_leg")
-material_override = SubResource("StandardMaterial3D_chair")
-
-[node name="LegBLCollision" type="CollisionShape3D" parent="Room/TestChairs/ChairB"]
-position = Vector3(-0.53, 0.25, 0.53)
-shape = SubResource("BoxShape3D_chair_leg")
-
-[node name="LegBR" type="MeshInstance3D" parent="Room/TestChairs/ChairB"]
-position = Vector3(0.53, 0.25, 0.53)
-mesh = SubResource("BoxMesh_chair_leg")
-material_override = SubResource("StandardMaterial3D_chair")
-
-[node name="LegBRCollision" type="CollisionShape3D" parent="Room/TestChairs/ChairB"]
-position = Vector3(0.53, 0.25, 0.53)
-shape = SubResource("BoxShape3D_chair_leg")
-
-[node name="Back" type="MeshInstance3D" parent="Room/TestChairs/ChairB"]
-position = Vector3(0, 0.775, 0.6)
+[node name="BackrestMesh" type="MeshInstance3D" parent="Room/OfficeSet/ChairDeskB"]
+position = Vector3(0, 0.77, 0.21)
 mesh = SubResource("BoxMesh_chair_back")
 material_override = SubResource("StandardMaterial3D_chair")
 
-[node name="BackCollision" type="CollisionShape3D" parent="Room/TestChairs/ChairB"]
-position = Vector3(0, 0.775, 0.6)
+[node name="BackrestCollisionShape" type="CollisionShape3D" parent="Room/OfficeSet/ChairDeskB"]
+position = Vector3(0, 0.77, 0.21)
 shape = SubResource("BoxShape3D_chair_back")
 
-[node name="ChairC" type="StaticBody3D" parent="Room/TestChairs"]
-position = Vector3(4.1, 0, 3.8)
-rotation_degrees = Vector3(0, -32, 0)
+[node name="LeftStorageShelf" type="StaticBody3D" parent="Room/OfficeSet"]
+position = Vector3(-3.45, 1.1, 1.4)
 collision_layer = 1
 collision_mask = 0
 
-[node name="Seat" type="MeshInstance3D" parent="Room/TestChairs/ChairC"]
-position = Vector3(0, 0.5, 0)
-mesh = SubResource("BoxMesh_chair_seat")
-material_override = SubResource("StandardMaterial3D_chair")
+[node name="ShelfMesh" type="MeshInstance3D" parent="Room/OfficeSet/LeftStorageShelf"]
+scale = Vector3(0.7, 2.6, 1.2)
+mesh = SubResource("BoxMesh_box_interactable")
+material_override = SubResource("StandardMaterial3D_wall")
 
-[node name="SeatCollision" type="CollisionShape3D" parent="Room/TestChairs/ChairC"]
-position = Vector3(0, 0.5, 0)
-shape = SubResource("BoxShape3D_chair_seat")
+[node name="ShelfCollision" type="CollisionShape3D" parent="Room/OfficeSet/LeftStorageShelf"]
+scale = Vector3(0.7, 2.6, 1.2)
+shape = SubResource("BoxShape3D_box_interactable")
 
-[node name="LegFL" type="MeshInstance3D" parent="Room/TestChairs/ChairC"]
-position = Vector3(-0.53, 0.25, -0.53)
-mesh = SubResource("BoxMesh_chair_leg")
-material_override = SubResource("StandardMaterial3D_chair")
+[node name="StackedCaseA" type="StaticBody3D" parent="Room/OfficeSet"]
+position = Vector3(-3.25, 0.44, 2.9)
+collision_layer = 1
+collision_mask = 0
 
-[node name="LegFLCollision" type="CollisionShape3D" parent="Room/TestChairs/ChairC"]
-position = Vector3(-0.53, 0.25, -0.53)
-shape = SubResource("BoxShape3D_chair_leg")
+[node name="CaseMesh" type="MeshInstance3D" parent="Room/OfficeSet/StackedCaseA"]
+scale = Vector3(0.92, 1.04, 0.92)
+mesh = SubResource("BoxMesh_box_interactable")
+material_override = SubResource("StandardMaterial3D_box_interactable")
 
-[node name="LegFR" type="MeshInstance3D" parent="Room/TestChairs/ChairC"]
-position = Vector3(0.53, 0.25, -0.53)
-mesh = SubResource("BoxMesh_chair_leg")
-material_override = SubResource("StandardMaterial3D_chair")
+[node name="CaseCollisionShape" type="CollisionShape3D" parent="Room/OfficeSet/StackedCaseA"]
+scale = Vector3(0.92, 1.04, 0.92)
+shape = SubResource("BoxShape3D_box_interactable")
 
-[node name="LegFRCollision" type="CollisionShape3D" parent="Room/TestChairs/ChairC"]
-position = Vector3(0.53, 0.25, -0.53)
-shape = SubResource("BoxShape3D_chair_leg")
+[node name="StackedCaseB" type="StaticBody3D" parent="Room/OfficeSet"]
+position = Vector3(-3.25, 1.28, 2.9)
+collision_layer = 1
+collision_mask = 0
 
-[node name="LegBL" type="MeshInstance3D" parent="Room/TestChairs/ChairC"]
-position = Vector3(-0.53, 0.25, 0.53)
-mesh = SubResource("BoxMesh_chair_leg")
-material_override = SubResource("StandardMaterial3D_chair")
+[node name="CaseMesh" type="MeshInstance3D" parent="Room/OfficeSet/StackedCaseB"]
+scale = Vector3(0.92, 0.94, 0.92)
+mesh = SubResource("BoxMesh_box_interactable")
+material_override = SubResource("StandardMaterial3D_box_interactable")
 
-[node name="LegBLCollision" type="CollisionShape3D" parent="Room/TestChairs/ChairC"]
-position = Vector3(-0.53, 0.25, 0.53)
-shape = SubResource("BoxShape3D_chair_leg")
+[node name="CaseCollisionShape" type="CollisionShape3D" parent="Room/OfficeSet/StackedCaseB"]
+scale = Vector3(0.92, 0.94, 0.92)
+shape = SubResource("BoxShape3D_box_interactable")
 
-[node name="LegBR" type="MeshInstance3D" parent="Room/TestChairs/ChairC"]
-position = Vector3(0.53, 0.25, 0.53)
-mesh = SubResource("BoxMesh_chair_leg")
-material_override = SubResource("StandardMaterial3D_chair")
+[node name="OctoTank" type="StaticBody3D" parent="Room/OfficeSet"]
+position = Vector3(2.4, 0.15, -3.7)
+collision_layer = 1
+collision_mask = 0
 
-[node name="LegBRCollision" type="CollisionShape3D" parent="Room/TestChairs/ChairC"]
-position = Vector3(0.53, 0.25, 0.53)
-shape = SubResource("BoxShape3D_chair_leg")
+[node name="Stand" type="MeshInstance3D" parent="Room/OfficeSet/OctoTank"]
+position = Vector3(0, 0.15, 0)
+scale = Vector3(1.176, 0.353, 0.706)
+mesh = SubResource("BoxMesh_box_interactable")
+material_override = SubResource("StandardMaterial3D_wall")
 
-[node name="Back" type="MeshInstance3D" parent="Room/TestChairs/ChairC"]
-position = Vector3(0, 0.775, 0.6)
-mesh = SubResource("BoxMesh_chair_back")
-material_override = SubResource("StandardMaterial3D_chair")
+[node name="StandCollision" type="CollisionShape3D" parent="Room/OfficeSet/OctoTank"]
+position = Vector3(0, 0.15, 0)
+scale = Vector3(1.176, 0.353, 0.706)
+shape = SubResource("BoxShape3D_box_interactable")
 
-[node name="BackCollision" type="CollisionShape3D" parent="Room/TestChairs/ChairC"]
-position = Vector3(0, 0.775, 0.6)
-shape = SubResource("BoxShape3D_chair_back")
+[node name="TankFrame" type="MeshInstance3D" parent="Room/OfficeSet/OctoTank"]
+position = Vector3(0, 0.78, 0)
+scale = Vector3(1.176, 1.294, 0.706)
+mesh = SubResource("BoxMesh_box_interactable")
+material_override = SubResource("StandardMaterial3D_wall")
+
+[node name="TankCollision" type="CollisionShape3D" parent="Room/OfficeSet/OctoTank"]
+position = Vector3(0, 0.78, 0)
+scale = Vector3(1.176, 1.294, 0.706)
+shape = SubResource("BoxShape3D_box_interactable")
+
+[node name="Water" type="MeshInstance3D" parent="Room/OfficeSet/OctoTank"]
+position = Vector3(0, 0.78, 0)
+scale = Vector3(0.94, 1.05, 0.56)
+mesh = SubResource("BoxMesh_box_interactable")
+material_override = SubResource("StandardMaterial3D_window")
+
+[node name="EastWallCabinet" type="StaticBody3D" parent="Room/OfficeSet"]
+position = Vector3(3.5, 1.2, -0.6)
+collision_layer = 1
+collision_mask = 0
+
+[node name="CabinetMesh" type="MeshInstance3D" parent="Room/OfficeSet/EastWallCabinet"]
+scale = Vector3(0.94, 2.82, 1.41)
+mesh = SubResource("BoxMesh_box_interactable")
+material_override = SubResource("StandardMaterial3D_box_interactable")
+
+[node name="CabinetCollision" type="CollisionShape3D" parent="Room/OfficeSet/EastWallCabinet"]
+scale = Vector3(0.94, 2.82, 1.41)
+shape = SubResource("BoxShape3D_box_interactable")
 
 [node name="Interactables" type="Node3D" parent="."]
+scale = Vector3(1.5, 1.5, 1.5)
 
 [node name="LightButton" type="StaticBody3D" parent="Interactables"]
 position = Vector3(0, 2.2, -16.0)
@@ -704,8 +592,9 @@ interaction_range = 2.8
 shape = SubResource("BoxShape3D_button_interaction")
 
 [node name="CardReader" type="StaticBody3D" parent="Interactables"]
-position = Vector3(15.93, 2.2, 4.5)
+position = Vector3(3.45, 1.3, 0.35)
 rotation_degrees = Vector3(0, 90, 0)
+scale = Vector3(0.26, 0.26, 0.26)
 collision_layer = 1
 collision_mask = 0
 script = ExtResource("4_b6dyj")
@@ -749,13 +638,15 @@ interaction_range = 2.8
 shape = SubResource("BoxShape3D_card_reader_interaction")
 
 [node name="CodePanel" type="StaticBody3D" parent="Interactables"]
-position = Vector3(-15.93, 2.2, 4.5)
-rotation_degrees = Vector3(0, -90, 0)
+position = Vector3(-1.2, 1.1, 4.35)
+rotation_degrees = Vector3(0, 0, 0)
+scale = Vector3(0.26, 0.26, 0.26)
 script = ExtResource("6_5e7k2")
 required_code = "1234"
 
 [node name="Mug" type="RigidBody3D" parent="Interactables"]
-position = Vector3(-2.2, 0.5, -2)
+position = Vector3(-1.7, 0.9, 0.55)
+scale = Vector3(0.72, 0.72, 0.72)
 mass = 0.55
 continuous_cd = true
 collision_layer = 8
@@ -777,13 +668,14 @@ display_name = "Mug"
 interaction_range = 2.4
 prompt_action = "Pick up"
 focus_offset = Vector3(0, 0.147, 0)
-hold_offset = Vector3(0, -0.12, 0.36)
+hold_offset = Vector3(0, -0.02, 0.06)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Interactables/Mug/Interactable"]
 shape = SubResource("BoxShape3D_mug_interaction")
 
 [node name="Box" type="RigidBody3D" parent="Interactables"]
-position = Vector3(2.3, 0.55, -1.4)
+position = Vector3(2.9, 0.55, 2.8)
+scale = Vector3(0.4, 0.4, 0.4)
 mass = 0.55
 continuous_cd = true
 collision_layer = 8
@@ -805,13 +697,13 @@ display_name = "Box"
 interaction_range = 2.4
 prompt_action = "Pick up"
 focus_offset = Vector3(0, 0.2975, 0)
-hold_offset = Vector3(0, -0.12, 0.36)
+hold_offset = Vector3(0, -0.02, 0.06)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Interactables/Box/Interactable"]
 shape = SubResource("BoxShape3D_box_interaction")
 
 [node name="Card" type="RigidBody3D" parent="Interactables"]
-position = Vector3(0.9, 0.12, 2.2)
+position = Vector3(1.3, 0.76, 0.35)
 mass = 0.2
 continuous_cd = true
 collision_layer = 8
@@ -835,13 +727,14 @@ display_name = "Card"
 interaction_range = 2.4
 prompt_action = "Pick up"
 focus_offset = Vector3(0, 0.0175, 0)
-hold_offset = Vector3(0, -0.12, 0.36)
+hold_offset = Vector3(0, -0.02, 0.06)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Interactables/Card/Interactable"]
 shape = SubResource("BoxShape3D_card_interaction")
 
 [node name="Mug2" type="RigidBody3D" parent="Interactables"]
-position = Vector3(-4.2, 0.5, 1.4)
+position = Vector3(1.7, 0.9, 0.55)
+scale = Vector3(0.72, 0.72, 0.72)
 mass = 0.55
 continuous_cd = true
 collision_layer = 8
@@ -863,13 +756,14 @@ display_name = "Mug 2"
 interaction_range = 2.4
 prompt_action = "Pick up"
 focus_offset = Vector3(0, 0.147, 0)
-hold_offset = Vector3(0, -0.12, 0.36)
+hold_offset = Vector3(0, -0.02, 0.06)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Interactables/Mug2/Interactable"]
 shape = SubResource("BoxShape3D_mug_interaction")
 
 [node name="Mug3" type="RigidBody3D" parent="Interactables"]
-position = Vector3(4.5, 0.5, 2.8)
+position = Vector3(-1.3, 0.9, 0.9)
+scale = Vector3(0.72, 0.72, 0.72)
 mass = 0.55
 continuous_cd = true
 collision_layer = 8
@@ -891,13 +785,14 @@ display_name = "Mug 3"
 interaction_range = 2.4
 prompt_action = "Pick up"
 focus_offset = Vector3(0, 0.147, 0)
-hold_offset = Vector3(0, -0.12, 0.36)
+hold_offset = Vector3(0, -0.02, 0.06)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Interactables/Mug3/Interactable"]
 shape = SubResource("BoxShape3D_mug_interaction")
 
 [node name="Box2" type="RigidBody3D" parent="Interactables"]
-position = Vector3(-5.6, 0.55, -4.8)
+position = Vector3(-2.9, 0.55, 3.2)
+scale = Vector3(0.4, 0.4, 0.4)
 mass = 0.55
 continuous_cd = true
 collision_layer = 8
@@ -919,13 +814,14 @@ display_name = "Box 2"
 interaction_range = 2.4
 prompt_action = "Pick up"
 focus_offset = Vector3(0, 0.2975, 0)
-hold_offset = Vector3(0, -0.12, 0.36)
+hold_offset = Vector3(0, -0.02, 0.06)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Interactables/Box2/Interactable"]
 shape = SubResource("BoxShape3D_box_interaction")
 
 [node name="Box3" type="RigidBody3D" parent="Interactables"]
-position = Vector3(5.8, 0.55, -3.9)
+position = Vector3(2.9, 0.55, -3.1)
+scale = Vector3(0.4, 0.4, 0.4)
 mass = 0.55
 continuous_cd = true
 collision_layer = 8
@@ -947,13 +843,13 @@ display_name = "Box 3"
 interaction_range = 2.4
 prompt_action = "Pick up"
 focus_offset = Vector3(0, 0.2975, 0)
-hold_offset = Vector3(0, -0.12, 0.36)
+hold_offset = Vector3(0, -0.02, 0.06)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Interactables/Box3/Interactable"]
 shape = SubResource("BoxShape3D_box_interaction")
 
 [node name="Card2" type="RigidBody3D" parent="Interactables"]
-position = Vector3(-1.6, 0.12, 4.4)
+position = Vector3(-1.3, 0.76, 0.3)
 mass = 0.2
 continuous_cd = true
 collision_layer = 8
@@ -977,13 +873,13 @@ display_name = "Card 2"
 interaction_range = 2.4
 prompt_action = "Pick up"
 focus_offset = Vector3(0, 0.0175, 0)
-hold_offset = Vector3(0, -0.12, 0.36)
+hold_offset = Vector3(0, -0.02, 0.06)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Interactables/Card2/Interactable"]
 shape = SubResource("BoxShape3D_card_interaction")
 
 [node name="Card3" type="RigidBody3D" parent="Interactables"]
-position = Vector3(2.7, 0.12, 5.1)
+position = Vector3(1.7, 0.76, 0.95)
 mass = 0.2
 continuous_cd = true
 collision_layer = 8
@@ -1007,13 +903,13 @@ display_name = "Card 3"
 interaction_range = 2.4
 prompt_action = "Pick up"
 focus_offset = Vector3(0, 0.0175, 0)
-hold_offset = Vector3(0, -0.12, 0.36)
+hold_offset = Vector3(0, -0.02, 0.06)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Interactables/Card3/Interactable"]
 shape = SubResource("BoxShape3D_card_interaction")
 
 [node name="Card4" type="RigidBody3D" parent="Interactables"]
-position = Vector3(-6.2, 0.12, -0.4)
+position = Vector3(-1.7, 0.76, 1.0)
 mass = 0.2
 continuous_cd = true
 collision_layer = 8
@@ -1037,7 +933,7 @@ display_name = "Card 4"
 interaction_range = 2.4
 prompt_action = "Pick up"
 focus_offset = Vector3(0, 0.0175, 0)
-hold_offset = Vector3(0, -0.12, 0.36)
+hold_offset = Vector3(0, -0.02, 0.06)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Interactables/Card4/Interactable"]
 shape = SubResource("BoxShape3D_card_interaction")
@@ -1060,7 +956,8 @@ material_override = SubResource("StandardMaterial3D_player")
 
 [node name="SpringArm3D" type="SpringArm3D" parent="CameraPivot/CameraYaw/CameraPitch"]
 spring_length = 9.0
-collision_mask = 1
+collision_mask = 2
+margin = 0.2
 
 [node name="Camera3D" type="Camera3D" parent="CameraPivot/CameraYaw/CameraPitch/SpringArm3D"]
 current = true
