@@ -1,5 +1,23 @@
 # Dev Log
 
+## 2026-02-24
+
+### Step 17 - GDD review and clarifications
+
+Full review of `docs/GDD.md`. Resolved open design questions and corrected structural issues:
+
+- **Catch/return behaviour**: world state preserved on catch, no cooldown, room puzzle progress resets.
+- **Movement**: Octo walks on surfaces inside the station; swimming only in outdoor open-water sections.
+- **Save system**: autosave on entering each new room; players can quit and resume.
+- **Collectibles**: objects are actionable or not (visually distinct, no UI); fancy things occupy arm slots, no separate inventory.
+- **Controls**: PC-first target documented; iPad/Mac input deferred to post-PC review. Removed swipe/pinch references.
+- **Scope**: World Bible (Blue Current Research Facility) is now the explicit source of truth for rooms and layout.
+- **Arm system**: removed biology breakdown table; simplified to 8 arms with specialisation deferred to prototyping.
+- **Roadmap**: added missing Step 5 (pick up / carry / set down); deferred iPad touch input note.
+- **TASK_LIST.md**: updated Milestone 5 to reflect PC-first export order and removed iPad-specific performance target.
+
+No code changes. Design docs only.
+
 ## 2026-02-23
 
 ### Step 16 - Update project icon to octopus PNG

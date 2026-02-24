@@ -130,8 +130,8 @@ This file is intentionally editable and project-specific.
 
 - [ ] Run structured internal and external playtests.
 - [ ] Fix top friction points from observed sessions.
-- [ ] Hit iPad performance target and stabilize save/load. `[RISK]`
-- [ ] Finish platform exports (iPad, Mac, PC).
+- [ ] Stabilize save/load under repeated quit scenarios. `[RISK]`
+- [ ] Finish platform exports (PC first, then Mac and iPad).
 - [ ] Prepare store assets and launch materials.
 
 ### Tests
