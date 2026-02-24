@@ -2,6 +2,33 @@
 
 ## 2026-02-24
 
+### Step 21 - Add and polish wall code panel (focus-gated keypad)
+
+- Added new wall-mounted `CodePanel` gameplay object on the wall opposite the card reader.
+- Implemented keypad with `0-9`, `<<` backspace, and `OK` confirm.
+- Integrated with existing focus interaction flow:
+  - panel enters focus before keypad input,
+  - keypad button interactables are enabled only while that panel is the active focus target.
+- Added display feedback and solved-state behavior:
+  - `ENTER CODE` (idle),
+  - masked typed input,
+  - `DENIED` on wrong code then timed reset,
+  - latched `GRANTED` on success until next entry attempt.
+- Aligned code panel LED visuals with card reader by matching both color values and material properties.
+- Tuned panel layout/interaction details through QA fixes:
+  - corrected wall-fixed label orientation,
+  - reduced overall panel and text size,
+  - fixed top-row button interaction blocking via focus-point offset and hit-area tuning.
+- Updated scene/script wiring:
+  - `scripts/code_panel.gd`,
+  - `scenes/main.tscn`,
+  - `scripts/main.gd` (focus-target query helper for panel gating).
+- Default scene code is set to `1234` on the `CodePanel` node instance.
+
+### Validation commands (pass)
+1. `./scripts/check.sh`
+   - Result: boot smoke PASS, `movement_math_test: PASS`, `slope_movement_test: PASS`, `card_reader_interaction_test: PASS`.
+
 ### Step 20 - Focus interaction + card reader polish and controller modularization
 
 - Implemented focus-mode precision interaction flow:

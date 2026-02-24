@@ -62,7 +62,7 @@ This file is intentionally editable and project-specific.
 - [x] Block movement when all arms are occupied.
 - [ ] Add two-arm heavy object behavior.
 - [ ] Persist object positions across room transitions. `[RISK]`
-- [ ] Implement code-lock node with sequence validation.
+- [x] Implement code-lock node with sequence validation.
 - [x] Implement light switch mechanic and room group toggles.
 - [ ] Implement camouflage hold mechanic and interaction lockout.
 - [ ] Implement first human NPC with patrol and soft catch/reset. `[RISK]`

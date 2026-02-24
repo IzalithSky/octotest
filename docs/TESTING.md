@@ -54,6 +54,12 @@ HOME=/tmp XDG_DATA_HOME=/tmp XDG_CONFIG_HOME=/tmp godot --headless --path /path/
 25. Confirm reader holds one card at a time: second card cannot replace inserted card.
 26. Confirm clicking inserted card retrieves/ejects it back to held items (when a slot is available).
 27. Confirm non-applicable held item click in focus (e.g. mug on reader) animates toward slot and returns.
+28. Confirm code panel can be clicked to enter focus mode.
+29. Confirm code panel keypad is only clickable while focused.
+30. Confirm code panel input supports `0-9`, `<<` (backspace), and `OK`.
+31. Confirm default code `1234` sets display to `GRANTED` and latches green LED.
+32. Confirm wrong code sets display to `DENIED`, red LED, then resets to `ENTER CODE` + yellow LED.
+33. Confirm code panel LED colors match card reader colors for idle/wrong/correct states.
 
 ## Regression Focus Areas
 

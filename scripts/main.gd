@@ -275,6 +275,14 @@ func _set_in_game_menu_visible(is_visible: bool) -> void:
 		in_game_main_menu_button.grab_focus()
 
 
+func is_focus_target_active(target: FocusTargetType) -> bool:
+	if not _focus_mode:
+		return false
+	if target == null:
+		return false
+	return _focus_target == target
+
+
 func _make_click_through(node: Node) -> void:
 	if node is Control:
 		(node as Control).mouse_filter = Control.MOUSE_FILTER_IGNORE

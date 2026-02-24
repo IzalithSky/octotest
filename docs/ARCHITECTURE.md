@@ -40,6 +40,7 @@ This document describes the current runtime architecture of the prototype and mu
 - `LightButton` (`StaticBody3D`) with `Interactable` child for click interaction.
 - Multiple pickup objects (`RigidBody3D`) with `Interactable` child areas.
 - `CardReader` (`StaticBody3D`) with `Interactable` and `FocusTarget` children for zoomed precision interaction.
+- `CodePanel` (`StaticBody3D`) with `Interactable` + `FocusTarget` on the host and keypad button interactables that are enabled only during active focus.
 - All interactables use collision layer 8 for interaction raycasts.
 7. Camera rig:
 - `CameraPivot -> CameraYaw -> CameraPitch -> SpringArm3D -> Camera3D`.
@@ -82,6 +83,10 @@ This document describes the current runtime architecture of the prototype and mu
 - Encapsulates short "apply failed" item motion toward slot and return.
 10. `res://scripts/interaction_hint_builder.gd`
 - Builds HUD hint text from controller state so text policy is not embedded in interaction flow logic.
+11. `res://scripts/code_panel.gd`
+- Runtime-builds keypad geometry and interactables.
+- Enforces focus-gated keypad input.
+- Handles code-entry state (`ENTER CODE`, masked input, `DENIED`, latched `GRANTED`) and LED material-state transitions.
 
 ## Movement Data Flow
 

@@ -12,6 +12,7 @@ Godot `4.6.1` 3D isometric prototype with:
 8. Multi-item octopus carry system (up to 8 held items) with overload movement penalties.
 9. Focus-mode interaction system for precision objects (e.g. card reader).
 10. Card reader gameplay with one-slot insertion, LED feedback, and clickable card ejection.
+11. Wall-mounted code panel gameplay with focus-first keypad input (`0-9`, `<<`, `OK`), display feedback, and card-reader-matched LED states.
 
 ## Canonical Branch
 
@@ -64,6 +65,7 @@ GODOT_BIN=/absolute/path/to/godot ./scripts/check.sh
 - `RMB` exits focus.
 - `LMB` outside interaction area exits focus.
 - While focused, held items are selectable at the bottom of the screen.
+- Code panel keypad buttons are only interactive while the panel is focused.
 
 ## Validate
 
