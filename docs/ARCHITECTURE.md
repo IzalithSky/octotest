@@ -20,8 +20,7 @@ This document describes the current runtime architecture of the prototype and mu
 - Handles mouse raycast targeting on ground collision layer.
 - Handles orbit camera controls (RMB drag, Q/E yaw, wheel zoom).
 - Handles in-game menu (`Esc` toggle) with `Main Menu` and `Quit` actions.
-- Handles interaction raycasts, hover/range/blocked state logic, and queued auto-interact.
-- Handles octopus carry state (up to 8 held items), drop controls, and carry movement penalties.
+- Delegates interaction/carry systems to `InteractionController`.
 2. `UI` (`CanvasLayer`) in gameplay scene:
 - `HUD` contains key hints anchored to screen corner.
 - HUD controls are set to ignore mouse input so world clicks pass through.
@@ -52,12 +51,10 @@ This document describes the current runtime architecture of the prototype and mu
 - Changes to gameplay scene on `Play`.
 - Quits app on `Quit`.
 2. `res://scripts/main.gd`
-- Input and camera orchestration.
-- Converts screen click to world target via physics raycast.
-- Calls `Player.set_move_target()`.
+- Lightweight scene orchestrator.
+- Owns camera orbit/zoom behavior.
 - Owns in-game menu visibility and scene change/quit actions.
-- Owns interaction queue and click-to-interact behavior.
-- Owns carry/drop flow and hand-socket layout for held items.
+- Routes click-to-move and delegates interact/drop input to `InteractionController`.
 3. `res://scripts/player_controller.gd`
 - Character movement state (`_target_position`, `_has_target`).
 - Gravity and grounded handling.
@@ -70,6 +67,11 @@ This document describes the current runtime architecture of the prototype and mu
 - Reusable `Area3D` interaction component.
 - Encapsulates interaction type (`CLICK`, `PICKUP`), range, prompts, held-state toggles, and visual overlays.
 - Emits `clicked`, `picked_up`, and `dropped` signals for gameplay-specific reactions.
+6. `res://scripts/interaction_controller.gd`
+- Centralized interaction and carry system.
+- Handles interactable raycasts, hover state transitions, line-of-sight and range checks, and queued auto-interact.
+- Handles octopus hand-socket layout, held-item updates, targeted drop, and carry movement penalties.
+- Handles wall-switch callback and HUD interaction hints.
 
 ## Movement Data Flow
 

@@ -2,6 +2,30 @@
 
 ## 2026-02-24
 
+### Step 19 - Refactor gameplay interaction logic out of `main.gd`
+
+- Added `scripts/interaction_controller.gd` and moved interaction-heavy responsibilities out of `main.gd`:
+  - interactable raycasts,
+  - hover/range/blocked state transitions,
+  - queued auto-interact flow,
+  - octopus carry/drop behavior,
+  - hand-socket layout and held-item transform updates,
+  - carry-based movement penalties,
+  - interaction HUD hint composition,
+  - wall light switch callback wiring.
+- Rewrote `scripts/main.gd` as a lean orchestrator:
+  - camera orbit/zoom,
+  - menu visibility + scene transitions,
+  - ground click-to-move,
+  - delegation of interaction/drop input to `InteractionController`.
+- Updated architecture docs for the new script boundary.
+
+### Validation commands (pass)
+1. `/Applications/Godot.app/Contents/MacOS/godot --headless --path . --scene res://scenes/main.tscn --log-file /tmp/octotest-main.log --quit-after 5`
+   - Result: gameplay scene boots with no script parse/runtime errors.
+2. `./scripts/check.sh`
+   - Result: boot smoke test PASS, `movement_math_test: PASS`, `slope_movement_test: PASS`.
+
 ### Step 18 - Interactable objects + octopus carry prototype
 
 - Added reusable interaction component:
