@@ -4,6 +4,7 @@ class_name InteractionController
 
 const WALL_COLLISION_MASK := 1 << 0
 const INTERACTABLE_COLLISION_MASK := 1 << 3
+const CardReaderType = preload("res://scripts/card_reader.gd")
 
 @export var interact_move_standoff := 1.2
 @export var held_item_follow_speed := 15.0
@@ -14,6 +15,7 @@ const INTERACTABLE_COLLISION_MASK := 1 << 3
 @export var hand_socket_inner_radius := 1.0
 @export var hand_socket_outer_radius := 1.35
 @export var hand_socket_height := 1.05
+@export var drop_clamp_extent := 15.2
 
 var _player: CharacterBody3D
 var _camera: Camera3D
@@ -29,6 +31,10 @@ var _held_interactables: Array[Interactable] = []
 var _hand_sockets: Array[Node3D] = []
 var _held_socket_by_item_id: Dictionary = {}
 var _queued_interaction_target: Interactable
+var _pending_card_reader: CardReaderType
+var _awaiting_card_selection := false
+var _eligible_held_cards: Array[Interactable] = []
+var _selection_markers: Dictionary = {}
 var _light_toggle_on := true
 var _default_light_energy := 4.0
 var _base_move_speed := 6.0
@@ -53,6 +59,7 @@ func set_interaction_enabled(is_enabled: bool) -> void:
 		return
 	_interaction_enabled = is_enabled
 	if not _interaction_enabled:
+		_cancel_card_selection_mode()
 		_set_hovered_interactable(null, false, false)
 
 
@@ -64,11 +71,29 @@ func process_interactions(delta: float) -> void:
 	_update_held_item_transform(delta)
 
 
+func consume_escape() -> bool:
+	if _awaiting_card_selection:
+		_cancel_card_selection_mode()
+		return true
+	return false
+
+
 func try_handle_interaction_click(screen_position: Vector2) -> bool:
 	if not _interaction_enabled:
 		return false
 
 	var target := _raycast_to_interactable(screen_position)
+
+	if _awaiting_card_selection:
+		if target != null and _is_item_currently_held(target) and _eligible_held_cards.has(target):
+			_apply_card_to_pending_reader(target)
+			return true
+		if target != null and _get_card_reader_for_interactable(target) == _pending_card_reader:
+			_cancel_card_selection_mode()
+			return true
+		_update_hint_text()
+		return true
+
 	if target == null:
 		_queued_interaction_target = null
 		return false
@@ -90,6 +115,10 @@ func try_handle_interaction_click(screen_position: Vector2) -> bool:
 
 	if _hovered_in_range:
 		_queued_interaction_target = null
+		var reader := _get_card_reader_for_interactable(target)
+		if reader != null:
+			_handle_card_reader_click(reader)
+			return true
 		if target.interaction_type == Interactable.InteractionType.CLICK:
 			target.interact(_player)
 			return true
@@ -151,6 +180,11 @@ func _process_queued_interaction() -> void:
 		return
 
 	if _queued_interaction_target.interaction_type == Interactable.InteractionType.CLICK:
+		var reader := _get_card_reader_for_interactable(_queued_interaction_target)
+		if reader != null:
+			_handle_card_reader_click(reader)
+			_queued_interaction_target = null
+			return
 		_queued_interaction_target.interact(_player)
 		_queued_interaction_target = null
 
@@ -172,6 +206,123 @@ func _update_hovered_interactable() -> void:
 		in_range = false
 
 	_set_hovered_interactable(target, in_range, blocked)
+
+
+func _get_card_reader_for_interactable(target: Interactable) -> CardReaderType:
+	if target == null:
+		return null
+	var parent := target.get_parent()
+	if parent is CardReaderType:
+		return parent as CardReaderType
+	return null
+
+
+func _handle_card_reader_click(reader: CardReaderType) -> void:
+	if reader == null:
+		return
+
+	if reader.has_inserted_card():
+		var held_cards := _get_held_cards()
+		if not held_cards.is_empty():
+			if held_cards.size() == 1:
+				_pending_card_reader = reader
+				_apply_card_to_pending_reader(held_cards[0])
+			else:
+				_enter_card_selection_mode(reader, held_cards)
+			return
+
+		if _held_interactables.size() >= max_held_items:
+			_update_hint_text()
+			return
+		var ejected_card := reader.eject_card()
+		if ejected_card != null:
+			_attach_item_to_hands(ejected_card, false)
+		_cancel_card_selection_mode()
+		_update_hint_text()
+		return
+
+	var held_cards := _get_held_cards()
+	if held_cards.is_empty():
+		_cancel_card_selection_mode()
+		_update_hint_text()
+		return
+
+	if held_cards.size() == 1:
+		_pending_card_reader = reader
+		_apply_card_to_pending_reader(held_cards[0])
+		return
+
+	_enter_card_selection_mode(reader, held_cards)
+
+
+func _get_held_cards() -> Array[Interactable]:
+	var cards: Array[Interactable] = []
+	for held_item in _held_interactables:
+		if held_item.is_card():
+			cards.append(held_item)
+	return cards
+
+
+func _enter_card_selection_mode(reader: CardReaderType, held_cards: Array[Interactable]) -> void:
+	_cancel_card_selection_mode()
+	_pending_card_reader = reader
+	_awaiting_card_selection = true
+	_eligible_held_cards = held_cards.duplicate()
+
+	for card in _eligible_held_cards:
+		card.set_visual_state(Interactable.VisualState.IN_RANGE)
+		var marker := Label3D.new()
+		marker.text = "?"
+		marker.position = Vector3(0.0, 0.45, 0.0)
+		marker.modulate = Color(1.0, 0.94, 0.28, 1.0)
+		marker.outline_modulate = Color(0.1, 0.1, 0.1, 1.0)
+		card.get_pickup_root().add_child(marker)
+		_selection_markers[card.get_instance_id()] = marker
+
+	_update_hint_text()
+
+
+func _cancel_card_selection_mode() -> void:
+	_awaiting_card_selection = false
+	_pending_card_reader = null
+	for marker in _selection_markers.values():
+		if marker is Node and is_instance_valid(marker):
+			(marker as Node).queue_free()
+	_selection_markers.clear()
+	for card in _eligible_held_cards:
+		if card != null and is_instance_valid(card):
+			card.set_visual_state(Interactable.VisualState.HELD)
+	_eligible_held_cards.clear()
+	_update_hint_text()
+
+
+func _apply_card_to_pending_reader(card: Interactable) -> void:
+	if _pending_card_reader == null or card == null:
+		_cancel_card_selection_mode()
+		return
+	if not _is_item_currently_held(card):
+		_cancel_card_selection_mode()
+		return
+	if not _pending_card_reader.can_accept_card(card):
+		_update_hint_text()
+		return
+
+	if _pending_card_reader.has_inserted_card():
+		var previous_card := _pending_card_reader.eject_card()
+		if previous_card != null:
+			_attach_item_to_hands(previous_card, false)
+
+	var removed_card := _remove_held_item(card)
+	if removed_card == null:
+		_cancel_card_selection_mode()
+		return
+
+	removed_card.set_held(true)
+	if not _pending_card_reader.insert_card(removed_card):
+		_attach_item_to_hands(removed_card, false)
+
+	_cancel_card_selection_mode()
+	_update_hint_text()
 
 
 func _set_hovered_interactable(target: Interactable, in_range: bool, blocked: bool) -> void:
@@ -231,7 +382,11 @@ func _move_toward_interactable(target: Interactable) -> void:
 	else:
 		away = away.normalized()
 
-	var move_position: Vector3 = target_pos + away * interact_move_standoff
+	var standoff := interact_move_standoff
+	if _get_card_reader_for_interactable(target) != null:
+		standoff = maxf(standoff, 2.6)
+
+	var move_position: Vector3 = target_pos + away * standoff
 	move_position.y = player_pos.y
 	_player.set_move_target(move_position)
 
@@ -240,24 +395,12 @@ func _pick_up_interactable(target: Interactable) -> void:
 	if _held_interactables.size() >= max_held_items or _is_item_currently_held(target):
 		return
 
-	_held_interactables.append(target)
-	_refresh_hand_socket_layout()
-
-	var socket_index := int(_held_socket_by_item_id.get(target.get_instance_id(), -1))
-	if socket_index < 0 or socket_index >= _hand_sockets.size():
-		_held_interactables.erase(target)
-		_refresh_hand_socket_layout()
+	if not _attach_item_to_hands(target, true):
 		return
 
-	var pickup_root := target.get_pickup_root()
-	var socket := _hand_sockets[socket_index]
-	pickup_root.reparent(socket, true)
-	target.set_held(true)
-	pickup_root.transform = target.get_hold_transform()
 	target.interact(_player)
 	_player.clear_move_target()
-	_update_carry_mobility()
-	_update_hint_text()
+	_cancel_card_selection_mode()
 
 
 func _drop_last_held_item() -> void:
@@ -283,8 +426,9 @@ func _drop_held_item_by_index(index: int) -> void:
 		return
 
 	var item := _held_interactables[index]
-	_held_interactables.remove_at(index)
-	_refresh_hand_socket_layout()
+	item = _remove_held_item(item)
+	if item == null:
+		return
 
 	var pickup_root := item.get_pickup_root()
 	pickup_root.reparent(_world_root, true)
@@ -293,6 +437,8 @@ func _drop_held_item_by_index(index: int) -> void:
 
 	var lateral_offset := _player.global_basis.x * (0.2 * float(index % 3 - 1))
 	var drop_position: Vector3 = _player.global_position + _player.global_basis.z * 1.25 + Vector3(0.0, 0.6, 0.0) + lateral_offset
+	drop_position.x = clampf(drop_position.x, -drop_clamp_extent, drop_clamp_extent)
+	drop_position.z = clampf(drop_position.z, -drop_clamp_extent, drop_clamp_extent)
 	pickup_root.global_position = drop_position
 	if pickup_root is RigidBody3D:
 		var body := pickup_root as RigidBody3D
@@ -301,7 +447,7 @@ func _drop_held_item_by_index(index: int) -> void:
 	if _hovered_interactable == item:
 		_set_hovered_interactable(null, false, false)
 
-	_update_carry_mobility()
+	_cancel_card_selection_mode()
 	_update_hint_text()
 
 
@@ -392,6 +538,49 @@ func _is_item_currently_held(item: Interactable) -> bool:
 	return _held_socket_by_item_id.has(item.get_instance_id())
 
 
+func _remove_held_item(item: Interactable) -> Interactable:
+	if item == null:
+		return null
+	var index := _held_interactables.find(item)
+	if index == -1:
+		return null
+	_held_interactables.remove_at(index)
+	_refresh_hand_socket_layout()
+	_update_carry_mobility()
+	return item
+
+
+func _attach_item_to_hands(item: Interactable, clear_motion_target: bool) -> bool:
+	if item == null:
+		return false
+	if _held_interactables.size() >= max_held_items:
+		return false
+	if _is_item_currently_held(item):
+		return true
+
+	_held_interactables.append(item)
+	_refresh_hand_socket_layout()
+
+	var socket_index := int(_held_socket_by_item_id.get(item.get_instance_id(), -1))
+	if socket_index < 0 or socket_index >= _hand_sockets.size():
+		_held_interactables.erase(item)
+		_refresh_hand_socket_layout()
+		return false
+
+	var pickup_root := item.get_pickup_root()
+	var socket := _hand_sockets[socket_index]
+	pickup_root.reparent(socket, true)
+	item.set_interaction_enabled(true)
+	item.set_held(true)
+	pickup_root.transform = item.get_hold_transform()
+
+	if clear_motion_target:
+		_player.clear_move_target()
+
+	_update_carry_mobility()
+	return true
+
+
 func _update_carry_mobility() -> void:
 	var held_count := _held_interactables.size()
 	if held_count >= immobilized_at_item_count:
@@ -445,6 +634,8 @@ func _update_hint_text() -> void:
 		lines.append("Heavy carry: movement slowed")
 	if _queued_interaction_target != null and is_instance_valid(_queued_interaction_target):
 		lines.append("Auto-interact queued: %s" % _queued_interaction_target.display_name)
+	if _awaiting_card_selection and _pending_card_reader != null:
+		lines.append("Card Reader: choose held card (click card in hands)")
 
 	_hint_label.text = "\n".join(lines)
 

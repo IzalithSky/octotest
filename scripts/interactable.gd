@@ -12,6 +12,11 @@ enum InteractionType {
 	PICKUP,
 }
 
+enum ItemKind {
+	NONE,
+	CARD,
+}
+
 enum VisualState {
 	IDLE,
 	HOVERED,
@@ -21,6 +26,8 @@ enum VisualState {
 }
 
 @export var interaction_type: InteractionType = InteractionType.CLICK
+@export var item_kind: ItemKind = ItemKind.NONE
+@export var item_id := ""
 @export var display_name := "Interactable"
 @export var interaction_range := 2.6
 @export var prompt_action := "Interact"
@@ -43,6 +50,7 @@ var _saved_area_mask := 0
 var _saved_pickup_layer := 0
 var _saved_pickup_mask := 0
 var _has_saved_pickup_collision := false
+var _interaction_enabled := true
 
 
 func _ready() -> void:
@@ -82,6 +90,20 @@ func get_pickup_root() -> Node3D:
 	return _pickup_root
 
 
+func is_card() -> bool:
+	return item_kind == ItemKind.CARD
+
+
+func set_interaction_enabled(is_enabled: bool) -> void:
+	_interaction_enabled = is_enabled
+	if _interaction_enabled:
+		collision_layer = _saved_area_layer
+		collision_mask = _saved_area_mask
+	else:
+		collision_layer = 0
+		collision_mask = 0
+
+
 func interact(actor: Node) -> void:
 	emit_signal("interacted", self, actor)
 	if interaction_type == InteractionType.CLICK:
@@ -99,8 +121,7 @@ func set_held(is_held: bool) -> void:
 	if is_held:
 		_set_visual_state(VisualState.HELD)
 	else:
-		collision_layer = _saved_area_layer
-		collision_mask = _saved_area_mask
+		set_interaction_enabled(_interaction_enabled)
 		_set_visual_state(VisualState.IDLE)
 
 	if _pickup_root == null:

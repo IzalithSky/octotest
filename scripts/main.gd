@@ -59,6 +59,9 @@ func _physics_process(delta: float) -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if _is_escape_press(event):
+		if _interaction_controller != null and _interaction_controller.consume_escape():
+			get_viewport().set_input_as_handled()
+			return
 		_set_in_game_menu_visible(not in_game_menu.visible)
 		get_viewport().set_input_as_handled()
 		return
