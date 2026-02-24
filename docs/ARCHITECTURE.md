@@ -75,6 +75,10 @@ This document describes the current runtime architecture of the prototype and mu
 - Handles interactable raycasts, hover state transitions, line-of-sight and range checks, and queued auto-interact.
 - Handles octopus hand-socket layout, held-item updates, targeted drop, and carry movement penalties.
 - Handles wall-switch callback, HUD interaction hints, and focus-mode interaction routing.
+- Provides a unified focus-held item application pipeline with extension points:
+  - `_can_focus_target_accept_held_item(...)`,
+  - `_apply_held_item_to_focus_target(...)`,
+  - `_get_focus_item_target_position(...)`.
 7. `res://scripts/focus_target.gd`
 - Configures per-object focus behavior (anchor, click-outside threshold, optional angle overrides, solved-state auto-exit).
 8. `res://scripts/card_reader.gd`

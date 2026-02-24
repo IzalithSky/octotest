@@ -60,6 +60,7 @@ HOME=/tmp XDG_DATA_HOME=/tmp XDG_CONFIG_HOME=/tmp godot --headless --path /path/
 31. Confirm default code `1234` sets display to `GRANTED` and latches green LED.
 32. Confirm wrong code sets display to `DENIED`, red LED, then resets to `ENTER CODE` + yellow LED.
 33. Confirm code panel LED colors match card reader colors for idle/wrong/correct states.
+34. Confirm non-applicable held item click in code panel focus animates toward panel and returns.
 
 ## Regression Focus Areas
 

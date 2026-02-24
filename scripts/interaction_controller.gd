@@ -148,14 +148,7 @@ func try_handle_interaction_click(screen_position: Vector2) -> bool:
 			var clicked_held := _get_held_item_at_screen(screen_position, FOCUS_HELD_CLICK_RADIUS)
 			if clicked_held != null and _is_click_confirmed_for_held_item(clicked_held):
 				_queued_interaction_target = null
-				if _focus_card_reader != null and clicked_held.is_card() and _focus_card_reader.can_accept_card(clicked_held):
-					_debug_log("Focus-held click applies card %s" % _describe_interactable(clicked_held))
-					_pending_card_reader = _focus_card_reader
-					_apply_card_to_pending_reader(clicked_held)
-				else:
-					_debug_log("Focus-held click ignored for %s (reader missing or cannot accept)" % _describe_interactable(clicked_held))
-					if _focus_card_reader != null:
-						_trigger_focus_reject_feedback(clicked_held)
+				_try_apply_focus_held_item(clicked_held)
 				_update_hint_text()
 				return true
 		_queued_interaction_target = null
@@ -165,14 +158,7 @@ func try_handle_interaction_click(screen_position: Vector2) -> bool:
 	if _is_item_currently_held(target):
 		_queued_interaction_target = null
 		if _focus_locked:
-			if _focus_card_reader != null and target.is_card() and _focus_card_reader.can_accept_card(target):
-				_debug_log("Focus-held ray click applies card %s" % _describe_interactable(target))
-				_pending_card_reader = _focus_card_reader
-				_apply_card_to_pending_reader(target)
-			else:
-				_debug_log("Focus-held ray click ignored for %s (cannot apply)" % _describe_interactable(target))
-				if _focus_card_reader != null:
-					_trigger_focus_reject_feedback(target)
+			_try_apply_focus_held_item(target)
 			_update_hint_text()
 			return true
 		_debug_log("Dropping held item %s" % _describe_interactable(target))
@@ -794,8 +780,11 @@ func _update_focus_display_transforms(delta: float) -> void:
 		target_pos += camera_forward * 2.2
 		target_pos += camera_right * offset_x
 		target_pos += camera_up * offset_y
-		if _focus_card_reader != null:
-			target_pos += _focus_reject_feedback.get_offset(held_item, target_pos, _focus_card_reader.get_slot_position())
+		target_pos += _focus_reject_feedback.get_offset(
+			held_item,
+			target_pos,
+			_get_focus_reject_target_position(target_pos)
+		)
 
 		var target_basis := Basis.looking_at(-camera_forward, Vector3.UP)
 		var target_transform := Transform3D(target_basis, target_pos)
@@ -803,9 +792,55 @@ func _update_focus_display_transforms(delta: float) -> void:
 
 
 func _trigger_focus_reject_feedback(item: Interactable) -> void:
-	if item == null or not _focus_locked or _focus_card_reader == null:
+	if item == null or not _focus_locked:
 		return
 	_focus_reject_feedback.trigger(item)
+
+
+func _try_apply_focus_held_item(item: Interactable) -> void:
+	if item == null:
+		return
+	if _can_focus_target_accept_held_item(item):
+		_apply_held_item_to_focus_target(item)
+		return
+	_debug_log("Focus-held click rejected for %s" % _describe_interactable(item))
+	_trigger_focus_reject_feedback(item)
+
+
+func _get_focus_reject_target_position(fallback_position: Vector3) -> Vector3:
+	return _get_focus_item_target_position(fallback_position)
+
+
+func _can_focus_target_accept_held_item(item: Interactable) -> bool:
+	if item == null:
+		return false
+
+	# Extension point: add additional focus-target handlers here as new
+	# interactable types gain held-item application behavior.
+	if _focus_card_reader != null:
+		return item.is_card() and _focus_card_reader.can_accept_card(item)
+
+	return false
+
+
+func _apply_held_item_to_focus_target(item: Interactable) -> void:
+	if item == null:
+		return
+
+	# Extension point: mirror branching in _can_focus_target_accept_held_item.
+	if _focus_card_reader != null:
+		_debug_log("Focus-held click applies card %s" % _describe_interactable(item))
+		_pending_card_reader = _focus_card_reader
+		_apply_card_to_pending_reader(item)
+
+
+func _get_focus_item_target_position(fallback_position: Vector3) -> Vector3:
+	# Extension point: return a destination position per focus-target type.
+	if _focus_card_reader != null:
+		return _focus_card_reader.get_slot_position()
+	if _focus_target != null:
+		return _focus_target.get_focus_position()
+	return fallback_position
 
 
 func _ensure_hand_sockets() -> void:

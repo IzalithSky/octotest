@@ -2,6 +2,22 @@
 
 ## 2026-02-24
 
+### Step 22 - Unify focus held-item apply/reject routing for future interactables
+
+- Refactored focus held-item click handling in `InteractionController` into one pipeline used by both ray-picked and screen-picked held items.
+- Introduced explicit extension points for future focus interactables:
+  - `_can_focus_target_accept_held_item(...)`,
+  - `_apply_held_item_to_focus_target(...)`,
+  - `_get_focus_item_target_position(...)`.
+- Kept card-reader behavior unchanged while enabling reject feedback animation for non-applicable held items in code panel focus mode.
+- Reject animation target now resolves by focus context:
+  - card reader slot for reader focus,
+  - focus target position for other focus-enabled objects.
+
+### Validation commands (pass)
+1. `./scripts/check.sh`
+   - Result: boot smoke PASS, `movement_math_test: PASS`, `slope_movement_test: PASS`, `card_reader_interaction_test: PASS`.
+
 ### Step 21 - Add and polish wall code panel (focus-gated keypad)
 
 - Added new wall-mounted `CodePanel` gameplay object on the wall opposite the card reader.
