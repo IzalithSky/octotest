@@ -2,6 +2,56 @@
 
 ## 2026-02-24
 
+### Step 19 - Refactor gameplay interaction logic out of `main.gd`
+
+- Added `scripts/interaction_controller.gd` and moved interaction-heavy responsibilities out of `main.gd`:
+  - interactable raycasts,
+  - hover/range/blocked state transitions,
+  - queued auto-interact flow,
+  - octopus carry/drop behavior,
+  - hand-socket layout and held-item transform updates,
+  - carry-based movement penalties,
+  - interaction HUD hint composition,
+  - wall light switch callback wiring.
+- Rewrote `scripts/main.gd` as a lean orchestrator:
+  - camera orbit/zoom,
+  - menu visibility + scene transitions,
+  - ground click-to-move,
+  - delegation of interaction/drop input to `InteractionController`.
+- Updated architecture docs for the new script boundary.
+
+### Validation commands (pass)
+1. `/Applications/Godot.app/Contents/MacOS/godot --headless --path . --scene res://scenes/main.tscn --log-file /tmp/octotest-main.log --quit-after 5`
+   - Result: gameplay scene boots with no script parse/runtime errors.
+2. `./scripts/check.sh`
+   - Result: boot smoke test PASS, `movement_math_test: PASS`, `slope_movement_test: PASS`.
+
+### Step 18 - Interactable objects + octopus carry prototype
+
+- Added reusable interaction component:
+  - `scripts/interactable.gd`
+  - Supports interaction types (`CLICK`, `PICKUP`), visual states (idle/hover/in-range/blocked/held), prompts, and pickup/drop signals.
+- Implemented gameplay interaction flow in `scripts/main.gd`:
+  - Hover + range + blocked visualization.
+  - Click-to-interact and move-closer + queued auto-interact.
+  - Clickable held item drop.
+  - `F` drop last, `Shift + F` drop all.
+- Implemented octopus carry behavior:
+  - Up to 8 simultaneously held items.
+  - Dynamic hand socket layout in rings to reduce clipping.
+  - Movement penalties: slow when heavily loaded, immobilize when full.
+- Authored interactables directly in scene (`scenes/main.tscn`):
+  - Wall-mounted light switch.
+  - Multiple pickup objects for full-hands testing (10 total pickups).
+- Fixed local Godot check reliability:
+  - `scripts/check.sh` now supports lowercase macOS app binary path and sets explicit writable `--log-file`.
+
+### Validation commands (pass)
+1. `./scripts/check.sh`
+   - Result: boot smoke test PASS, `movement_math_test: PASS`, `slope_movement_test: PASS`.
+2. `/Applications/Godot.app/Contents/MacOS/godot --headless --path . --scene res://scenes/main.tscn --log-file /tmp/octotest-main.log --quit-after 5`
+   - Result: gameplay scene boots with no script parse/runtime errors.
+
 ### Step 17 - GDD review and clarifications
 
 Full review of `docs/GDD.md`. Resolved open design questions and corrected structural issues:
