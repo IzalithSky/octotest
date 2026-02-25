@@ -12,6 +12,9 @@ This file defines how to initialize and run AI-assisted dev sessions for this pr
 - Architecture doc: `docs/ARCHITECTURE.md`
 - Manual testing doc: `docs/TESTING.md`
 - Quickstart doc: `docs/README.md`
+- Task backlog: `docs/TASK_LIST.md`
+- Puzzle planning doc: `docs/misc/PUZZLE_PLAN.md`
+- Room concept template: `docs/misc/room_concepts/ROOM_TEMPLATE.md`
 - Unified check script: `scripts/check.sh`
 
 ## Session Initialization Checklist
@@ -20,9 +23,10 @@ Run these steps at the start of every session.
 
 1. Confirm current directory is project root.
 2. Read `docs/ARCHITECTURE.md` and `docs/DEVLOG.md`, then note the latest completed step.
-3. Check git status and branch.
-4. Run baseline sanity checks before changing code (`./scripts/check.sh`).
-5. Create a dedicated feature/fix branch before implementation.
+3. For gameplay/content sessions, review `docs/TASK_LIST.md` and `docs/misc/PUZZLE_PLAN.md`.
+4. Check git status and branch.
+5. Run baseline sanity checks before changing code (`./scripts/check.sh`).
+6. Create a dedicated feature/fix branch before implementation.
 
 Suggested commands:
 

@@ -34,7 +34,7 @@
 
 ## **Core Concept**
 
-*A curious octopus escapes her research tank on a Friday evening and explores an underwater science station — solving puzzles, avoiding the skeleton crew, and eventually finding her way to open ocean.*
+*A curious octopus escapes her research tank on a Friday evening and explores an underwater science station — solving puzzles, avoiding the skeleton crew, and eventually reaching a final cutscene escape to open ocean.*
 
 Inspired by Stray: the player inhabits a small, intelligent creature in a world built for someone else. No handholding. No combat. Just observation, curiosity, and the satisfaction of figuring things out.
 
@@ -58,7 +58,7 @@ Puzzles emerge from mechanics, not arbitrary logic. The octopus's arms are the p
 
 She has no formal name — she is a research subject. Her tank is labelled OCT-05. The scientists call her Octo out loud, which the player hears in the opening scene. It's informal, affectionate, unofficial. It suits her.
 
-Her colour shifts tell her story. Octopuses change colour not just for camouflage but as emotional expression — curious, alert, pleased, startled. No dialogue needed.
+Her colour shifts tell her story. Octopuses shift colour as emotional expression — curious, alert, pleased, startled. No dialogue needed.
 
 ### **Relationship with Humans**
 
@@ -96,7 +96,7 @@ The story zones in Story -> The Journey are pacing layers, while the Blue Curren
 | Zone 2 - Work Area | Lab Zone, Systems Room, maintenance-heavy corridors |
 | Zone 3 - Common Areas | Central Core, Observation Lounge, Galley |
 | Zone 4 - Public Facilities | Public Zone (Gift Shop, Exit Corridor, visitor-facing entries) |
-| Zone 5 - Open Water | Wet Room / Dive Airlock to exterior ocean traversal segments |
+| Zone 5 - Final Cutscene Escape | Wet Room / Dive Airlock used only for the ending cinematic |
 
 #### **Zone 1 - Central Core**
 
@@ -443,7 +443,7 @@ The station goes quiet. Octo looks at the tank wall. Looks at the desk, visible 
 
 ### **The Journey**
 
-Octo moves through the station from back to front — from the most private and restricted spaces toward the public-facing ones, and eventually outside.
+Octo moves through the station from back to front — from the most private and restricted spaces toward the public-facing ones.
 
 These are narrative progression zones, not literal architecture labels (see World Bible -> The Station -> Zone Mapping (Narrative vs Physical Layout)).
 
@@ -455,7 +455,7 @@ These are narrative progression zones, not literal architecture labels (see Worl
 
 * Zone 4 — Public Facilities: Reception, cafeteria, gift shop. Cheesy educational posters. A little plushie octopus on the gift shop shelf. Octo walks past it.
 
-* Zone 5 — Open Water: Between buildings, then beyond. The ocean.
+* Zone 5 — Final Cutscene Escape: The Wet Room / Dive Airlock trigger for the ending cinematic.
 
 *Scope: the Blue Current Research Facility as described in the World Bible is the source of truth for rooms and layout. Small enough to ship, deep enough to be satisfying.*
 
@@ -513,27 +513,7 @@ Curious players are rewarded. None of it is required — all of it is delightful
 
 ### **The Arm System**
 
-Octo has 8 arms. Each can hold an object, press a button, or reach toward a target. Some arms are more expressive and precise — used for primary interactions like codes and buttons. Others are used for movement and squeezing through tight spaces. The exact specialisation is determined by feel during prototyping, not by biology.
-
-### **The Tangle System (Nice-to-Have / Post-MVP)**
-
-*Puzzle difficulty comes from arm state management — not from arbitrary item matching or colour pairing.*
-
-Arms can cross over each other in 3D space. In the enhanced version of the game, this can create a tangle — a visible constraint the player must consider before acting further.
-
-For MVP, this system is optional and can be deferred without breaking the core game loop (explore, observe, solve, evade, progress).
-
-If implemented post-MVP:
-
-* Tangle state can persist between rooms — you live with your choices
-
-* Arms only tangle when holding objects — dropping items or getting caught auto-untangles
-
-* Some rooms can require entering already tangled in a specific configuration
-
-* Untangling means tapping/clicking interactions in the correct sequence to unwind crossed arms
-
-* Visual feedback: arms visibly cross, tangle points highlighted — exact visual approach deferred until 3D model exists
+Octo has 8 arms for carrying and game logic constraints, but visual interaction is intentionally simple. When interacting, Octo gives a small directional movement toward the object instead of full arm contact animation. The exact arm specialisation is handled as gameplay state, not explicit per-arm animation.
 
 ### **Code & Sequence Puzzles**
 
@@ -552,18 +532,6 @@ Code variety keeps rooms distinct:
 * Timed inputs combined with specific arm positions
 
 * Environmental patterns — lights flickering in sequence, water flow, animal behaviour
-
-### **Camouflage**
-
-Hold to blend into surroundings. Octo becomes invisible to nearby humans and creatures.
-
-* While camouflaged: arms cannot be extended — no interaction
-
-* Core tension: sneak past the guard to reach the observation point, then uncloak to act
-
-* Lights off \+ camouflage: double cover, but Octo also loses visual clarity
-
-* Colour shifts as mood expression are separate from active camouflage
 
 ### **Object Carrying**
 
@@ -587,13 +555,13 @@ Design rules for persistence:
 
 Octo can turn room lights on and off. Simple interaction, deep combinations:
 
-* Lights off: humans react — window to move or interact unobserved
+* Lights off: humans react — creates temporary movement opportunities
 
 * Lights on: reveals hidden things — codes on walls, patterns on floors
 
 * Screen glare: some codes only readable on monitors with room lights off
 
-* Chain reaction: lights off → human goes to check the switch → Octo slips through the door they just walked away from
+* Chain reaction: lights off → human goes to check the switch → Octo slips through while the route is clear
 
 ### **Interactable Devices**
 
@@ -625,21 +593,9 @@ Because humans are rare, each encounter is an event, not a routine obstacle. The
 
 * Open a far door → guard goes to investigate → corridor unblocked
 
-* Lights off \+ camouflage → both systems active simultaneously
+### **Station-Only Traversal**
 
-### **Outdoor Traversal**
-
-The research station is a campus — multiple buildings connected by open water. At key points Octo leaves the safety of indoors entirely.
-
-* Massive tonal shift — from sterile corridors to open dark ocean
-
-* No walls to hide behind — camouflage becomes essential
-
-* Underwater paths between buildings: pipes, guide lights, familiar landmarks
-
-* Some buildings locked from outside — Octo finds alternate entry: broken vent, open hatch, gap in a panel
-
-* The final outdoor section is the emotional climax — open ocean visible, tantalizingly close
+Gameplay traversal stays entirely inside Blue Current as a single-building experience. Open water is only used in the final cutscene.
 
 ## **Controls**
 
@@ -647,7 +603,7 @@ The research station is a campus — multiple buildings connected by open water.
 
 ### **Movement & Camera**
 
-* Click or tap to move — Octo walks to that point relative to the current camera view (inside the station); swimming is only in outdoor open-water sections
+* Click or tap to move — Octo walks to that point relative to the current camera view (inside the station)
 
 * Player-controlled camera — click-drag to rotate freely, Stray-style
 
@@ -657,11 +613,9 @@ The research station is a campus — multiple buildings connected by open water.
 
 ### **Interaction**
 
-* Click or tap an object to interact — automatic arm selection, invisible until it matters
+* Click or tap an object to interact — automatic arm selection, with a subtle body/arm-direction nudge toward the target (no full touch animation)
 
 * All interactable objects are highlighted (subtle glow or dot) — the player decides what is worth picking up or using
-
-* Hold to camouflage, release to uncloak
 
 * Scroll wheel to zoom — examine codes on notes, labels on equipment
 
@@ -675,11 +629,9 @@ Arm status is communicated through Octo's body language, not an interface panel:
 
 * This keeps the screen clean and the feedback characterful
 
-### **Tangle Rules (Optional System)**
+### **Catch Reset**
 
-If enabled, arms only tangle when they are holding objects and cross in space. Dropping items or getting caught by a human auto-untangles — objects fall, arms return to rest.
-
-*Getting caught has a soft mechanical cost: you lose your arm state and have to re-collect items. No punishment screen — just a quiet reset.*
+*Getting caught has a soft mechanical cost: you lose your room-level progress and have to retry. No punishment screen — just a quiet reset.*
 
 ### **Object Placement**
 
@@ -703,9 +655,9 @@ If enabled, arms only tangle when they are holding objects and cross in space. D
 
 * Big, expressive eyes — react to discovering a code, noticing something interesting, and key puzzle progress
 
-* Colour shifts for mood: curious (warm), startled (pale flash), pleased (deep rich hue), camouflaged (environment-matched)
+* Colour shifts for mood: curious (warm), startled (pale flash), pleased (deep rich hue)
 
-* Arms have weight and physicality — they drag slightly, coil naturally, don't snap around
+* Interaction animation is minimal and readable — slight directional movement toward objects rather than full contact choreography
 
 ### **Sound**
 
@@ -725,7 +677,7 @@ If enabled, arms only tangle when they are holding objects and cross in space. D
 
 * Step 2 — Click-to-move with camera follow  ✅
 
-* Step 3 — One arm reaching toward a tap target
+* Step 3 — Subtle interaction motion toward a tap target (no detailed arm touch animation)
 
 * Step 4 — Multiple arms, observe spatial behaviour
 
@@ -735,17 +687,11 @@ If enabled, arms only tangle when they are holding objects and cross in space. D
 
 * Step 7 — Simple code lock: tap A, then B, then C to open a door
 
-* Optional Step 8 — First tangle: two arms cross — does it feel like anything?
-
 By step 7 the core game exists. Everything after is content and refinement.
 
 ### **Key Godot Technology to Research Early**
 
-* Skeleton3D \+ Inverse Kinematics (IK) for arm movement — research community plugins before writing arm code
-
 * SpringArm3D for camera collision — use from the start, retrofitting is painful
-
-* 3D collision/proximity checks for optional tangle detection (post-MVP)
 
 * AnimationTree for body and eye expression
 

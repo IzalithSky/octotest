@@ -1,5 +1,29 @@
 # Dev Log
 
+## 2026-02-25
+
+### Step 24 - Scope update + planning docs overhaul (single-building version)
+
+- Updated `docs/GDD.md` to match revised game scope:
+  - indoor gameplay only (single building),
+  - open-water moment moved to ending cutscene only,
+  - removed camouflage and tangle systems,
+  - clarified simple interaction visuals (subtle movement toward targets, no full contact animation).
+- Rewrote `docs/TASK_LIST.md` into a literal, step-by-step implementation plan with:
+  - pre-production mapping tasks,
+  - puzzle-planning tasks,
+  - reusable module tasks,
+  - explicit content-authoring tasks for room creation.
+- Added planning templates:
+  - `docs/misc/PUZZLE_PLAN.md`,
+  - `docs/misc/room_concepts/ROOM_TEMPLATE.md`.
+- Synced docs references:
+  - updated `docs/README.md` docs map,
+  - updated `docs/PROCEDURES.md` project facts and initialization checklist.
+
+### Validation commands
+1. Not run (docs-only changes).
+
 ## 2026-02-24
 
 ### Step 23 - Office room rescale/layout polish + climb/interaction fixes

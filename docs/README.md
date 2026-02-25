@@ -85,3 +85,5 @@ Run the unified check script:
 5. Gameplay implementation notes: `docs/misc/STAIRS.md`
 6. Canonical game design document (active project version): `docs/GDD.md`
 7. Editable game task backlog: `docs/TASK_LIST.md`
+8. Puzzle planning template and dependency sheet: `docs/misc/PUZZLE_PLAN.md`
+9. Per-room concept template: `docs/misc/room_concepts/ROOM_TEMPLATE.md`
